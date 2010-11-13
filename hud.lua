@@ -343,16 +343,17 @@ local function Hud(self, unit)
 	end
 end
 
+oUF:RegisterStyle('TukzHud',Hud)
+oUF:SetActiveStyle('TukzHud')
+
 local width = hud_width
 if TukuiHudCF.powerhud then
 	width = width + hud_power_width + 2
 end
 
-oUF:SetActiveStyle('TukzHud')
 local player_hud = oUF:Spawn('player', "oUF_Tukz_player_Hud")
 player_hud:SetPoint("CENTER", UIParent, "CENTER", TukuiDB.Scale(-width) + TukuiDB.Scale(-100), 0)
 player_hud:SetSize(width, hud_height)
-oUF:SetActiveStyle('Tukz')
 
 if TukuiHudCF.hideooc == true then
 	local hud_hider = CreateFrame("Frame", nil, UIParent)
@@ -378,11 +379,9 @@ if TukuiHudCF.powerhud then
 	width = width + hud_power_width + 2
 end
 
-oUF:SetActiveStyle('TukzHud')
 local target_hud = oUF:Spawn('target', "oUF_Tukz_target_Hud")
 target_hud:SetPoint("CENTER", UIParent, "CENTER", TukuiDB.Scale(width) + TukuiDB.Scale(100), 0)
 target_hud:SetSize(width, hud_height)
-oUF:SetActiveStyle('Tukz')
 
 if TukuiHudCF.hideooc == true then
 	local hud_hider = CreateFrame("Frame", nil, UIParent)
@@ -408,11 +407,9 @@ if TukuiHudCF.pethud then
         width = width + hud_power_width + 2
     end
 
-    oUF:SetActiveStyle('TukzHud')
     local pet_hud = oUF:Spawn('pet', "oUF_Tukz_pet_Hud")
     pet_hud:SetPoint("BOTTOMRIGHT", oUF_Tukz_player_Hud, "BOTTOMLEFT", TukuiDB.Scale(-width) - TukuiDB.Scale(15), 0)
     pet_hud:SetSize(width, hud_height * .75)
-    oUF:SetActiveStyle('Tukz')
 	
 	if TukuiHudCF.hideooc == true then
 		local hud_hider = CreateFrame("Frame", nil, UIParent)
