@@ -4,7 +4,6 @@
 ## Title: |cffC495DDTukui_HUD|r
 ## Notes: HUD frames for Tukui
 ## RequiredDeps: Tukui
-## OptionalDeps: Tukui_Dps_Layout, Tukui_Heal_Layout
 
 config.lua
 functions.lua
