@@ -7,5 +7,5 @@
 ## OptionalDeps: Tukui_Dps_Layout, Tukui_Heal_Layout
 
 config.lua
-hud.lua
 functions.lua
+hud.lua
