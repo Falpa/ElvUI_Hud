@@ -5,6 +5,8 @@
 ## Notes: HUD frames for Tukui
 ## RequiredDeps: Tukui
 
+libs/oUF_ThreatBar/oUF_ThrearBar.lua
+
 config.lua
 functions.lua
 hud.lua
