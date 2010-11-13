@@ -1,3 +1,19 @@
+------------------------------------------------------------------------
+--	local variables
+------------------------------------------------------------------------
+
+local db = TukuiCF["unitframes"]
+local font1 = TukuiCF["media"].uffont
+local font2 = TukuiCF["media"].font
+local normTex = TukuiCF["media"].normTex
+local glowTex = TukuiCF["media"].glowTex
+local bubbleTex = TukuiCF["media"].bubbleTex
+
+local backdrop = {
+	bgFile = TukuiCF["media"].blank,
+	insets = {top = -TukuiDB.mult, left = -TukuiDB.mult, bottom = -TukuiDB.mult, right = -TukuiDB.mult},
+}
+
 local hud_height = TukuiDB.Scale(100)
 local hud_width = TukuiDB.Scale(15)
 local hud_power_width = TukuiDB.Scale(10)
