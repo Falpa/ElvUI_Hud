@@ -114,7 +114,7 @@ local function Hud(self, unit)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
             power.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
-            power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(4), 0)
+            power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(10), 0)
             power.PreUpdate = TukuiHud.PreUpdatePowerHud
             power.PostUpdate = TukuiHud.PostUpdatePowerHud
 
@@ -141,6 +141,43 @@ local function Hud(self, unit)
                 power.Smooth = true
             end
         end
+		
+		if TukuiHudCF.showthreat then
+			-- Threat Bar Border
+			local ThreatFrame = CreateFrame("Frame", nil, self)
+			ThreatFrame:SetHeight(hud_height * .75)
+			ThreatFrame:SetWidth(hud_power_width)
+			ThreatFrame:SetFrameLevel(self:GetFrameLevel() + 4)
+			if TukuiHudCF.powerhud then
+				ThreatFrame:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMRIGHT", TukuiDB.Scale(2), 0)
+			else
+				ThreatFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", TukuiDB.Scale(4), 0)
+			end
+			TukuiDB.SetTemplate(ThreatFrame)
+            ThreatFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
+            self.ThreatFrame = ThreatFrame
+            TukuiDB.CreateShadow(self.ThreatFrame)
+			local ThreatBar = CreateFrame("StatusBar", nil, self)
+			
+			ThreatBar:SetFrameLevel(ThreatFrame:GetFrameLevel() + 1)
+			ThreatBar:SetPoint("TOPLEFT", ThreatFrame, TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			ThreatBar:SetPoint("BOTTOMRIGHT", ThreatFrame, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+
+			ThreatBar:SetOrientation("VERTICAL")
+			ThreatBar:SetStatusBarTexture(normTex)
+			ThreatBar:SetBackdrop(backdrop)
+			ThreatBar:SetBackdropColor(0, 0, 0, 0)
+
+			ThreatBar.Text = TukuiDB.SetFontString(ThreatBar, font2, 12)
+			ThreatBar.Text:SetPoint("LEFT", ThreatBar, "RIGHT", TukuiDB.Scale(10), 0)
+
+			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
+			ThreatBar.bg:SetAllPoints(ThreatBar)
+			ThreatBar.bg:SetTexture(0.1,0.1,0.1)
+
+			ThreatBar.useRawThreat = false
+			self.ThreatBar = ThreatBar
+		end
     elseif unit == "target" then
         -- Health Bar
         local health = CreateFrame('StatusBar', nil, self)
@@ -367,6 +404,10 @@ if TukuiHudCF.powerhud then
 	width = width + hud_power_width + 2
 end
 
+if TukuiHudCF.showthreat then
+	width = width + hud_power_width + 2
+end
+
 local player_hud = oUF:Spawn('player', "oUF_Tukz_player_Hud")
 player_hud:SetPoint("CENTER", UIParent, "CENTER", TukuiDB.Scale(-width) + TukuiDB.Scale(-100), 0)
 player_hud:SetSize(width, hud_height)
@@ -390,7 +431,7 @@ if TukuiHudCF.hideooc == true then
 end
 
 
-local width = hud_width
+width = hud_width
 if TukuiHudCF.powerhud then
 	width = width + hud_power_width + 2
 end
@@ -418,7 +459,7 @@ if TukuiHudCF.hideooc == true then
 end
 
 if TukuiHudCF.pethud then
-	local width = hud_width
+	width = hud_width
     if TukuiHudCF.powerhud then
         width = width + hud_power_width + 2
     end
