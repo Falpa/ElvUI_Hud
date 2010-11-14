@@ -1,5 +1,11 @@
 TukuiHud = { }
 
+TukuiHud.updateAllElements = function(frame)
+    for _, v in ipairs(frame.__elements) do
+        v(frame, "UpdateElement", frame.unit)
+    end
+end
+
 TukuiHud.PostUpdateHealthHud = function(health, unit, min, max)
     local r, g, b
 

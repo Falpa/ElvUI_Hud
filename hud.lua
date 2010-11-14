@@ -24,7 +24,7 @@ local function Hud(self, unit)
     self.colors = TukuiDB.oUF_colors
 
     -- Update all elements on show
-    self:HookScript("OnShow", TukuiDB.updateAllElements)
+    self:HookScript("OnShow", TukuiHud.updateAllElements)
 
     -- For Testing..
     --[[self:SetBackdrop(backdrop)
@@ -392,7 +392,7 @@ local function Hud(self, unit)
             end
 		end
 		
-		self:RegisterEvent("UNIT_PET", TukuiDB.updateAllElements)
+		self:RegisterEvent("UNIT_PET", TukuiHud.updateAllElements)
 	end
 end
 
