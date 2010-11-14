@@ -14,9 +14,9 @@ local backdrop = {
 	insets = {top = -TukuiDB.mult, left = -TukuiDB.mult, bottom = -TukuiDB.mult, right = -TukuiDB.mult},
 }
 
-local hud_height = TukuiDB.Scale(100)
-local hud_width = TukuiDB.Scale(15)
-local hud_power_width = TukuiDB.Scale(10)
+local hud_height = TukuiDB.Scale(TukuiHudCF.height)
+local hud_width = TukuiDB.Scale(TukuiHudCF.width)
+local hud_power_width = TukuiDB.Scale((hud_width/3)*2)
 
 -- Hud bars
 local function Hud(self, unit)
