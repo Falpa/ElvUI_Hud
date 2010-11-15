@@ -3,7 +3,7 @@
 ------------------------------------------------------------------------
 
 local db = TukuiHudCF
-local font1 = TukuiCF["media"].uffont
+local font1 = TukuiCF["media"].uffont or TukuiCF["media"].font
 local font2 = TukuiCF["media"].font
 local normTex = TukuiCF["media"].normTex
 local glowTex = TukuiCF["media"].glowTex
