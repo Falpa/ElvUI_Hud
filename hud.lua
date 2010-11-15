@@ -2,7 +2,7 @@
 --	local variables
 ------------------------------------------------------------------------
 
-local db = TukuiCF["unitframes"]
+local db = TukuiHudCF
 local font1 = TukuiCF["media"].uffont
 local font2 = TukuiCF["media"].font
 local normTex = TukuiCF["media"].normTex
