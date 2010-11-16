@@ -62,7 +62,7 @@ local function Hud(self, unit)
         healthBG:SetAllPoints()
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.1)
-        health.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize , "THINOUTLINE")
+        health.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize or 12, "THINOUTLINE")
         health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(0))
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
