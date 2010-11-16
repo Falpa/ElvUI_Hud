@@ -8,4 +8,6 @@ TukuiHudCF = {
   height = 150, -- height of the HUD
   width = 15, -- width of the HUD
   offset = 125, -- offset from the center in pixels
+  font = TukuiCF["media"].font,
+  fontsize = 12,
 }

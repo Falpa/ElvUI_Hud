@@ -3,8 +3,6 @@
 ------------------------------------------------------------------------
 
 local db = TukuiHudCF
-local font1 = TukuiCF["media"].uffont or TukuiCF["media"].font
-local font2 = TukuiCF["media"].font
 local normTex = TukuiCF["media"].normTex
 local glowTex = TukuiCF["media"].glowTex
 local bubbleTex = TukuiCF["media"].bubbleTex
@@ -62,7 +60,7 @@ local function Hud(self, unit)
         healthBG:SetAllPoints()
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.1)
-        health.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize or 12, "THINOUTLINE")
+        health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
         health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(0))
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
@@ -113,7 +111,7 @@ local function Hud(self, unit)
             powerBG:SetAllPoints(power)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
-            power.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
+            power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
             power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(10), 0)
             power.PreUpdate = TukuiHud.PreUpdatePowerHud
             power.PostUpdate = TukuiHud.PostUpdatePowerHud
@@ -168,7 +166,7 @@ local function Hud(self, unit)
 			ThreatBar:SetBackdrop(backdrop)
 			ThreatBar:SetBackdropColor(0, 0, 0, 0)
 
-			ThreatBar.Text = TukuiDB.SetFontString(ThreatBar, font2, 12)
+			ThreatBar.Text = TukuiDB.SetFontString(ThreatBar, db.font, db.fontsize)
 			ThreatBar.Text:SetPoint("LEFT", ThreatBar, "RIGHT", TukuiDB.Scale(10), 0)
 
 			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
@@ -206,7 +204,7 @@ local function Hud(self, unit)
         healthBG:SetAllPoints()
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.2)
-        health.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
+        health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
         health.value:SetPoint("LEFT", health, "RIGHT", TukuiDB.Scale(10), 0)
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
@@ -257,7 +255,7 @@ local function Hud(self, unit)
             powerBG:SetAllPoints(power)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
-            power.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
+            power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
             power.value:SetPoint("RIGHT", power, "LEFT", TukuiDB.Scale(-4), 0)
             power.PreUpdate = TukuiHud.PreUpdatePowerHud
             power.PostUpdate = TukuiHud.PostUpdatePowerHud
@@ -312,7 +310,7 @@ local function Hud(self, unit)
         healthBG:SetAllPoints()
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.1)
-        health.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize , "THINOUTLINE")
+        health.value = TukuiDB.SetFontString(health, db.font, db.fontsize , "THINOUTLINE")
         health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(0))
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
@@ -363,7 +361,7 @@ local function Hud(self, unit)
             powerBG:SetAllPoints(power)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
-            power.value = TukuiDB.SetFontString(health, font1, TukuiCF["unitframes"].fontsize, "THINOUTLINE")
+            power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
             power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(4), 0)
             power.PreUpdate = TukuiHud.PreUpdatePowerHud
             power.PostUpdate = TukuiHud.PostUpdatePowerHud
