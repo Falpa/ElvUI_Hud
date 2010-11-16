@@ -409,7 +409,7 @@ if TukuiHudCF.showthreat then
 end
 
 local player_hud = oUF:Spawn('player', "oUF_Tukz_player_Hud")
-player_hud:SetPoint("CENTER", UIParent, "CENTER", TukuiDB.Scale(-width) + TukuiDB.Scale(-100), 0)
+player_hud:SetPoint("CENTER", UIParent, "CENTER", TukuiDB.Scale(-100), 0)
 player_hud:SetSize(width, hud_height)
 
 if TukuiHudCF.hideooc == true then
@@ -437,7 +437,7 @@ if TukuiHudCF.powerhud then
 end
 
 local target_hud = oUF:Spawn('target', "oUF_Tukz_target_Hud")
-target_hud:SetPoint("CENTER", UIParent, "CENTER", TukuiDB.Scale(width) + TukuiDB.Scale(100), 0)
+target_hud:SetPoint("CENTER", UIParent, "CENTER", TukuiDB.Scale(100), 0)
 target_hud:SetSize(width, hud_height)
 
 if TukuiHudCF.hideooc == true then
