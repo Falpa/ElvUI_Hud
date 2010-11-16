@@ -51,7 +51,7 @@ local function Hud(self, unit)
         HealthFrame:SetFrameLevel(self:GetFrameLevel() + 4)
 
         TukuiDB.SetTemplate(HealthFrame)
-        HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
+        HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
         self.FrameBorder = HealthFrame
         TukuiDB.CreateShadow(self.FrameBorder)
 
@@ -94,7 +94,7 @@ local function Hud(self, unit)
             PowerFrame:SetPoint("LEFT", self.Health, "RIGHT", TukuiDB.Scale(4), 0)
 
             TukuiDB.SetTemplate(PowerFrame)
-            PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
+            PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
             self.PowerFrame = PowerFrame
             TukuiDB.CreateShadow(self.PowerFrame)
 
@@ -152,7 +152,7 @@ local function Hud(self, unit)
 				ThreatFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", TukuiDB.Scale(4), 0)
 			end
 			TukuiDB.SetTemplate(ThreatFrame)
-            ThreatFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
+            ThreatFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
             self.ThreatFrame = ThreatFrame
             TukuiDB.CreateShadow(self.ThreatFrame)
 			local ThreatBar = CreateFrame("StatusBar", nil, self)
@@ -195,7 +195,7 @@ local function Hud(self, unit)
         HealthFrame:SetFrameLevel(self:GetFrameLevel() + 4)
 
         TukuiDB.SetTemplate(HealthFrame)
-        HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
+        HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
         self.FrameBorder = HealthFrame
         TukuiDB.CreateShadow(self.FrameBorder)
 
@@ -238,7 +238,7 @@ local function Hud(self, unit)
             PowerFrame:SetPoint("RIGHT", self.Health, "LEFT", TukuiDB.Scale(-4), 0)
 
             TukuiDB.SetTemplate(PowerFrame)
-            PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
+            PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
             self.PowerFrame = PowerFrame
             TukuiDB.CreateShadow(self.PowerFrame)
 
@@ -301,7 +301,7 @@ local function Hud(self, unit)
         HealthFrame:SetFrameLevel(self:GetFrameLevel() + 4)
 
         TukuiDB.SetTemplate(HealthFrame)
-        HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
+        HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
         self.FrameBorder = HealthFrame
         TukuiDB.CreateShadow(self.FrameBorder)
 
@@ -344,7 +344,7 @@ local function Hud(self, unit)
             PowerFrame:SetPoint("LEFT", self.Health, "RIGHT", TukuiDB.Scale(4), 0)
 
             TukuiDB.SetTemplate(PowerFrame)
-            PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor))	
+            PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
             self.PowerFrame = PowerFrame
             TukuiDB.CreateShadow(self.PowerFrame)
 
