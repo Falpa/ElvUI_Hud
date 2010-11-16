@@ -7,4 +7,5 @@ TukuiHudCF = {
   hideooc = true, -- hide the hud out of combat
   height = 150, -- height of the HUD
   width = 15, -- width of the HUD
+  offset = 125, -- offset from the center in pixels
 }
