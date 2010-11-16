@@ -76,7 +76,7 @@ local function Hud(self, unit)
         if db.unicolor ~= false then
             health.colorTapping = false
             health.colorClass = false
-            health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))
+            health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor or { 0.05, 0.05, 0.05 }))
             health.colorDisconnected = false
         else
             health.colorTapping = true	
@@ -220,7 +220,7 @@ local function Hud(self, unit)
         if db.unicolor ~= false then
             health.colorTapping = false
             health.colorClass = false
-            health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))
+            health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor or { 0.05, 0.05, 0.05 }))
             health.colorDisconnected = false
         else
             health.colorTapping = true	
@@ -326,7 +326,7 @@ local function Hud(self, unit)
         if db.unicolor ~= false then
             health.colorTapping = false
             health.colorClass = false
-            health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor))
+            health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor or { 0.05, 0.05, 0.05 }))
             health.colorDisconnected = false
         else
             health.colorTapping = true	
