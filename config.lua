@@ -1,4 +1,5 @@
 TukuiHudCF = {
+  enabled = true,
   powerhud = true, -- show the power bar in the hud
   pethud = true, -- show the pet hud
   showthreat = true, -- show a threat bar next to the players hud
