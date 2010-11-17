@@ -1,6 +1,6 @@
 ## Interface: 40000
 ## Author: Sortokk
-## Version: 1.0.12
+## Version: 1.0.13
 ## Title: |cffC495DDTukui_HUD|r
 ## Notes: HUD frames for Tukui
 ## RequiredDeps: Tukui
