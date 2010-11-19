@@ -11,4 +11,10 @@ TukuiHudCF = {
   offset = 125, -- offset from the center in pixels
   font = TukuiCF["media"].font,
   fontsize = 12,
+  alpha = 1, -- alpha value of the HUD when fully visible
+  oocalpha = 0, -- alpha value of the HUD when hidden out of combat if hideooc is true
 }
+
+if TukuiDB.myname == "Norinael" then
+  TukuiHudCF.enabled = false
+end

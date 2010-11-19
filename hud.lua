@@ -114,7 +114,11 @@ local function Hud(self, unit)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
             power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-            power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(10), 0)
+			if TukuiHudCF.showthreat then
+				power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", TukuiDB.Scale(10), TukuiDB.Scale(-15))
+			else
+				power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(10), 0)
+			end
             power.PreUpdate = TukuiHud.PreUpdatePowerHud
             power.PostUpdate = TukuiHud.PostUpdatePowerHud
 
@@ -408,9 +412,13 @@ if TukuiHudCF.showthreat then
 	width = width + hud_power_width + 2
 end
 
+local alpha = TukuiHudCF.alpha
+local oocalpha = TukuiHudCF.oocalpha
+
 local player_hud = oUF:Spawn('player', "oUF_Tukz_player_Hud")
 player_hud:SetPoint("RIGHT", UIParent, "CENTER", TukuiDB.Scale(-TukuiHudCF.offset), 0)
 player_hud:SetSize(width, hud_height)
+player_hud:SetAlpha(alpha)
 
 if TukuiHudCF.hideooc == true then
 	local hud_hider = CreateFrame("Frame", nil, UIParent)
@@ -419,12 +427,12 @@ if TukuiHudCF.hideooc == true then
 	hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
 	hud_hider:SetScript("OnEvent", function(self, event)
 		if (event == "PLAYER_REGEN_DISABLED") then
-				UIFrameFadeIn(player_hud, 0.3 * (1 - player_hud:GetAlpha()), player_hud:GetAlpha(), 1)
+				UIFrameFadeIn(player_hud, 0.3 * (alpha - player_hud:GetAlpha()), player_hud:GetAlpha(), alpha)
 		elseif (event == "PLAYER_REGEN_ENABLED") then
-				UIFrameFadeOut(player_hud, 0.3 * (0 + player_hud:GetAlpha()), player_hud:GetAlpha(), 0)
+				UIFrameFadeOut(player_hud, 0.3 * (oocalpha + player_hud:GetAlpha()), player_hud:GetAlpha(), oocalpha)
 		elseif (event == "PLAYER_ENTERING_WORLD") then
 				if (not InCombatLockdown()) then
-						player_hud:SetAlpha(0)
+						player_hud:SetAlpha(oocalpha)
 				end
 		end
 	end)
@@ -439,6 +447,7 @@ end
 local target_hud = oUF:Spawn('target', "oUF_Tukz_target_Hud")
 target_hud:SetPoint("LEFT", UIParent, "CENTER", TukuiDB.Scale(TukuiHudCF.offset), 0)
 target_hud:SetSize(width, hud_height)
+target_hud:SetAlpha(alpha)
 
 if TukuiHudCF.hideooc == true then
 	local hud_hider = CreateFrame("Frame", nil, UIParent)
@@ -447,12 +456,12 @@ if TukuiHudCF.hideooc == true then
 	hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
 	hud_hider:SetScript("OnEvent", function(self, event)
 		if (event == "PLAYER_REGEN_DISABLED") then
-				UIFrameFadeIn(target_hud, 0.3 * (1 - target_hud:GetAlpha()), target_hud:GetAlpha(), 1)
+				UIFrameFadeIn(target_hud, 0.3 * (alpha - target_hud:GetAlpha()), target_hud:GetAlpha(), alpha)
 		elseif (event == "PLAYER_REGEN_ENABLED") then
-				UIFrameFadeOut(target_hud, 0.3 * (0 + target_hud:GetAlpha()), target_hud:GetAlpha(), 0)
+				UIFrameFadeOut(target_hud, 0.3 * (oocalpha + target_hud:GetAlpha()), target_hud:GetAlpha(), oocalpha)
 		elseif (event == "PLAYER_ENTERING_WORLD") then
 				if (not InCombatLockdown()) then
-						target_hud:SetAlpha(0)
+						target_hud:SetAlpha(oocalpha)
 				end
 		end
 	end)
@@ -467,6 +476,7 @@ if TukuiHudCF.pethud then
     local pet_hud = oUF:Spawn('pet', "oUF_Tukz_pet_Hud")
     pet_hud:SetPoint("BOTTOMRIGHT", oUF_Tukz_player_Hud, "BOTTOMLEFT", TukuiDB.Scale(-width) - TukuiDB.Scale(15), 0)
     pet_hud:SetSize(width, hud_height * .75)
+	pet_hud:SetAlpha(alpha)
 	
 	if TukuiHudCF.hideooc == true then
 		local hud_hider = CreateFrame("Frame", nil, UIParent)
@@ -475,12 +485,12 @@ if TukuiHudCF.pethud then
 		hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
 		hud_hider:SetScript("OnEvent", function(self, event)
 			if (event == "PLAYER_REGEN_DISABLED") then
-					UIFrameFadeIn(pet_hud, 0.3 * (1 - pet_hud:GetAlpha()), pet_hud:GetAlpha(), 1)
+					UIFrameFadeIn(pet_hud, 0.3 * (alpha - pet_hud:GetAlpha()), pet_hud:GetAlpha(), alpha)
 			elseif (event == "PLAYER_REGEN_ENABLED") then
-					UIFrameFadeOut(pet_hud, 0.3 * (0 + pet_hud:GetAlpha()), pet_hud:GetAlpha(), 0)
+					UIFrameFadeOut(pet_hud, 0.3 * (oocalpha + pet_hud:GetAlpha()), pet_hud:GetAlpha(), oocalpha)
 			elseif (event == "PLAYER_ENTERING_WORLD") then
 					if (not InCombatLockdown()) then
-							pet_hud:SetAlpha(0)
+							pet_hud:SetAlpha(oocalpha)
 					end
 			end
 		end)
