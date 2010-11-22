@@ -25,6 +25,7 @@ local function Hud(self, unit)
 
     -- Update all elements on show
     self:HookScript("OnShow", TukuiHud.updateAllElements)
+	self:EnableMouse(false) -- HUD should be click-through
 
     -- For Testing..
     --[[self:SetBackdrop(backdrop)
