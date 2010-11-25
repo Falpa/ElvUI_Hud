@@ -129,18 +129,11 @@ local function Hud(self, unit)
             -- Update the Power bar Frequently
             power.frequentUpdates = true
 
-            -- Setup Colors
-            if db.unicolor ~= false then
-                power.colorTapping = true	
-                power.colorClass = true
-                power.colorReaction = true
-                power.colorDisconnected = true		
-            else
-                power.colorDisconnected = true
-                power.colorPower = true
-                power.colorTapping = true
-            end
-
+			power.colorTapping = true	
+			power.colorPower = true
+			power.colorReaction = true
+			power.colorDisconnected = true		
+			
             -- Smooth Animation
             if db.showsmooth == true then
                 power.Smooth = true
@@ -274,16 +267,10 @@ local function Hud(self, unit)
             power.frequentUpdates = true
 
             -- Setup Colors
-            if db.unicolor ~= false then
-                power.colorTapping = true	
-                power.colorClass = true
-                power.colorReaction = true
-                power.colorDisconnected = true		
-            else
-                power.colorDisconnected = true
-                power.colorPower = true
-                power.colorTapping = true
-            end
+			power.colorTapping = true	
+			power.colorPower = true
+			power.colorReaction = true
+			power.colorDisconnected = true		
 
             -- Smooth Animation
             if db.showsmooth == true then
@@ -380,17 +367,11 @@ local function Hud(self, unit)
             power.frequentUpdates = true
 
             -- Setup Colors
-            if db.unicolor ~= false then
-                power.colorTapping = true	
-                power.colorClass = true
-                power.colorReaction = true
-                power.colorDisconnected = true		
-            else
-                power.colorDisconnected = true
-                power.colorPower = true
-                power.colorTapping = true
-            end
-
+			power.colorTapping = true	
+			power.colorPower = true
+			power.colorReaction = true
+			power.colorDisconnected = true		
+			
             -- Smooth Animation
             if db.showsmooth == true then
                 power.Smooth = true
