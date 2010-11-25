@@ -3,6 +3,7 @@ TukuiHudCF = {
   powerhud = true, -- show the power bar in the hud
   pethud = true, -- show the pet hud
   showthreat = true, -- show a threat bar next to the players hud
+  showvalues = true, -- show text values
   unicolor = true, -- use a unicolor them
   showsmooth = true, -- show smooth bars
   hideooc = true, -- hide the hud out of combat

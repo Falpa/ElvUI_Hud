@@ -63,8 +63,16 @@ local function Hud(self, unit)
         healthBG:SetAllPoints()
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.1)
-        health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-        health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(0))
+		if db.showvalues then
+			health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
+			if db.classpecificbars and (TukuiDB.myclass == "DRUID" or 
+				TukuiDB.myclass == "PALADIN" or TukuiDB.myclass == "WARLOCK" or 
+				TukuiDB.myclass == "SHAMAN" or TukuiDB.myclass == "DEATHKNIGHT") then
+				health.value:SetPoint("BOTTOM", health, "TOP", 0, TukuiDB.Scale(4))
+			else
+				health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(0))
+			end
+		end
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
         self.Health.bg = healthBG
@@ -114,11 +122,13 @@ local function Hud(self, unit)
             powerBG:SetAllPoints(power)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
-            power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-			if TukuiHudCF.showthreat then
-				power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", TukuiDB.Scale(10), TukuiDB.Scale(-15))
-			else
-				power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(10), 0)
+			if TukuiHudCF.showvalues then
+				power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
+				if TukuiHudCF.showthreat then
+					power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", TukuiDB.Scale(10), TukuiDB.Scale(-15))
+				else
+					power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(10), 0)
+				end
 			end
             power.PreUpdate = TukuiHud.PreUpdatePowerHud
             power.PostUpdate = TukuiHud.PostUpdatePowerHud
@@ -165,9 +175,11 @@ local function Hud(self, unit)
 			ThreatBar:SetStatusBarTexture(normTex)
 			ThreatBar:SetBackdrop(backdrop)
 			ThreatBar:SetBackdropColor(0, 0, 0, 0)
-
-			ThreatBar.Text = TukuiDB.SetFontString(ThreatBar, db.font, db.fontsize)
-			ThreatBar.Text:SetPoint("LEFT", ThreatBar, "RIGHT", TukuiDB.Scale(10), 0)
+		
+			if TukuiHudCF.showvalues then
+				ThreatBar.Text = TukuiDB.SetFontString(ThreatBar, db.font, db.fontsize)
+				ThreatBar.Text:SetPoint("LEFT", ThreatBar, "RIGHT", TukuiDB.Scale(10), 0)
+			end
 
 			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
 			ThreatBar.bg:SetAllPoints(ThreatBar)
@@ -204,8 +216,10 @@ local function Hud(self, unit)
         healthBG:SetAllPoints()
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.2)
-        health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-        health.value:SetPoint("LEFT", health, "RIGHT", TukuiDB.Scale(10), 0)
+		if TukuiHudCF.showvalues then
+			health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
+			health.value:SetPoint("LEFT", health, "RIGHT", TukuiDB.Scale(10), 0)
+		end
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
         self.Health.bg = healthBG
@@ -255,8 +269,10 @@ local function Hud(self, unit)
             powerBG:SetAllPoints(power)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
-            power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-            power.value:SetPoint("RIGHT", power, "LEFT", TukuiDB.Scale(-4), 0)
+			if TukuiHudCF.showvalues then
+				power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
+				power.value:SetPoint("RIGHT", power, "LEFT", TukuiDB.Scale(-4), 0)
+			end
             power.PreUpdate = TukuiHud.PreUpdatePowerHud
             power.PostUpdate = TukuiHud.PostUpdatePowerHud
 
@@ -304,8 +320,10 @@ local function Hud(self, unit)
         healthBG:SetAllPoints()
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.1)
-        health.value = TukuiDB.SetFontString(health, db.font, db.fontsize , "THINOUTLINE")
-        health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(0))
+		if TukuiHudCF.showvalues then
+			health.value = TukuiDB.SetFontString(health, db.font, db.fontsize , "THINOUTLINE")
+			health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(0))
+		end
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
         self.Health.bg = healthBG
@@ -355,8 +373,10 @@ local function Hud(self, unit)
             powerBG:SetAllPoints(power)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
-            power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-            power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(4), 0)
+			if TukuiHudCF.showvalues then
+				power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
+				power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(4), 0)
+			end
             power.PreUpdate = TukuiHud.PreUpdatePowerHud
             power.PostUpdate = TukuiHud.PostUpdatePowerHud
 

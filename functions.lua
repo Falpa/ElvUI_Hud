@@ -24,7 +24,7 @@ TukuiHud.PostUpdateHealthHud = function(health, unit, min, max)
         end					
     end
 
-    if min ~= max then
+    if min ~= max and TukuiHudCF.showvalues then
         health.value:SetFormattedText("%d%%", floor(min / max * 100))
     end
 end
@@ -43,11 +43,11 @@ TukuiHud.PostUpdatePowerHud = function(power, unit, min, max)
     local pType, pToken = UnitPowerType(unit)
     local color = TukuiDB.oUF_colors.power[pToken]
 
-    if color then
+    if color and TukuiHudCF.showvalues then
         power.value:SetTextColor(color[1], color[2], color[3])
     end
 
-    if min ~= max then
+    if min ~= max and TukuiHudCF.showvalues then
         if pType == 0 then
             power.value:SetFormattedText("%d%%", floor(min / max * 100))
         end
