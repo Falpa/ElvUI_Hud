@@ -54,3 +54,32 @@ TukuiHud.PostUpdatePowerHud = function(power, unit, min, max)
     end
 end
 
+TukuiHud.ComboDisplay = function(self, event, unit)
+	if(unit == 'pet') then return end
+	
+	local cpoints = self.CPoints
+	local cp
+	if(UnitExists'vehicle') then
+		cp = GetComboPoints('vehicle', 'target')
+	else
+		cp = GetComboPoints('player', 'target')
+	end
+
+	for i=1, MAX_COMBO_POINTS do
+		if(i <= cp) then
+			cpoints[i]:SetAlpha(1)
+		else
+			cpoints[i]:SetAlpha(0.15)
+		end
+	end
+	
+	if cpoints[1]:GetAlpha() == 1 then
+		for i=1, MAX_COMBO_POINTS do
+			cpoints[i]:Show()
+		end
+	else
+		for i=1, MAX_COMBO_POINTS do
+			cpoints[i]:Hide()
+		end
+	end
+end

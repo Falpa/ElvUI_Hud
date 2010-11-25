@@ -3,6 +3,7 @@ TukuiHudCF = {
   powerhud = true, -- show the power bar in the hud
   pethud = true, -- show the pet hud
   showthreat = true, -- show a threat bar next to the players hud
+  classspecificbars = true, -- show class specific bars (rune bar, totem bar, eclipse bar, etc.)
   showvalues = true, -- show text values
   unicolor = true, -- use a unicolor them
   showsmooth = true, -- show smooth bars
@@ -16,6 +17,3 @@ TukuiHudCF = {
   oocalpha = 0, -- alpha value of the HUD when hidden out of combat if hideooc is true
 }
 
-if TukuiDB.myname == "Norinael" then
-  TukuiHudCF.enabled = false
-end
