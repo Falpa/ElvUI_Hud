@@ -65,13 +65,7 @@ local function Hud(self, unit)
         healthBG:SetAlpha(.1)
 		if db.showvalues then
 			health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-			if db.classpecificbars and (TukuiDB.myclass == "DRUID" or 
-				TukuiDB.myclass == "PALADIN" or TukuiDB.myclass == "WARLOCK" or 
-				TukuiDB.myclass == "SHAMAN" or TukuiDB.myclass == "DEATHKNIGHT") then
-				health.value:SetPoint("BOTTOM", health, "TOP", 0, TukuiDB.Scale(4))
-			else
-				health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(0))
-			end
+			health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-20), TukuiDB.Scale(0))
 		end
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
@@ -401,7 +395,7 @@ local function Hud(self, unit)
         healthBG:SetAlpha(.2)
 		if TukuiHudCF.showvalues then
 			health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-			health.value:SetPoint("LEFT", health, "RIGHT", TukuiDB.Scale(10), 0)
+			health.value:SetPoint("LEFT", health, "RIGHT", TukuiDB.Scale(20), 0)
 		end
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
