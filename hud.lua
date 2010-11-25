@@ -423,7 +423,7 @@ local function Hud(self, unit)
 		-- Setup combo points
 		local bars = CreateFrame("Frame", nil, self)
 		bars:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", TukuiDB.Scale(6), 0)
-		bars:SetWidth(hud_width-4)
+		bars:SetWidth(hud_width-8)
 		bars:SetHeight(hud_height-4)
 		TukuiDB.SetTemplate(bars)
 		bars:SetBackdropBorderColor(0,0,0,0)
@@ -441,7 +441,7 @@ local function Hud(self, unit)
 				bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, TukuiDB.Scale(1))
 			end
 			bars[i]:SetAlpha(0.15)
-			bars[i]:SetWidth(hud_width-4)
+			bars[i]:SetWidth(hud_width-8)
 			bars[i]:SetOrientation('VERTICAL')
 		end
 		
