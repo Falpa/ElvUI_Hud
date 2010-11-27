@@ -431,7 +431,7 @@ local function Hud(self, unit)
 		
 		for i = 1, 5 do					
 			bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, self)
-			bars[i]:SetHeight(TukuiDB.Scale(hud_height - 4)/5)					
+			bars[i]:SetHeight((TukuiDB.Scale(hud_height - 4) - 4)/5)					
 			bars[i]:SetStatusBarTexture(normTex)
 			bars[i]:GetStatusBarTexture():SetHorizTile(false)
 							
