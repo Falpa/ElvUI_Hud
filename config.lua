@@ -1,5 +1,6 @@
 TukuiHudCF = {
   enabled = true,
+  simpleLayout = true, -- a simple layout inspired by Hydra, player health on left, power on right, no target/pet hud
   powerhud = true, -- show the power bar in the hud
   pethud = true, -- show the pet hud
   showthreat = true, -- show a threat bar next to the players hud
