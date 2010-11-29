@@ -24,9 +24,14 @@ TukuiHud.PostUpdateHealthHud = function(health, unit, min, max)
         end					
     end
 
-    if min ~= max and TukuiHudCF.showvalues then
-        health.value:SetFormattedText("%d%%", floor(min / max * 100))
-    end
+	if TukuiHudCF.showvalues then
+		health.value:SetText(format("%.f", min / max * 100).." %")
+	end
+	
+    -- Flash health below threshold %
+	if (min / max * 100) < (TukuiHudCF.lowThreshold) then
+		TukuiHud.Flash(health, 0.6)
+	end
 end
 
 TukuiHud.PreUpdatePowerHud = function(power, unit)
@@ -47,11 +52,13 @@ TukuiHud.PostUpdatePowerHud = function(power, unit, min, max)
         power.value:SetTextColor(color[1], color[2], color[3])
     end
 
-    if min ~= max and TukuiHudCF.showvalues then
-        if pType == 0 then
-            power.value:SetFormattedText("%d%%", floor(min / max * 100))
-        end
-    end
+    power.value:SetText(format("%.f",min / max * 100).." %")
+	
+	-- Flash mana below threshold %
+	local powerMana, _ = UnitPowerType(unit)
+	if (min / max * 100) < (TukuiHudCF.lowThreshold) and (powerMana == SPELL_POWER_MANA) then
+		TukuiHud.Flash(power, 0.4)
+	end
 end
 
 TukuiHud.ComboDisplay = function(self, event, unit)
@@ -82,4 +89,26 @@ TukuiHud.ComboDisplay = function(self, event, unit)
 			cpoints[i]:Hide()
 		end
 	end
+end
+
+-- The following functions are thanks to Hydra from the Tukui forums
+TukuiHud.SetUpAnimGroup = function(self)
+    self.anim = self:CreateAnimationGroup("Flash")
+    self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
+    self.anim.fadein:SetChange(1)
+    self.anim.fadein:SetOrder(2)
+
+    self.anim.fadeout = self.anim:CreateAnimation("ALPHA", "FadeOut")
+    self.anim.fadeout:SetChange(-1)
+    self.anim.fadeout:SetOrder(1)
+end
+
+TukuiHud.Flash = function(self, duration)
+    if not self.anim then
+        TukuiHud.SetUpAnimGroup(self)
+    end
+
+    self.anim.fadein:SetDuration(duration)
+    self.anim.fadeout:SetDuration(duration)
+    self.anim:Play()
 end

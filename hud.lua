@@ -65,7 +65,7 @@ local function Hud(self, unit)
         healthBG:SetAlpha(.1)
 		if db.showvalues then
 			health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-			health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-20), TukuiDB.Scale(0))
+			health.value:SetPoint("TOPRIGHT", health, "TOPLEFT", TukuiDB.Scale(-20), TukuiDB.Scale(-15))
 		end
         health.PostUpdate = TukuiHud.PostUpdateHealthHud
         self.Health = health
@@ -118,11 +118,7 @@ local function Hud(self, unit)
             powerBG.multiplier = 0.3
 			if TukuiHudCF.showvalues then
 				power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-				if TukuiHudCF.showthreat then
-					power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", TukuiDB.Scale(10), TukuiDB.Scale(-15))
-				else
-					power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(10), 0)
-				end
+				power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", TukuiDB.Scale(10), TukuiDB.Scale(-15))
 			end
             power.PreUpdate = TukuiHud.PreUpdatePowerHud
             power.PostUpdate = TukuiHud.PostUpdatePowerHud
