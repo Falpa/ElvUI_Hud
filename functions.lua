@@ -1,5 +1,7 @@
 TukuiHud = { }
-
+TukuiHudDB = {
+	warningTextShown = false,
+}
 TukuiHud.updateAllElements = function(frame)
     for _, v in ipairs(frame.__elements) do
         v(frame, "UpdateElement", frame.unit)
@@ -31,6 +33,13 @@ TukuiHud.PostUpdateHealthHud = function(health, unit, min, max)
     -- Flash health below threshold %
 	if (min / max * 100) < (TukuiHudCF.lowThreshold) then
 		TukuiHud.Flash(health, 0.6)
+		if not TukuiHudDB.warningTextShown then
+			TukuiHudWarning:AddMessage("|cff0000ffLOW HEALTH")
+			TukuiHudDB.warningTextShown = true
+		else
+			TukuiHudWarning:Clear()
+			TukuiHudDB.warningTextShown = false
+		end
 	end
 end
 
@@ -56,8 +65,17 @@ TukuiHud.PostUpdatePowerHud = function(power, unit, min, max)
 	
 	-- Flash mana below threshold %
 	local powerMana, _ = UnitPowerType(unit)
-	if (min / max * 100) < (TukuiHudCF.lowThreshold) and (powerMana == SPELL_POWER_MANA) then
+	if (min / max * 100) < (TukuiHudCF.lowThreshold) and (powerMana == SPELL_POWER_MANA) and TukuiHudCF.flash then
 		TukuiHud.Flash(power, 0.4)
+		if TukuiHudCF.warningText then
+			if not TukuiHudDB.warningTextShown then
+				TukuiHudWarning:AddMessage("|c0000ffffLOW MANA")
+				TukuiHudDB.warningTextShown = true
+			else
+				TukuiHudWarning:Clear()
+				TukuiHudDB.warningTextShown = false
+			end
+		end
 	end
 end
 
@@ -111,4 +129,21 @@ TukuiHud.Flash = function(self, duration)
     self.anim.fadein:SetDuration(duration)
     self.anim.fadeout:SetDuration(duration)
     self.anim:Play()
+end
+
+TukuiHud.CreateWarningFrame = function()
+	local f=CreateFrame("ScrollingMessageFrame","TukuiHudWarning",UIParent)
+	f:SetFont(TukuiHudCF.font,TukuiHudCF.fontsize*2,"THINOUTLINE")
+	f:SetShadowColor(0,0,0,0)
+	f:SetFading(true)
+	f:SetFadeDuration(0.5)
+	f:SetTimeVisible(0.6)
+	f:SetMaxLines(10)
+	f:SetSpacing(2)
+	f:SetWidth(128)
+	f:SetHeight(128)
+	f:SetPoint("CENTER",0,TukuiDB.Scale(-100))
+	f:SetMovable(false)
+	f:SetResizable(false)
+	--f:SetInsertMode("TOP") -- Bugged currently
 end
