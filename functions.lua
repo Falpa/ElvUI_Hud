@@ -34,7 +34,7 @@ TukuiHud.PostUpdateHealthHud = function(health, unit, min, max)
 	if (min / max * 100) < (TukuiHudCF.lowThreshold) then
 		TukuiHud.Flash(health, 0.6)
 		if not TukuiHudDB.warningTextShown then
-			TukuiHudWarning:AddMessage("|cff0000ffLOW HEALTH")
+			TukuiHudWarning:AddMessage("|cffff0000LOW HEALTH")
 			TukuiHudDB.warningTextShown = true
 		else
 			TukuiHudWarning:Clear()
@@ -69,7 +69,7 @@ TukuiHud.PostUpdatePowerHud = function(power, unit, min, max)
 		TukuiHud.Flash(power, 0.4)
 		if TukuiHudCF.warningText then
 			if not TukuiHudDB.warningTextShown then
-				TukuiHudWarning:AddMessage("|c0000ffffLOW MANA")
+				TukuiHudWarning:AddMessage("|cff00ffffLOW MANA")
 				TukuiHudDB.warningTextShown = true
 			else
 				TukuiHudWarning:Clear()
