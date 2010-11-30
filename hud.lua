@@ -736,9 +736,8 @@ if TukuiHudCF.warningText then
 	TukuiHud.CreateWarningFrame()
 end
 
-if TukuiHudCF.simpleLayout then
+if TukuiHudCF.simpleLayout then	
 	local alpha = TukuiHudCF.alpha
-	local oocalpha = TukuiHudCF.oocalpha
 	
 	oUF:SetActiveStyle('TukzHudSimpleHealth')
 	local player_health = oUF:Spawn('player', "oUF_Tukz_player_HudHealth")
@@ -746,47 +745,15 @@ if TukuiHudCF.simpleLayout then
 	player_health:SetSize(hud_width, hud_height)
 	player_health:SetAlpha(alpha)
 
-	if TukuiHudCF.hideooc == true then
-		local hud_hider = CreateFrame("Frame", nil, UIParent)
-		hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
-		hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
-		hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
-		hud_hider:SetScript("OnEvent", function(self, event)
-			if (event == "PLAYER_REGEN_DISABLED") then
-					UIFrameFadeIn(player_health, 0.3 * (alpha - player_health:GetAlpha()), player_health:GetAlpha(), alpha)
-			elseif (event == "PLAYER_REGEN_ENABLED") then
-					UIFrameFadeOut(player_health, 0.3 * (oocalpha + player_health:GetAlpha()), player_health:GetAlpha(), oocalpha)
-			elseif (event == "PLAYER_ENTERING_WORLD") then
-					if (not InCombatLockdown()) then
-							player_health:SetAlpha(oocalpha)
-					end
-			end
-		end)
-	end
-
+	TukuiHud.HideOOC(player_health)
+	
 	oUF:SetActiveStyle('TukzHudSimplePower')
 	local player_power = oUF:Spawn('player', "oUF_Tukz_player_HudPower")
 	player_power:SetPoint("LEFT", UIParent, "CENTER", TukuiDB.Scale(TukuiHudCF.offset), 0)
 	player_power:SetSize(hud_width, hud_height)
 	player_power:SetAlpha(alpha)
-
-	if TukuiHudCF.hideooc == true then
-		local hud_hider = CreateFrame("Frame", nil, UIParent)
-		hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
-		hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
-		hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
-		hud_hider:SetScript("OnEvent", function(self, event)
-			if (event == "PLAYER_REGEN_DISABLED") then
-					UIFrameFadeIn(player_power, 0.3 * (alpha - player_power:GetAlpha()), player_power:GetAlpha(), alpha)
-			elseif (event == "PLAYER_REGEN_ENABLED") then
-					UIFrameFadeOut(player_power, 0.3 * (oocalpha + player_power:GetAlpha()), player_power:GetAlpha(), oocalpha)
-			elseif (event == "PLAYER_ENTERING_WORLD") then
-					if (not InCombatLockdown()) then
-							player_power:SetAlpha(oocalpha)
-					end
-			end
-		end)
-	end
+	
+	TukuiHud.HideOOC(player_power)
 else
 	local width = hud_width
 	if TukuiHudCF.powerhud then
@@ -798,31 +765,13 @@ else
 	end
 
 	local alpha = TukuiHudCF.alpha
-	local oocalpha = TukuiHudCF.oocalpha
 
 	local player_hud = oUF:Spawn('player', "oUF_Tukz_player_Hud")
 	player_hud:SetPoint("RIGHT", UIParent, "CENTER", TukuiDB.Scale(-TukuiHudCF.offset), 0)
 	player_hud:SetSize(width, hud_height)
 	player_hud:SetAlpha(alpha)
 
-	if TukuiHudCF.hideooc == true then
-		local hud_hider = CreateFrame("Frame", nil, UIParent)
-		hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
-		hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
-		hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
-		hud_hider:SetScript("OnEvent", function(self, event)
-			if (event == "PLAYER_REGEN_DISABLED") then
-					UIFrameFadeIn(player_hud, 0.3 * (alpha - player_hud:GetAlpha()), player_hud:GetAlpha(), alpha)
-			elseif (event == "PLAYER_REGEN_ENABLED") then
-					UIFrameFadeOut(player_hud, 0.3 * (oocalpha + player_hud:GetAlpha()), player_hud:GetAlpha(), oocalpha)
-			elseif (event == "PLAYER_ENTERING_WORLD") then
-					if (not InCombatLockdown()) then
-							player_hud:SetAlpha(oocalpha)
-					end
-			end
-		end)
-	end
-
+	TukuiHud.HideOOC(player_hud)
 
 	width = hud_width
 	if TukuiHudCF.powerhud then
@@ -834,23 +783,7 @@ else
 	target_hud:SetSize(width, hud_height)
 	target_hud:SetAlpha(alpha)
 
-	if TukuiHudCF.hideooc == true then
-		local hud_hider = CreateFrame("Frame", nil, UIParent)
-		hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
-		hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
-		hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
-		hud_hider:SetScript("OnEvent", function(self, event)
-			if (event == "PLAYER_REGEN_DISABLED") then
-					UIFrameFadeIn(target_hud, 0.3 * (alpha - target_hud:GetAlpha()), target_hud:GetAlpha(), alpha)
-			elseif (event == "PLAYER_REGEN_ENABLED") then
-					UIFrameFadeOut(target_hud, 0.3 * (oocalpha + target_hud:GetAlpha()), target_hud:GetAlpha(), oocalpha)
-			elseif (event == "PLAYER_ENTERING_WORLD") then
-					if (not InCombatLockdown()) then
-							target_hud:SetAlpha(oocalpha)
-					end
-			end
-		end)
-	end
+	TukuiHud.HideOOC(target_hud)
 
 	if TukuiHudCF.pethud then
 		width = hud_width
@@ -863,22 +796,6 @@ else
 		pet_hud:SetSize(width, hud_height * .75)
 		pet_hud:SetAlpha(alpha)
 		
-		if TukuiHudCF.hideooc == true then
-			local hud_hider = CreateFrame("Frame", nil, UIParent)
-			hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
-			hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
-			hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
-			hud_hider:SetScript("OnEvent", function(self, event)
-				if (event == "PLAYER_REGEN_DISABLED") then
-						UIFrameFadeIn(pet_hud, 0.3 * (alpha - pet_hud:GetAlpha()), pet_hud:GetAlpha(), alpha)
-				elseif (event == "PLAYER_REGEN_ENABLED") then
-						UIFrameFadeOut(pet_hud, 0.3 * (oocalpha + pet_hud:GetAlpha()), pet_hud:GetAlpha(), oocalpha)
-				elseif (event == "PLAYER_ENTERING_WORLD") then
-						if (not InCombatLockdown()) then
-								pet_hud:SetAlpha(oocalpha)
-						end
-				end
-			end)
-		end
+		TukuiHud.HideOOC(pet_hud)
 	end
 end
