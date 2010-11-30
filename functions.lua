@@ -33,7 +33,7 @@ TukuiHud.PostUpdateHealthHud = function(health, unit, min, max)
     -- Flash health below threshold %
 	if (min / max * 100) < (TukuiHudCF.lowThreshold) then
 		TukuiHud.Flash(health, 0.6)
-		if not TukuiHudDB.warningTextShown then
+		if not TukuiHudDB.warningTextShown and unit == "player" then
 			TukuiHudWarning:AddMessage("|cffff0000LOW HEALTH")
 			TukuiHudDB.warningTextShown = true
 		else
@@ -68,7 +68,7 @@ TukuiHud.PostUpdatePowerHud = function(power, unit, min, max)
 	if (min / max * 100) < (TukuiHudCF.lowThreshold) and (powerMana == SPELL_POWER_MANA) and TukuiHudCF.flash then
 		TukuiHud.Flash(power, 0.4)
 		if TukuiHudCF.warningText then
-			if not TukuiHudDB.warningTextShown then
+			if not TukuiHudDB.warningTextShown and unit == "player" then
 				TukuiHudWarning:AddMessage("|cff00ffffLOW MANA")
 				TukuiHudDB.warningTextShown = true
 			else
