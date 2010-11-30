@@ -177,46 +177,22 @@ end
 TukuiHud.Enable = function(msg)
 	if msg == "enable" then
 		if TukuiHudCF.simpleLayout then
-			if TukuiHudCF.hideooc then
-				oUF_Tukz_player_HudHealth.hud_hider:SetScript("OnEvent", function(self,event) __Hide(oUF_Tukz_player_HudHealth,event) end)
-				oUF_Tukz_player_HudPower.hud_hider:SetScript("OnEvent", function(self,event) __Hide(oUF_Tukz_player_HudPower,event) end)
-			end
-			oUF_Tukz_player_HudHealth:SetAlpha(1)
-			oUF_Tukz_player_HudPower:SetAlpha(1)
-			if TukuiHudCF.hideooc then __Hide(oUF_Tukz_player_HudHealth,"PLAYER_ENTERING_WORLD") __Hide(oUF_Tukz_player_HudPower,"PLAYER_ENTERING_WORLD") end
+			oUF_Tukz_player_HudHealth:Hide()
+			oUF_Tukz_player_HudPower:Hide()
 		else
-			if TukuiHudCF.hideooc then
-				oUF_Tukz_player_Hud.hud_hider:SetScript("OnEvent", function(self,event) __Hide(oUF_Tukz_player_Hud,event) end)
-				oUF_Tukz_target_Hud.hud_hider:SetScript("OnEvent", function(self,event) __Hide(oUF_Tukz_target_Hud,event) end)
-				if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud.hud_hider:SetScript("OnEvent", function(self,event) __Hide(oUF_Tukz_pet_Hud,event) end) end
-			end
-			oUF_Tukz_player_Hud:SetAlpha(1)
-			oUF_Tukz_target_Hud:SetAlpha(1)
-			if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud:SetAlpha(1) end
-			if TukuiHudCF.hideooc then
-				__Hide(oUF_Tukz_player_Hud,"PLAYER_ENTERING_WORLD")
-				__Hide(oUF_Tukz_target_Hud,"PLAYER_ENTERING_WORLD")
-				if oUF_Tukz_pet_Hud then __Hide(oUF_Tukz_pet_Hud,"PLAYER_ENTERING_WORLD") end
-			end
+			oUF_Tukz_player_Hud:Hide()
+			oUF_Tukz_target_Hud:Hide()
+			if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud:Hide() end
 		end
 		print('Tukui_Hud: Hud is enabled.  /hud disable to disable.')
 	elseif msg == "disable" then
 		if TukuiHudCF.simpleLayout then
-			if TukuiHudCF.hideooc then
-				oUF_Tukz_player_HudHealth.hud_hider:SetScript("OnEvent", nil)
-				oUF_Tukz_player_HudPower.hud_hider:SetScript("OnEvent", nil)
-			end
-			oUF_Tukz_player_HudHealth:SetAlpha(0)
-			oUF_Tukz_player_HudPower:SetAlpha(0)
+			oUF_Tukz_player_HudHealth:Show()
+			oUF_Tukz_player_HudPower:Show()
 		else
-			if TukuiHudCF.hideooc then
-				oUF_Tukz_player_Hud.hud_hider:SetScript("OnEvent", nil)
-				oUF_Tukz_target_Hud.hud_hider:SetScript("OnEvent", nil)
-				if pethud then oUF_Tukz_pet_Hud.hud_hider:SetScript("OnEvent", nil) end
-			end
-			oUF_Tukz_player_Hud:SetAlpha(0)
-			oUF_Tukz_target_Hud:SetAlpha(0)
-			if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud:SetAlpha(0) end
+			oUF_Tukz_player_Hud:Show()
+			oUF_Tukz_target_Hud:Show()
+			if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud:Show() end
 		end
 		print('Tukui_Hud: Hud is disabled.  /hud enable or /rl to reenable.')
 	else
