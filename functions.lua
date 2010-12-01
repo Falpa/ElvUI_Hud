@@ -177,22 +177,22 @@ end
 TukuiHud.Enable = function(msg)
 	if msg == "enable" then
 		if TukuiHudCF.simpleLayout then
-			oUF_Tukz_player_HudHealth:Hide()
-			oUF_Tukz_player_HudPower:Hide()
-		else
-			oUF_Tukz_player_Hud:Hide()
-			oUF_Tukz_target_Hud:Hide()
-			if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud:Hide() end
-		end
-		print('Tukui_Hud: Hud is enabled.  /hud disable to disable.')
-	elseif msg == "disable" then
-		if TukuiHudCF.simpleLayout then
 			oUF_Tukz_player_HudHealth:Show()
 			oUF_Tukz_player_HudPower:Show()
 		else
 			oUF_Tukz_player_Hud:Show()
 			oUF_Tukz_target_Hud:Show()
 			if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud:Show() end
+		end
+		print('Tukui_Hud: Hud is enabled.  /hud disable to disable.')
+	elseif msg == "disable" then
+		if TukuiHudCF.simpleLayout then
+			oUF_Tukz_player_HudHealth:Hide()
+			oUF_Tukz_player_HudPower:Hide()
+		else
+			oUF_Tukz_player_Hud:Hide()
+			oUF_Tukz_target_Hud:Hide()
+			if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud:Hide() end
 		end
 		print('Tukui_Hud: Hud is disabled.  /hud enable or /rl to reenable.')
 	else
