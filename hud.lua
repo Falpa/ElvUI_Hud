@@ -5,7 +5,8 @@ if not TukuiHudCF.enabled == true then return end
 ------------------------------------------------------------------------
 
 local db = TukuiHudCF
-local normTex = TukuiCF["media"].normTex
+--local normTex = --TukuiCF.media.normTex
+local normTex = [[Interface\AddOns\Tukui_Hud\normTexVert]]
 local glowTex = TukuiCF["media"].glowTex
 local bubbleTex = TukuiCF["media"].bubbleTex
 
