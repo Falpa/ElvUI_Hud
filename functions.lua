@@ -59,9 +59,8 @@ TukuiHud.PostUpdatePowerHud = function(power, unit, min, max)
 
     if color and TukuiHudCF.showvalues then
         power.value:SetTextColor(color[1], color[2], color[3])
+		power.value:SetText(format("%.f",min / max * 100).." %")
     end
-
-    power.value:SetText(format("%.f",min / max * 100).." %")
 	
 	-- Flash mana below threshold %
 	local powerMana, _ = UnitPowerType(unit)
