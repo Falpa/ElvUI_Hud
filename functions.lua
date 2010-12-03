@@ -170,18 +170,10 @@ TukuiHud.ComboDisplay = function(self, event, unit)
                 for i=1, MAX_COMBO_POINTS do
                         cpoints[i]:Show()   
                 end
-                if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["ComboBar"] == true) then return end
-                if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["ComboBar"] == true) then return end
-                self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
-                if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(17)) end
         else
                 for i=1, MAX_COMBO_POINTS do
                         cpoints[i]:Hide()
                 end
-                if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["ComboBar"] == true) then return end
-                if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["ComboBar"] == true) then return end
-                self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
-                if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(6)) end
         end
 end
 
