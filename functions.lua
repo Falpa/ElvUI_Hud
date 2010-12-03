@@ -147,6 +147,44 @@ TukuiHud.CreateWarningFrame = function()
 	--f:SetInsertMode("TOP") -- Bugged currently
 end
 
+TukuiHud.ComboDisplay = function(self, event, unit)
+        if(unit == 'pet') then return end
+        
+        local cpoints = self.CPoints
+        local cp
+        if(UnitExists'vehicle') then
+                cp = GetComboPoints('vehicle', 'target')
+        else
+                cp = GetComboPoints('player', 'target')
+        end
+        
+        for i=1, MAX_COMBO_POINTS do
+                if(i <= cp) then
+                        cpoints[i]:SetAlpha(1)
+                else
+                        cpoints[i]:SetAlpha(0.15)
+                end
+        end
+
+        if cpoints[1]:GetAlpha() == 1 then
+                for i=1, MAX_COMBO_POINTS do
+                        cpoints[i]:Show()   
+                end
+                if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["ComboBar"] == true) then return end
+                if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["ComboBar"] == true) then return end
+                self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(17))
+                if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(17)) end
+        else
+                for i=1, MAX_COMBO_POINTS do
+                        cpoints[i]:Hide()
+                end
+                if (IsAddOnLoaded("Tukui_Dps_Layout") and DPSElementsCharPos and DPSElementsCharPos["ComboBar"] == true) then return end
+                if (IsAddOnLoaded("Tukui_Heal_Layout") and HealElementsCharPos and HealElementsCharPos["ComboBar"] == true) then return end
+                self.FrameBorder.shadow:SetPoint("TOPLEFT", TukuiDB.Scale(-4), TukuiDB.Scale(4))
+                if self.Buffs then self.Buffs:ClearAllPoints() self.Buffs:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT", TukuiDB.Scale(-1), TukuiDB.Scale(6)) end
+        end
+end
+
 local alpha = TukuiHudCF.alpha
 local oocalpha = TukuiHudCF.oocalpha
 

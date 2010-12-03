@@ -299,7 +299,7 @@ local function SimpleHealth(self, unit)
 			bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 			bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 			bars.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
-			self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.ComboDisplay)
+			self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiHud.ComboDisplay)
 		end
 	end
 end
@@ -795,7 +795,7 @@ local function Hud(self, unit)
 		bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
 		bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 		bars.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
-		self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiDB.ComboDisplay)
+		self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiHud.ComboDisplay)
 
         if TukuiHudCF.powerhud then
             -- Power Frame Border
