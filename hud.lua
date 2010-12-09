@@ -638,7 +638,7 @@ local function Hud(self, unit)
 					end
 					TotemBar[i]:SetStatusBarTexture(normTex)
 					TotemBar[i]:GetStatusBarTexture():SetHorizTile(false)
-					TotemBar[i]:SetOrientation('ORIENTATION')
+					TotemBar[i]:SetOrientation('VERTICAL')
 					TotemBar[i]:SetBackdrop(backdrop)
 					TotemBar[i]:SetBackdropColor(0, 0, 0)
 					TotemBar[i]:SetMinMaxValues(0, 1)
