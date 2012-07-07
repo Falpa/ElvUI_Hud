@@ -1,4 +1,3 @@
-if TukuiCF.unitframes.enable ~= true or TukuiCF.unitframes.showthreat == true then return end
 --[[
 	Elements handled:
 	.ThreatBar - StatusBar
@@ -12,7 +11,7 @@ if TukuiCF.unitframes.enable ~= true or TukuiCF.unitframes.showthreat == true th
 	.maxThreatVal - For use with .useRawThreat.  Allows threat percentage greater than 100.
 ]]--
 
-if not oUF then return end
+if not ElvUF then return end
 
 local ThreatNumParty = 0
 local ThreatNumRaid = 0
@@ -105,4 +104,4 @@ local function disable(self)
 	end
 end
 
-oUF:AddElement("ThreatBar", function() return end, enable, disable)
+ElvUF:AddElement("ThreatBar", function() return end, enable, disable)

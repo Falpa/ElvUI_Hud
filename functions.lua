@@ -1,20 +1,26 @@
-TukuiHud = { }
-TukuiHudDB = {
+local E, L, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local HUD = E:NewModule('HUD', 'AceTimer-3.0', 'AceEvent-3.0');
+local LSM = LibStub("LibSharedMedia-3.0");
+
+local db = ElvUIHudCF
+
+ElvUIHud = { }
+ElvUIHudDB = {
 	warningTextShown = false,
 }
-TukuiHud.updateAllElements = function(frame)
+ElvUIHud.updateAllElements = function(frame)
     for _, v in ipairs(frame.__elements) do
         v(frame, "UpdateElement", frame.unit)
     end
 end
 
-TukuiHud.PostUpdateHealthHud = function(health, unit, min, max)
+ElvUIHud.PostUpdateHealthHud = function(health, unit, min, max)
     local r, g, b
 
     -- overwrite healthbar color for enemy player (a tukui option if enabled), target vehicle/pet too far away returning unitreaction nil and friend unit not a player. (mostly for overwrite tapped for friendly)
-    -- I don't know if we really need to call TukuiCF["unitframes"].unicolor but anyway, it's safe this way.
-    if (TukuiCF["unitframes"].unicolor ~= true and TukuiCF["unitframes"].enemyhcolor and unit == "target" and UnitIsEnemy(unit, "player")) or (TukuiCF["unitframes"].unicolor ~= true and unit == "target" and not UnitIsPlayer(unit) and UnitIsFriend(unit, "player")) then
-        local c = TukuiDB.oUF_colors.reaction[UnitReaction(unit, "player")]
+    -- I don't know if we really need to call ElvUICF["unitframes"].unicolor but anyway, it's safe this way.
+    if (db.unicolor ~= true and unit == "target" and UnitIsEnemy(unit, "player")) or (db.unicolor ~= true and unit == "target" and not UnitIsPlayer(unit) and UnitIsFriend(unit, "player")) then
+        local c = ElvUF["colors"].reaction[UnitReaction(unit, "player")]
         if c then 
             r, g, b = c[1], c[2], c[3]
             health:SetStatusBarColor(r, g, b)
@@ -26,59 +32,59 @@ TukuiHud.PostUpdateHealthHud = function(health, unit, min, max)
         end					
     end
 
-	if TukuiHudCF.showvalues then
+	if ElvUIHudCF.showvalues then
 		health.value:SetText(format("%.f", min / max * 100).." %")
 	end
 	
     -- Flash health below threshold %
-	if (min / max * 100) < (TukuiHudCF.lowThreshold) then
-		TukuiHud.Flash(health, 0.6)
-		if not TukuiHudDB.warningTextShown and unit == "player" then
-			TukuiHudWarning:AddMessage("|cffff0000LOW HEALTH")
-			TukuiHudDB.warningTextShown = true
+	if (min / max * 100) < (ElvUIHudCF.lowThreshold) then
+		ElvUIHud.Flash(health, 0.6)
+		if not ElvUIHudDB.warningTextShown and unit == "player" then
+			ElvUIHudWarning:AddMessage("|cffff0000LOW HEALTH")
+			ElvUIHudDB.warningTextShown = true
 		else
-			TukuiHudWarning:Clear()
-			TukuiHudDB.warningTextShown = false
+			ElvUIHudWarning:Clear()
+			ElvUIHudDB.warningTextShown = false
 		end
 	end
 end
 
-TukuiHud.PreUpdatePowerHud = function(power, unit)
+ElvUIHud.PreUpdatePowerHud = function(power, unit)
     local _, pType = UnitPowerType(unit)
 
-    local color = TukuiDB.oUF_colors.power[pType]
+    local color = ElvUF["colors"].power[pType]
     if color then
         power:SetStatusBarColor(color[1], color[2], color[3])
     end
 end
 
-TukuiHud.PostUpdatePowerHud = function(power, unit, min, max)
+ElvUIHud.PostUpdatePowerHud = function(power, unit, min, max)
     local self = power:GetParent()
     local pType, pToken = UnitPowerType(unit)
-    local color = TukuiDB.oUF_colors.power[pToken]
+    local color = ElvUF["colors"].power[pToken]
 
-    if color and TukuiHudCF.showvalues then
+    if color and ElvUIHudCF.showvalues then
         power.value:SetTextColor(color[1], color[2], color[3])
 		power.value:SetText(format("%.f",min / max * 100).." %")
     end
 	
 	-- Flash mana below threshold %
 	local powerMana, _ = UnitPowerType(unit)
-	if (min / max * 100) < (TukuiHudCF.lowThreshold) and (powerMana == SPELL_POWER_MANA) and TukuiHudCF.flash then
-		TukuiHud.Flash(power, 0.4)
-		if TukuiHudCF.warningText then
-			if not TukuiHudDB.warningTextShown and unit == "player" then
-				TukuiHudWarning:AddMessage("|cff00ffffLOW MANA")
-				TukuiHudDB.warningTextShown = true
+	if (min / max * 100) < (ElvUIHudCF.lowThreshold) and (powerMana == SPELL_POWER_MANA) and ElvUIHudCF.flash then
+		ElvUIHud.Flash(power, 0.4)
+		if ElvUIHudCF.warningText then
+			if not ElvUIHudDB.warningTextShown and unit == "player" then
+				ElvUIHudWarning:AddMessage("|cff00ffffLOW MANA")
+				ElvUIHudDB.warningTextShown = true
 			else
-				TukuiHudWarning:Clear()
-				TukuiHudDB.warningTextShown = false
+				ElvUIHudWarning:Clear()
+				ElvUIHudDB.warningTextShown = false
 			end
 		end
 	end
 end
 
-TukuiHud.ComboDisplay = function(self, event, unit)
+ElvUIHud.ComboDisplay = function(self, event, unit)
 	if(unit == 'pet') then return end
 	
 	local cpoints = self.CPoints
@@ -108,8 +114,8 @@ TukuiHud.ComboDisplay = function(self, event, unit)
 	end
 end
 
--- The following functions are thanks to Hydra from the Tukui forums
-TukuiHud.SetUpAnimGroup = function(self)
+-- The following functions are thanks to Hydra from the ElvUI forums
+ElvUIHud.SetUpAnimGroup = function(self)
     self.anim = self:CreateAnimationGroup("Flash")
     self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
     self.anim.fadein:SetChange(1)
@@ -120,9 +126,9 @@ TukuiHud.SetUpAnimGroup = function(self)
     self.anim.fadeout:SetOrder(1)
 end
 
-TukuiHud.Flash = function(self, duration)
+ElvUIHud.Flash = function(self, duration)
     if not self.anim then
-        TukuiHud.SetUpAnimGroup(self)
+        ElvUIHud.SetUpAnimGroup(self)
     end
 
     self.anim.fadein:SetDuration(duration)
@@ -130,9 +136,9 @@ TukuiHud.Flash = function(self, duration)
     self.anim:Play()
 end
 
-TukuiHud.CreateWarningFrame = function()
-	local f=CreateFrame("ScrollingMessageFrame","TukuiHudWarning",UIParent)
-	f:SetFont(TukuiHudCF.font,TukuiHudCF.fontsize*2,"THINOUTLINE")
+ElvUIHud.CreateWarningFrame = function()
+	local f=CreateFrame("ScrollingMessageFrame","ElvUIHudWarning",UIParent)
+	f:SetFont(LSM:Fetch("font", ElvUIHudCF.font),ElvUIHudCF.fontsize*2,"THINOUTLINE")
 	f:SetShadowColor(0,0,0,0)
 	f:SetFading(true)
 	f:SetFadeDuration(0.5)
@@ -141,13 +147,13 @@ TukuiHud.CreateWarningFrame = function()
 	f:SetSpacing(2)
 	f:SetWidth(128)
 	f:SetHeight(128)
-	f:SetPoint("CENTER",0,TukuiDB.Scale(-100))
+	f:SetPoint("CENTER",0,E:Scale(-100))
 	f:SetMovable(false)
 	f:SetResizable(false)
 	--f:SetInsertMode("TOP") -- Bugged currently
 end
 
-TukuiHud.ComboDisplay = function(self, event, unit)
+ElvUIHud.ComboDisplay = function(self, event, unit)
         if(unit == 'pet') then return end
         
         local cpoints = self.CPoints
@@ -177,8 +183,8 @@ TukuiHud.ComboDisplay = function(self, event, unit)
         end
 end
 
-local alpha = TukuiHudCF.alpha
-local oocalpha = TukuiHudCF.oocalpha
+local alpha = ElvUIHudCF.alpha
+local oocalpha = ElvUIHudCF.oocalpha
 
 local __Hide = function(frame,event)
 	if (event == "PLAYER_REGEN_DISABLED") then
@@ -192,8 +198,8 @@ local __Hide = function(frame,event)
 	end
 end
 
-TukuiHud.HideOOC = function(frame)
-	if TukuiHudCF.hideooc == true then
+ElvUIHud.HideOOC = function(frame)
+	if ElvUIHudCF.hideooc == true then
 		local hud_hider = CreateFrame("Frame", nil, UIParent)
 		hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
 		hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -203,32 +209,32 @@ TukuiHud.HideOOC = function(frame)
 	end
 end
 
-TukuiHud.Enable = function(msg)
+ElvUIHud.Enable = function(msg)
 	if msg == "enable" then
-		if TukuiHudCF.simpleLayout then
-			oUF_Tukz_player_HudHealth:Show()
-			oUF_Tukz_player_HudPower:Show()
+		if ElvUIHudCF.simpleLayout then
+			oUF_Elv_player_HudHealth:Show()
+			oUF_Elv_player_HudPower:Show()
 		else
-			oUF_Tukz_player_Hud:Show()
-			oUF_Tukz_target_Hud:Show()
-			if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud:Show() end
+			oUF_Elv_player_Hud:Show()
+			oUF_Elv_target_Hud:Show()
+			if oUF_Elv_pet_Hud then oUF_Elv_pet_Hud:Show() end
 		end
-		print('Tukui_Hud: Hud is enabled.  /hud disable to disable.')
+		print('ElvUI_Hud: Hud is enabled.  /hud disable to disable.')
 	elseif msg == "disable" then
-		if TukuiHudCF.simpleLayout then
-			oUF_Tukz_player_HudHealth:Hide()
-			oUF_Tukz_player_HudPower:Hide()
+		if ElvUIHudCF.simpleLayout then
+			oUF_Elv_player_HudHealth:Hide()
+			oUF_Elv_player_HudPower:Hide()
 		else
-			oUF_Tukz_player_Hud:Hide()
-			oUF_Tukz_target_Hud:Hide()
-			if oUF_Tukz_pet_Hud then oUF_Tukz_pet_Hud:Hide() end
+			oUF_Elv_player_Hud:Hide()
+			oUF_Elv_target_Hud:Hide()
+			if oUF_Elv_pet_Hud then oUF_Elv_pet_Hud:Hide() end
 		end
-		print('Tukui_Hud: Hud is disabled.  /hud enable or /rl to reenable.')
+		print('ElvUI_Hud: Hud is disabled.  /hud enable or /rl to reenable.')
 	else
 		print('Usage: /hud {enable|disable}')
 	end
 end
 
 SLASH_TUKUIHUD1 = '/hud'
-SlashCmdList["TUKUIHUD"] = TukuiHud.Enable
+SlashCmdList["ELVUIHUD"] = ElvUIHud.Enable
 		

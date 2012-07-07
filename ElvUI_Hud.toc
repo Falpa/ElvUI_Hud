@@ -1,9 +1,9 @@
 ## Interface: 40000
 ## Author: Sortokk
 ## Version: 1.6.6
-## Title: |cffC495DDTukui_HUD|r
-## Notes: HUD frames for Tukui
-## RequiredDeps: Tukui
+## Title: |cffC495DDElvUI_HUD|r
+## Notes: HUD frames for ElvUI
+## RequiredDeps: ElvUI
 
 libs\oUF_ThreatBar\oUF_ThreatBar.lua
 

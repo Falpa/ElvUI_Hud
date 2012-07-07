@@ -1,23 +1,24 @@
-if not TukuiHudCF.enabled == true then return end
+if not ElvUIHudCF.enabled == true then return end
+
+local E, L, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local LSM = LibStub("LibSharedMedia-3.0");
+local UF = E:GetModule('UnitFrames');
 
 ------------------------------------------------------------------------
 --	local variables
 ------------------------------------------------------------------------
 
-local db = TukuiHudCF
---local normTex = --TukuiCF.media.normTex
-local normTex = [[Interface\AddOns\Tukui_Hud\normTexVert]]
-local glowTex = TukuiCF["media"].glowTex
-local bubbleTex = TukuiCF["media"].bubbleTex
+local db = ElvUIHudCF
+local normTex = [[Interface\AddOns\ElvUI_Hud\normTexVert]]
 
 local backdrop = {
-	bgFile = TukuiCF["media"].blank,
-	insets = {top = -TukuiDB.mult, left = -TukuiDB.mult, bottom = -TukuiDB.mult, right = -TukuiDB.mult},
+	bgFile = E["media"].blankTex,
+	insets = {top = -E.mult, left = -E.mult, bottom = -E.mult, right = -E.mult},
 }
 
-local hud_height = TukuiDB.Scale(TukuiHudCF.height)
-local hud_width = TukuiDB.Scale(TukuiHudCF.width)
-local hud_power_width = TukuiDB.Scale((hud_width/3)*2)
+local hud_height = E:Scale(ElvUIHudCF.height)
+local hud_width = E:Scale(ElvUIHudCF.width)
+local hud_power_width = E:Scale((hud_width/3)*2)
 
 -- Hud layout function (Simple Layout)
 -- Simple layout health bar
@@ -34,14 +35,14 @@ local function SimpleHealth(self, unit)
 
 	-- Health Frame Border
 	local HealthFrame = CreateFrame("Frame", nil, self)
-	HealthFrame:SetPoint("TOPLEFT", health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-	HealthFrame:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+	HealthFrame:SetPoint("TOPLEFT", health, "TOPLEFT", E:Scale(-2), E:Scale(2))
+	HealthFrame:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
 	HealthFrame:SetFrameLevel(self:GetFrameLevel() + 4)
 
-	TukuiDB.SetTemplate(HealthFrame)
-	HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
+	HealthFrame:SetTemplate("Default")
+	HealthFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
 	self.FrameBorder = HealthFrame
-	TukuiDB.CreateShadow(self.FrameBorder)
+    self.FrameBorder:CreateShadow("Default")
 
 	-- Health Bar Background
 	local healthBG = health:CreateTexture(nil, 'BORDER')
@@ -49,24 +50,26 @@ local function SimpleHealth(self, unit)
 	healthBG:SetTexture(.1, .1, .1)
 	healthBG:SetAlpha(.1)
 	if db.showvalues then
-		health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-		health.value:SetPoint("BOTTOMRIGHT", health, "BOTTOMLEFT", TukuiDB.Scale(-5), TukuiDB.Scale(5))
+		health.value = health:CreateFontString(nil, "THINOUTLINE")
+        health.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+		health.value:SetPoint("BOTTOMRIGHT", health, "BOTTOMLEFT", E:Scale(-5), E:Scale(5))
 	end
-	health.PostUpdate = TukuiHud.PostUpdateHealthHud
+	health.PostUpdate = ElvUIHud.PostUpdateHealthHud
 	self.Health = health
 	self.Health.bg = healthBG
 	health.frequentUpdates = true
 
 	-- Smooth Bar Animation
 	if db.showsmooth == true then
-		health.Smooth = true
+		health.Smooth = UF.db.smoothbars
+		health.colorSmooth = true
 	end
 
 	-- Setup Colors
 	if db.unicolor ~= false then
 		health.colorTapping = false
 		health.colorClass = false
-		health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor or { 0.05, 0.05, 0.05 }))
+		health:SetStatusBarColor(unpack({ 0.05, 0.05, 0.05 }))
 		health.colorDisconnected = false
 	else
 		health.colorTapping = true	
@@ -75,14 +78,14 @@ local function SimpleHealth(self, unit)
 		health.colorDisconnected = true		
 	end
 	
-	if TukuiHudCF.classspecificbars then
-		if TukuiDB.myclass == "DRUID" then
+	if ElvUIHudCF.classspecificbars and unit == "player" then
+		if E.myclass == "DRUID" then
 			local eclipseBar = CreateFrame('Frame', nil, self)
-			eclipseBar:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-6), 0)
+			eclipseBar:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
 			eclipseBar:SetSize(hud_width-8, hud_height-4)
 			eclipseBar:SetFrameStrata("MEDIUM")
 			eclipseBar:SetFrameLevel(8)
-			TukuiDB.SetTemplate(eclipseBar)
+			eclipseBar:SetTemplate("Default")
 			eclipseBar:SetBackdropBorderColor(0,0,0,0)
 							
 			local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
@@ -102,30 +105,30 @@ local function SimpleHealth(self, unit)
 			eclipseBar.SolarBar = solarBar
 			
 			local eclipseBarText = eclipseBar:CreateFontString(nil, 'OVERLAY')
-			eclipseBarText:SetPoint("LEFT", eclipseBar, "RIGHT", TukuiDB.Scale(10), 0)
-			eclipseBarText:SetFont(db.font, db.fontsize, "THINOUTLINE")
+			eclipseBarText:SetPoint("LEFT", eclipseBar, "RIGHT", E:Scale(10), 0)
+			eclipseBarText:SetFont(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
 			
-			eclipseBar.PostUpdatePower = TukuiHud.EclipseDirection
+			eclipseBar.PostUpdatePower = ElvUIHud.EclipseDirection
 			self.EclipseBar = eclipseBar
 			self.EclipseBar.Text = eclipseBarText
 			
 			eclipseBar.FrameBackdrop = CreateFrame("Frame", nil, eclipseBar)
-			TukuiDB.SetTemplate(eclipseBar.FrameBackdrop)
-			eclipseBar.FrameBackdrop:SetPoint("TOPLEFT", eclipseBar, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			eclipseBar.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))
+            eclipseBar.FrameBackdrop:SetTemplate("Default")
+			eclipseBar.FrameBackdrop:SetPoint("TOPLEFT", eclipseBar, "TOPLEFT", E:Scale(-2), E:Scale(2))
+			eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+			eclipseBar.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
 
 		end
 		
 		-- set holy power bar or shard bar
-		if (TukuiDB.myclass == "WARLOCK" or TukuiDB.myclass == "PALADIN") then
+		if (E.myclass == "WARLOCK" or E.myclass == "PALADIN") then
 			local bars = CreateFrame("Frame", nil, self)
 			bars:SetHeight(hud_height-4)
 			bars:SetWidth(hud_width-8)
 			bars:SetFrameLevel(self:GetFrameLevel() + 5)
-			bars:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-6), 0)
-			TukuiDB.SetTemplate(bars)
+			bars:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
+            bars:SetTemplate("Default")
 			bars:SetBackdropBorderColor(0,0,0,0)
 			
 			for i = 1, 3 do					
@@ -137,10 +140,10 @@ local function SimpleHealth(self, unit)
 
 				bars[i].bg = bars[i]:CreateTexture(nil, 'BORDER')
 				
-				if TukuiDB.myclass == "WARLOCK" then
+				if E.myclass == "WARLOCK" then
 					bars[i]:SetStatusBarColor(148/255, 130/255, 201/255)
 					bars[i].bg:SetTexture(148/255, 130/255, 201/255)
-				elseif TukuiDB.myclass == "PALADIN" then
+				elseif E.myclass == "PALADIN" then
 					bars[i]:SetStatusBarColor(228/255,225/255,16/255)
 					bars[i].bg:SetTexture(228/255,225/255,16/255)
 				end
@@ -148,40 +151,40 @@ local function SimpleHealth(self, unit)
 				if i == 1 then
 					bars[i]:SetPoint("BOTTOM", bars)
 				else
-					bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, TukuiDB.Scale(1))
+					bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
 				end
 				
 				bars[i]:SetOrientation('VERTICAL')
 				bars[i].bg:SetAllPoints(bars[i])
-				bars[i]:SetHeight(TukuiDB.Scale(((hud_height - 4) - 2)/3))
+				bars[i]:SetHeight(E:Scale(((hud_height - 4) - 2)/3))
 				
 				bars[i].bg:SetTexture(normTex)					
 				bars[i].bg:SetAlpha(.15)
 			end
 			
-			if TukuiDB.myclass == "WARLOCK" then
-				bars.Override = TukuiDB.UpdateShards				
+			if E.myclass == "WARLOCK" then
+				bars.Override = UF.UpdateShards				
 				self.SoulShards = bars
-			elseif TukuiDB.myclass == "PALADIN" then
-				bars.Override = TukuiDB.UpdateHoly
+			elseif E.myclass == "PALADIN" then
+				bars.Override = UF.UpdateHoly
 				self.HolyPower = bars
 			end
 			bars.FrameBackdrop = CreateFrame("Frame", nil, bars)
-			TukuiDB.SetTemplate(bars.FrameBackdrop)
-			bars.FrameBackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			bars.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))
+			bars.FrameBackdrop:SetTemplate("Default")
+			bars.FrameBackdrop:SetPoint("TOPLEFT", E:Scale(-2), E:Scale(2))
+			bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+			bars.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 		end
 		
 		-- deathknight runes
-		if TukuiDB.myclass == "DEATHKNIGHT" then
+		if E.myclass == "DEATHKNIGHT" then
 			local Runes = CreateFrame("Frame", nil, self)
 			Runes:SetHeight(hud_height-4)
 			Runes:SetWidth(hud_width-8)
 			Runes:SetFrameLevel(self:GetFrameLevel() + 5)
-			Runes:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-6), 0)
-			TukuiDB.SetTemplate(Runes)
+			Runes:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
+			Runes:SetTemplate("Default")
 			Runes:SetBackdropBorderColor(0,0,0,0)
 
 			for i = 1, 6 do
@@ -193,7 +196,7 @@ local function SimpleHealth(self, unit)
 				if (i == 1) then
 					Runes[i]:SetPoint("BOTTOM", Runes)
 				else
-					Runes[i]:SetPoint("BOTTOM", Runes[i-1], "TOP", 0, TukuiDB.Scale(1))
+					Runes[i]:SetPoint("BOTTOM", Runes[i-1], "TOP", 0, E:Scale(1))
 				end
 				Runes[i]:SetStatusBarTexture(normTex)
 				Runes[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -201,23 +204,23 @@ local function SimpleHealth(self, unit)
 			end
 			
 			Runes.FrameBackdrop = CreateFrame("Frame", nil, Runes)
-			TukuiDB.SetTemplate(Runes.FrameBackdrop)
-			Runes.FrameBackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			Runes.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			Runes.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))
+			Runes.FrameBackdrop:SetTemplate("Default")
+			Runes.FrameBackdrop:SetPoint("TOPLEFT", E:Scale(-2), E:Scale(2))
+			Runes.FrameBackdrop:SetPoint("BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+			Runes.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			Runes.FrameBackdrop:SetFrameLevel(Runes:GetFrameLevel() - 1)
-			TukuiDB.CreateShadow(Runes.FrameBackdrop)
+			Runes.FrameBackdrop:CreateShadow("Default")
 			self.Runes = Runes
 		end
 			
 		-- shaman totem bar
-		if TukuiDB.myclass == "SHAMAN" then
+		if E.myclass == "SHAMAN" then
 			local TotemBar = CreateFrame("Frame", nil, self)
 			TotemBar.Destroy = true
 			TotemBar:SetHeight(hud_height-4)
 			TotemBar:SetWidth(hud_width-8)
 			TotemBar:SetFrameLevel(self:GetFrameLevel() + 5)
-			TotemBar:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-6), 0)
+			TotemBar:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
 
 			TotemBar:SetBackdrop(backdrop)
 			TotemBar:SetBackdropColor(0, 0, 0)
@@ -231,7 +234,7 @@ local function SimpleHealth(self, unit)
 				if (i == 1) then
 					TotemBar[i]:SetPoint("BOTTOM",TotemBar)
 				else
-					TotemBar[i]:SetPoint("BOTTOM", TotemBar[i-1], "TOP", 0, TukuiDB.Scale(1))
+					TotemBar[i]:SetPoint("BOTTOM", TotemBar[i-1], "TOP", 0, E:Scale(1))
 				end
 				TotemBar[i]:SetStatusBarTexture(normTex)
 				TotemBar[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -249,34 +252,34 @@ local function SimpleHealth(self, unit)
 
 
 			TotemBar.FrameBackdrop = CreateFrame("Frame", nil, TotemBar)
-			TukuiDB.SetTemplate(TotemBar.FrameBackdrop)
-			TotemBar.FrameBackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			TotemBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			TotemBar.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))
+			TotemBar.FrameBackdrop:SetTemplate("Default")
+			TotemBar.FrameBackdrop:SetPoint("TOPLEFT", E:Scale(-2), E:Scale(2))
+			TotemBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+			TotemBar.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			TotemBar.FrameBackdrop:SetFrameLevel(TotemBar:GetFrameLevel() - 1)
 			self.TotemBar = TotemBar
 		end
 		
-		if TukuiDB.myclass == "DRUID" or TukuiDB.myclass == "ROGUE" then
+		if E.myclass == "DRUID" or E.myclass == "ROGUE" then
 			-- Setup combo points
 			local bars = CreateFrame("Frame", nil, self)
-			bars:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-6), 0)
+			bars:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
 			bars:SetWidth(hud_width-8)
 			bars:SetHeight(hud_height-4)
-			TukuiDB.SetTemplate(bars)
+			bars:SetTemplate("Default")
 			bars:SetBackdropBorderColor(0,0,0,0)
 			bars:SetBackdropColor(0,0,0,0)
 			
 			for i = 1, 5 do					
 				bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, self)
-				bars[i]:SetHeight((TukuiDB.Scale(hud_height - 4) - 4)/5)					
+				bars[i]:SetHeight((E:Scale(hud_height - 4) - 4)/5)					
 				bars[i]:SetStatusBarTexture(normTex)
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 								
 				if i == 1 then
 					bars[i]:SetPoint("BOTTOM", bars)
 				else
-					bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, TukuiDB.Scale(1))
+					bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
 				end
 				bars[i]:SetAlpha(0.15)
 				bars[i]:SetWidth(hud_width-8)
@@ -291,15 +294,15 @@ local function SimpleHealth(self, unit)
 			
 
 			self.CPoints = bars
-			self.CPoints.Override = TukuiHud.ComboDisplay
+			self.CPoints.Override = ElvUIHud.ComboDisplay
 			
 			bars.FrameBackdrop = CreateFrame("Frame", nil, bars[1])
-			TukuiDB.SetTemplate(bars.FrameBackdrop)
-			bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-			bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+			bars.FrameBackdrop:SetTemplate("Default")
+			bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", E:Scale(-2), E:Scale(2))
+			bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
 			bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
-			bars.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
-			self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiHud.ComboDisplay)
+			bars.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
+			self:RegisterEvent("UNIT_DISPLAYPOWER", ElvUIHud.ComboDisplay)
 		end
 	end
 end
@@ -318,26 +321,27 @@ local function SimplePower(self, unit)
 
 	-- Power Frame Border
 	local PowerFrame = CreateFrame("Frame", nil, self)
-	PowerFrame:SetPoint("TOPLEFT", power, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-	PowerFrame:SetPoint("BOTTOMRIGHT", power, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+	PowerFrame:SetPoint("TOPLEFT", power, "TOPLEFT", E:Scale(-2), E:Scale(2))
+	PowerFrame:SetPoint("BOTTOMRIGHT", power, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
 	PowerFrame:SetFrameLevel(self:GetFrameLevel() + 4)
 
-	TukuiDB.SetTemplate(PowerFrame)
-	PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
+	PowerFrame:SetTemplate("Default")
+	PowerFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
 	self.FrameBorder = PowerFrame
-	TukuiDB.CreateShadow(self.FrameBorder)
+	self.FrameBorder:CreateShadow("Default")
 
 	-- Power Background
 	local powerBG = power:CreateTexture(nil, 'BORDER')
 	powerBG:SetAllPoints(power)
 	powerBG:SetTexture(normTex)
 	powerBG.multiplier = 0.3
-	if TukuiHudCF.showvalues then
-		power.value = TukuiDB.SetFontString(power, db.font, db.fontsize, "THINOUTLINE")
-		power.value:SetPoint("BOTTOMLEFT", power, "BOTTOMRIGHT", TukuiDB.Scale(5), TukuiDB.Scale(5))
+	if ElvUIHudCF.showvalues then
+		power.value = power:CreateFontString(nil, "THINOUTLINE") 		
+        power.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+		power.value:SetPoint("BOTTOMLEFT", power, "BOTTOMRIGHT", E:Scale(5), E:Scale(5))
 	end
-	power.PreUpdate = TukuiHud.PreUpdatePowerHud
-	power.PostUpdate = TukuiHud.PostUpdatePowerHud
+	power.PreUpdate = ElvUIHud.PreUpdatePowerHud
+	power.PostUpdate = ElvUIHud.PostUpdatePowerHud
 
 	self.Power = power
 	self.Power.bg = powerBG
@@ -359,10 +363,10 @@ end
 -- Hud layout function (Normal Layout)
 local function Hud(self, unit)
     -- Set Colors
-    self.colors = TukuiDB.oUF_colors
+    self.colors = ElvUF["colors"]
 
     -- Update all elements on show
-    self:HookScript("OnShow", TukuiHud.updateAllElements)
+    self:HookScript("OnShow", ElvUIHud.updateAllElements)
 	self:EnableMouse(false) -- HUD should be click-through
 
     -- For Testing..
@@ -387,14 +391,14 @@ local function Hud(self, unit)
 
         -- Health Frame Border
         local HealthFrame = CreateFrame("Frame", nil, self)
-        HealthFrame:SetPoint("TOPLEFT", health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-        HealthFrame:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+        HealthFrame:SetPoint("TOPLEFT", health, "TOPLEFT", E:Scale(-2), E:Scale(2))
+        HealthFrame:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
         HealthFrame:SetFrameLevel(self:GetFrameLevel() + 4)
 
-        TukuiDB.SetTemplate(HealthFrame)
-        HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
+        HealthFrame:SetTemplate("Default")
+        HealthFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
         self.FrameBorder = HealthFrame
-        TukuiDB.CreateShadow(self.FrameBorder)
+        self.FrameBorder:CreateShadow("Default")
 
         -- Health Bar Background
         local healthBG = health:CreateTexture(nil, 'BORDER')
@@ -402,24 +406,26 @@ local function Hud(self, unit)
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.1)
 		if db.showvalues then
-			health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-			health.value:SetPoint("TOPRIGHT", health, "TOPLEFT", TukuiDB.Scale(-20), TukuiDB.Scale(-15))
+			health.value = health:CreateFontString(nil, "THINOUTLINE") 			
+            health.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+			health.value:SetPoint("TOPRIGHT", health, "TOPLEFT", E:Scale(-20), E:Scale(-15))
 		end
-        health.PostUpdate = TukuiHud.PostUpdateHealthHud
+        health.PostUpdate = ElvUIHud.PostUpdateHealthHud
         self.Health = health
         self.Health.bg = healthBG
         health.frequentUpdates = true
 
         -- Smooth Bar Animation
         if db.showsmooth == true then
-            health.Smooth = true
-        end
+			health.Smooth = UF.db.smoothbars
+			health.colorSmooth = true
+		end
 
         -- Setup Colors
         if db.unicolor ~= false then
             health.colorTapping = false
             health.colorClass = false
-            health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor or { 0.05, 0.05, 0.05 }))
+            health:SetStatusBarColor(unpack({ 0.05, 0.05, 0.05 }))
             health.colorDisconnected = false
         else
             health.colorTapping = true	
@@ -428,23 +434,23 @@ local function Hud(self, unit)
             health.colorDisconnected = true		
         end
 
-        if TukuiHudCF.powerhud then
+        if ElvUIHudCF.powerhud then
             -- Power Frame Border
             local PowerFrame = CreateFrame("Frame", nil, self)
             PowerFrame:SetHeight(hud_height)
             PowerFrame:SetWidth(hud_power_width)
             PowerFrame:SetFrameLevel(self:GetFrameLevel() + 4)
-            PowerFrame:SetPoint("LEFT", self.Health, "RIGHT", TukuiDB.Scale(4), 0)
+            PowerFrame:SetPoint("LEFT", self.Health, "RIGHT", E:Scale(4), 0)
 
-            TukuiDB.SetTemplate(PowerFrame)
-            PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
+            PowerFrame:SetTemplate("Default")
+            PowerFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
             self.PowerFrame = PowerFrame
-            TukuiDB.CreateShadow(self.PowerFrame)
+            self.PowerFrame:CreateShadow("Default")
 
             -- Power Bar (Last because we change width of frame, and i don't want to fuck up everything else
             local power = CreateFrame('StatusBar', nil, self)
-            power:SetPoint("TOPLEFT", PowerFrame, "TOPLEFT", TukuiDB.mult*2, -TukuiDB.mult*2)
-            power:SetPoint("BOTTOMRIGHT", PowerFrame, "BOTTOMRIGHT", -TukuiDB.mult*2, TukuiDB.mult*2)
+            power:SetPoint("TOPLEFT", PowerFrame, "TOPLEFT", E.mult*2, -E.mult*2)
+            power:SetPoint("BOTTOMRIGHT", PowerFrame, "BOTTOMRIGHT", -E.mult*2, E.mult*2)
             power:SetStatusBarTexture(normTex)
             power:SetOrientation("VERTICAL")
             power:SetFrameLevel(PowerFrame:GetFrameLevel()+1)
@@ -454,12 +460,13 @@ local function Hud(self, unit)
             powerBG:SetAllPoints(power)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
-			if TukuiHudCF.showvalues then
-				power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-				power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", TukuiDB.Scale(10), TukuiDB.Scale(-15))
+			if ElvUIHudCF.showvalues then
+				power.value = power:CreateFontString(nil, "THINOUTLINE") 				
+                power.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+				power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", E:Scale(10), E:Scale(-15))
 			end
-            power.PreUpdate = TukuiHud.PreUpdatePowerHud
-            power.PostUpdate = TukuiHud.PostUpdatePowerHud
+            power.PreUpdate = ElvUIHud.PreUpdatePowerHud
+            power.PostUpdate = ElvUIHud.PostUpdatePowerHud
 
             self.Power = power
             self.Power.bg = powerBG
@@ -478,14 +485,14 @@ local function Hud(self, unit)
             end
         end
 		
-		if TukuiHudCF.classspecificbars then
-			if TukuiDB.myclass == "DRUID" then
+		if ElvUIHudCF.classspecificbars then
+			if E.myclass == "DRUID" then
 				local eclipseBar = CreateFrame('Frame', nil, self)
-				eclipseBar:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-6), 0)
+				eclipseBar:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
 				eclipseBar:SetSize(hud_width-8, hud_height-4)
 				eclipseBar:SetFrameStrata("MEDIUM")
 				eclipseBar:SetFrameLevel(8)
-				TukuiDB.SetTemplate(eclipseBar)
+				eclipseBar:SetTemplate("Default")
 				eclipseBar:SetBackdropBorderColor(0,0,0,0)
 								
 				local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
@@ -505,30 +512,30 @@ local function Hud(self, unit)
 				eclipseBar.SolarBar = solarBar
 				
 				local eclipseBarText = eclipseBar:CreateFontString(nil, 'OVERLAY')
-				eclipseBarText:SetPoint("LEFT", eclipseBar, "RIGHT", TukuiDB.Scale(10), 0)
-				eclipseBarText:SetFont(db.font, db.fontsize, "THINOUTLINE")
+				eclipseBarText:SetPoint("LEFT", eclipseBar, "RIGHT", E:Scale(10), 0)
+				eclipseBarText:FontTemplate(LSM:Fetch("font",db.font), db.fontsize, "THINOUTLINE")
 				
-				eclipseBar.PostUpdatePower = TukuiHud.EclipseDirection
+				eclipseBar.PostUpdatePower = ElvUIHud.EclipseDirection
 				self.EclipseBar = eclipseBar
 				self.EclipseBar.Text = eclipseBarText
 				
 				eclipseBar.FrameBackdrop = CreateFrame("Frame", nil, eclipseBar)
-				TukuiDB.SetTemplate(eclipseBar.FrameBackdrop)
-				eclipseBar.FrameBackdrop:SetPoint("TOPLEFT", eclipseBar, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-				eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-				eclipseBar.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))
+				eclipseBar.FrameBackdrop:SetTemplate("Default")
+				eclipseBar.FrameBackdrop:SetPoint("TOPLEFT", eclipseBar, "TOPLEFT", E:Scale(-2), E:Scale(2))
+				eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+				eclipseBar.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 				eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
 
 			end
 			
 			-- set holy power bar or shard bar
-			if (TukuiDB.myclass == "WARLOCK" or TukuiDB.myclass == "PALADIN") then
+			if (E.myclass == "WARLOCK" or E.myclass == "PALADIN") then
 				local bars = CreateFrame("Frame", nil, self)
 				bars:SetHeight(hud_height-4)
 				bars:SetWidth(hud_width-8)
 				bars:SetFrameLevel(self:GetFrameLevel() + 5)
-				bars:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-6), 0)
-				TukuiDB.SetTemplate(bars)
+				bars:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
+				bars:SetTemplate("Default")
 				bars:SetBackdropBorderColor(0,0,0,0)
 				
 				for i = 1, 3 do					
@@ -540,10 +547,10 @@ local function Hud(self, unit)
 
 					bars[i].bg = bars[i]:CreateTexture(nil, 'BORDER')
 					
-					if TukuiDB.myclass == "WARLOCK" then
+					if E.myclass == "WARLOCK" then
 						bars[i]:SetStatusBarColor(148/255, 130/255, 201/255)
 						bars[i].bg:SetTexture(148/255, 130/255, 201/255)
-					elseif TukuiDB.myclass == "PALADIN" then
+					elseif E.myclass == "PALADIN" then
 						bars[i]:SetStatusBarColor(228/255,225/255,16/255)
 						bars[i].bg:SetTexture(228/255,225/255,16/255)
 					end
@@ -551,40 +558,40 @@ local function Hud(self, unit)
 					if i == 1 then
 						bars[i]:SetPoint("BOTTOM", bars)
 					else
-						bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, TukuiDB.Scale(1))
+						bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
 					end
 					
 					bars[i]:SetOrientation('VERTICAL')
 					bars[i].bg:SetAllPoints(bars[i])
-					bars[i]:SetHeight(TukuiDB.Scale(((hud_height - 4) - 2)/3))
+					bars[i]:SetHeight(E:Scale(((hud_height - 4) - 2)/3))
 					
 					bars[i].bg:SetTexture(normTex)					
 					bars[i].bg:SetAlpha(.15)
 				end
 				
-				if TukuiDB.myclass == "WARLOCK" then
-					bars.Override = TukuiDB.UpdateShards				
+				if E.myclass == "WARLOCK" then
+					bars.Override = UF.UpdateShards				
 					self.SoulShards = bars
-				elseif TukuiDB.myclass == "PALADIN" then
-					bars.Override = TukuiDB.UpdateHoly
+				elseif E.myclass == "PALADIN" then
+					bars.Override = UF.UpdateHoly
 					self.HolyPower = bars
 				end
 				bars.FrameBackdrop = CreateFrame("Frame", nil, bars)
-				TukuiDB.SetTemplate(bars.FrameBackdrop)
-				bars.FrameBackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-				bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-				bars.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))
+				bars.FrameBackdrop:SetTemplate("Default")
+				bars.FrameBackdrop:SetPoint("TOPLEFT", E:Scale(-2), E:Scale(2))
+				bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+				bars.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 				bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 			end
 			
 			-- deathknight runes
-			if TukuiDB.myclass == "DEATHKNIGHT" then
+			if E.myclass == "DEATHKNIGHT" then
 				local Runes = CreateFrame("Frame", nil, self)
 				Runes:SetHeight(hud_height-4)
 				Runes:SetWidth(hud_width-8)
 				Runes:SetFrameLevel(self:GetFrameLevel() + 5)
-				Runes:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-6), 0)
-				TukuiDB.SetTemplate(Runes)
+				Runes:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
+				Runes:SetTemplate("Default")
 				Runes:SetBackdropBorderColor(0,0,0,0)
 
 				for i = 1, 6 do
@@ -596,7 +603,7 @@ local function Hud(self, unit)
 					if (i == 1) then
 						Runes[i]:SetPoint("BOTTOM", Runes)
 					else
-						Runes[i]:SetPoint("BOTTOM", Runes[i-1], "TOP", 0, TukuiDB.Scale(1))
+						Runes[i]:SetPoint("BOTTOM", Runes[i-1], "TOP", 0, E:Scale(1))
 					end
 					Runes[i]:SetStatusBarTexture(normTex)
 					Runes[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -604,23 +611,23 @@ local function Hud(self, unit)
 				end
 				
 				Runes.FrameBackdrop = CreateFrame("Frame", nil, Runes)
-				TukuiDB.SetTemplate(Runes.FrameBackdrop)
-				Runes.FrameBackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-				Runes.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-				Runes.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))
+				Runes.FrameBackdrop:SetTemplate("Default")
+				Runes.FrameBackdrop:SetPoint("TOPLEFT", E:Scale(-2), E:Scale(2))
+				Runes.FrameBackdrop:SetPoint("BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+				Runes.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 				Runes.FrameBackdrop:SetFrameLevel(Runes:GetFrameLevel() - 1)
-				TukuiDB.CreateShadow(Runes.FrameBackdrop)
+				Runes.FrameBackdrop:CreateShadow("Default")
 				self.Runes = Runes
 			end
 				
 			-- shaman totem bar
-			if TukuiDB.myclass == "SHAMAN" then
+			if E.myclass == "SHAMAN" then
 				local TotemBar = CreateFrame("Frame", nil, self)
 				TotemBar.Destroy = true
 				TotemBar:SetHeight(hud_height-4)
 				TotemBar:SetWidth(hud_width-8)
 				TotemBar:SetFrameLevel(self:GetFrameLevel() + 5)
-				TotemBar:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", TukuiDB.Scale(-6), 0)
+				TotemBar:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
 
 				TotemBar:SetBackdrop(backdrop)
 				TotemBar:SetBackdropColor(0, 0, 0)
@@ -634,7 +641,7 @@ local function Hud(self, unit)
 					if (i == 1) then
 						TotemBar[i]:SetPoint("BOTTOM",TotemBar)
 					else
-						TotemBar[i]:SetPoint("BOTTOM", TotemBar[i-1], "TOP", 0, TukuiDB.Scale(1))
+						TotemBar[i]:SetPoint("BOTTOM", TotemBar[i-1], "TOP", 0, E:Scale(1))
 					end
 					TotemBar[i]:SetStatusBarTexture(normTex)
 					TotemBar[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -652,44 +659,45 @@ local function Hud(self, unit)
 
 
 				TotemBar.FrameBackdrop = CreateFrame("Frame", nil, TotemBar)
-				TukuiDB.SetTemplate(TotemBar.FrameBackdrop)
-				TotemBar.FrameBackdrop:SetPoint("TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-				TotemBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
-				TotemBar.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))
+				TotemBar.FrameBackdrop:SetTemplate("Default")
+				TotemBar.FrameBackdrop:SetPoint("TOPLEFT", E:Scale(-2), E:Scale(2))
+				TotemBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+				TotemBar.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 				TotemBar.FrameBackdrop:SetFrameLevel(TotemBar:GetFrameLevel() - 1)
 				self.TotemBar = TotemBar
 			end
 		end
 		
-		if TukuiHudCF.showthreat then
+		if ElvUIHudCF.showthreat then
 			-- Threat Bar Border
 			local ThreatFrame = CreateFrame("Frame", nil, self)
 			ThreatFrame:SetHeight(hud_height * .75)
 			ThreatFrame:SetWidth(hud_power_width)
 			ThreatFrame:SetFrameLevel(self:GetFrameLevel() + 4)
-			if TukuiHudCF.powerhud then
-				ThreatFrame:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMRIGHT", TukuiDB.Scale(2), 0)
+			if ElvUIHudCF.powerhud then
+				ThreatFrame:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMRIGHT", E:Scale(2), 0)
 			else
-				ThreatFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", TukuiDB.Scale(4), 0)
+				ThreatFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", E:Scale(4), 0)
 			end
-			TukuiDB.SetTemplate(ThreatFrame)
-            ThreatFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
+			ThreatFrame:SetTemplate("Default")
+            ThreatFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
             self.ThreatFrame = ThreatFrame
-            TukuiDB.CreateShadow(self.ThreatFrame)
+            self.ThreatFrame:CreateShadow("Default")
 			local ThreatBar = CreateFrame("StatusBar", nil, self)
 			
 			ThreatBar:SetFrameLevel(ThreatFrame:GetFrameLevel() + 1)
-			ThreatBar:SetPoint("TOPLEFT", ThreatFrame, TukuiDB.Scale(2), TukuiDB.Scale(-2))
-			ThreatBar:SetPoint("BOTTOMRIGHT", ThreatFrame, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+			ThreatBar:SetPoint("TOPLEFT", ThreatFrame, E:Scale(2), E:Scale(-2))
+			ThreatBar:SetPoint("BOTTOMRIGHT", ThreatFrame, E:Scale(-2), E:Scale(2))
 
 			ThreatBar:SetOrientation("VERTICAL")
 			ThreatBar:SetStatusBarTexture(normTex)
 			ThreatBar:SetBackdrop(backdrop)
 			ThreatBar:SetBackdropColor(0, 0, 0, 0)
 		
-			if TukuiHudCF.showvalues then
-				ThreatBar.Text = TukuiDB.SetFontString(ThreatBar, db.font, db.fontsize)
-				ThreatBar.Text:SetPoint("LEFT", ThreatBar, "RIGHT", TukuiDB.Scale(10), 0)
+			if ElvUIHudCF.showvalues then
+				ThreatBar.Text = ThreatBar:CreateFontString(nil, "THINOUTLINE") 				
+                ThreatBar.Text:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+				ThreatBar.Text:SetPoint("LEFT", ThreatBar, "RIGHT", E:Scale(10), 0)
 			end
 
 			ThreatBar.bg = ThreatBar:CreateTexture(nil, 'BORDER')
@@ -713,39 +721,41 @@ local function Hud(self, unit)
 
         -- Health Frame Border
         local HealthFrame = CreateFrame("Frame", nil, self)
-        HealthFrame:SetPoint("TOPLEFT", health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-        HealthFrame:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+        HealthFrame:SetPoint("TOPLEFT", health, "TOPLEFT", E:Scale(-2), E:Scale(2))
+        HealthFrame:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
         HealthFrame:SetFrameLevel(self:GetFrameLevel() + 4)
 
-        TukuiDB.SetTemplate(HealthFrame)
-        HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
+        HealthFrame:SetTemplate("Default")
+        HealthFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
         self.FrameBorder = HealthFrame
-        TukuiDB.CreateShadow(self.FrameBorder)
+        self.FrameBorder:CreateShadow("Default")
 
         -- Health Bar Background
         local healthBG = health:CreateTexture(nil, 'BORDER')
         healthBG:SetAllPoints()
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.2)
-		if TukuiHudCF.showvalues then
-			health.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-			health.value:SetPoint("LEFT", health, "RIGHT", TukuiDB.Scale(20), 0)
+		if ElvUIHudCF.showvalues then
+			health.value = health:CreateFontString(nil, "THINOUTLINE") 			
+            health.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+			health.value:SetPoint("LEFT", health, "RIGHT", E:Scale(20), 0)
 		end
-        health.PostUpdate = TukuiHud.PostUpdateHealthHud
+        health.PostUpdate = ElvUIHud.PostUpdateHealthHud
         self.Health = health
         self.Health.bg = healthBG
         health.frequentUpdates = true
 
         -- Smooth Bar Animation
         if db.showsmooth == true then
-            health.Smooth = true
-        end
+			health.Smooth = UF.db.smoothbars
+			health.colorSmooth = true
+		end
 
         -- Setup Colors
         if db.unicolor ~= false then
             health.colorTapping = false
             health.colorClass = false
-            health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor or { 0.05, 0.05, 0.05 }))
+            health:SetStatusBarColor(unpack({ 0.05, 0.05, 0.05 }))
             health.colorDisconnected = false
         else
             health.colorTapping = true	
@@ -756,23 +766,23 @@ local function Hud(self, unit)
 		
 		-- Setup combo points
 		local bars = CreateFrame("Frame", nil, self)
-		bars:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", TukuiDB.Scale(6), 0)
+		bars:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", E:Scale(6), 0)
 		bars:SetWidth(hud_width-8)
 		bars:SetHeight(hud_height-4)
-		TukuiDB.SetTemplate(bars)
+		bars:SetTemplate("Default")
 		bars:SetBackdropBorderColor(0,0,0,0)
 		bars:SetBackdropColor(0,0,0,0)
 		
 		for i = 1, 5 do					
 			bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, self)
-			bars[i]:SetHeight((TukuiDB.Scale(hud_height - 4) - 4)/5)					
+			bars[i]:SetHeight((E:Scale(hud_height - 4) - 4)/5)					
 			bars[i]:SetStatusBarTexture(normTex)
 			bars[i]:GetStatusBarTexture():SetHorizTile(false)
 							
 			if i == 1 then
 				bars[i]:SetPoint("BOTTOM", bars)
 			else
-				bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, TukuiDB.Scale(1))
+				bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
 			end
 			bars[i]:SetAlpha(0.15)
 			bars[i]:SetWidth(hud_width-8)
@@ -787,33 +797,33 @@ local function Hud(self, unit)
 		
 
 		self.CPoints = bars
-		self.CPoints.Override = TukuiHud.ComboDisplay
+		self.CPoints.Override = ElvUIHud.ComboDisplay
 		
 		bars.FrameBackdrop = CreateFrame("Frame", nil, bars[1])
-		TukuiDB.SetTemplate(bars.FrameBackdrop)
-		bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-		bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+		bars.FrameBackdrop:SetTemplate("Default")
+		bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", E:Scale(-2), E:Scale(2))
+		bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
 		bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
-		bars.FrameBackdrop:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
-		self:RegisterEvent("UNIT_DISPLAYPOWER", TukuiHud.ComboDisplay)
+		bars.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
+		self:RegisterEvent("UNIT_DISPLAYPOWER", ElvUIHud.ComboDisplay)
 
-        if TukuiHudCF.powerhud then
+        if ElvUIHudCF.powerhud then
             -- Power Frame Border
             local PowerFrame = CreateFrame("Frame", nil, self)
             PowerFrame:SetHeight(hud_height)
             PowerFrame:SetWidth(hud_power_width)
             PowerFrame:SetFrameLevel(self:GetFrameLevel() + 4)
-            PowerFrame:SetPoint("RIGHT", self.Health, "LEFT", TukuiDB.Scale(-4), 0)
+            PowerFrame:SetPoint("RIGHT", self.Health, "LEFT", E:Scale(-4), 0)
 
-            TukuiDB.SetTemplate(PowerFrame)
-            PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
+            PowerFrame:SetTemplate("Default")
+            PowerFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
             self.PowerFrame = PowerFrame
-            TukuiDB.CreateShadow(self.PowerFrame)
+            self.PowerFrame:CreateShadow("Default")
 
             -- Power Bar (Last because we change width of frame, and i don't want to fuck up everything else
             local power = CreateFrame('StatusBar', nil, self)
-            power:SetPoint("TOPLEFT", PowerFrame, "TOPLEFT", TukuiDB.mult*2, -TukuiDB.mult*2)
-            power:SetPoint("BOTTOMRIGHT", PowerFrame, "BOTTOMRIGHT", -TukuiDB.mult*2, TukuiDB.mult*2)
+            power:SetPoint("TOPLEFT", PowerFrame, "TOPLEFT", E.mult*2, -E.mult*2)
+            power:SetPoint("BOTTOMRIGHT", PowerFrame, "BOTTOMRIGHT", -E.mult*2, E.mult*2)
             power:SetStatusBarTexture(normTex)
             power:SetOrientation("VERTICAL")
             power:SetFrameLevel(PowerFrame:GetFrameLevel()+1)
@@ -823,12 +833,13 @@ local function Hud(self, unit)
             powerBG:SetAllPoints(power)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
-			if TukuiHudCF.showvalues then
-				power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-				power.value:SetPoint("RIGHT", power, "LEFT", TukuiDB.Scale(-4), 0)
+			if ElvUIHudCF.showvalues then
+				power.value = power:CreateFontString(nil, "THINOUTLINE") 				
+                power.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+				power.value:SetPoint("RIGHT", power, "LEFT", E:Scale(-4), 0)
 			end
-            power.PreUpdate = TukuiHud.PreUpdatePowerHud
-            power.PostUpdate = TukuiHud.PostUpdatePowerHud
+            power.PreUpdate = ElvUIHud.PreUpdatePowerHud
+            power.PostUpdate = ElvUIHud.PostUpdatePowerHud
 
             self.Power = power
             self.Power.bg = powerBG
@@ -860,39 +871,41 @@ local function Hud(self, unit)
 
         -- Health Frame Border
         local HealthFrame = CreateFrame("Frame", nil, self)
-        HealthFrame:SetPoint("TOPLEFT", health, "TOPLEFT", TukuiDB.Scale(-2), TukuiDB.Scale(2))
-        HealthFrame:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", TukuiDB.Scale(2), TukuiDB.Scale(-2))
+        HealthFrame:SetPoint("TOPLEFT", health, "TOPLEFT", E:Scale(-2), E:Scale(2))
+        HealthFrame:SetPoint("BOTTOMRIGHT", health, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
         HealthFrame:SetFrameLevel(self:GetFrameLevel() + 4)
 
-        TukuiDB.SetTemplate(HealthFrame)
-        HealthFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
+        HealthFrame:SetTemplate("Default")
+        HealthFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
         self.FrameBorder = HealthFrame
-        TukuiDB.CreateShadow(self.FrameBorder)
+        self.FrameBorder:CreateShadow("Default")
 
         -- Health Bar Background
         local healthBG = health:CreateTexture(nil, 'BORDER')
         healthBG:SetAllPoints()
         healthBG:SetTexture(.1, .1, .1)
         healthBG:SetAlpha(.1)
-		if TukuiHudCF.showvalues then
-			health.value = TukuiDB.SetFontString(health, db.font, db.fontsize , "THINOUTLINE")
-			health.value:SetPoint("RIGHT", health, "LEFT", TukuiDB.Scale(-4), TukuiDB.Scale(0))
+		if ElvUIHudCF.showvalues then
+			health.value = health:CreateFontString(nil, "THINOUTLINE") 			
+            health.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+			health.value:SetPoint("RIGHT", health, "LEFT", E:Scale(-4), E:Scale(0))
 		end
-        health.PostUpdate = TukuiHud.PostUpdateHealthHud
+        health.PostUpdate = ElvUIHud.PostUpdateHealthHud
         self.Health = health
         self.Health.bg = healthBG
         health.frequentUpdates = true
 
         -- Smooth Bar Animation
         if db.showsmooth == true then
-            health.Smooth = true
-        end
+			health.Smooth = UF.db.smoothbars
+			health.colorSmooth = true
+		end
 
         -- Setup Colors
         if db.unicolor ~= false then
             health.colorTapping = false
             health.colorClass = false
-            health:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthcolor or { 0.05, 0.05, 0.05 }))
+            health:SetStatusBarColor(unpack({ 0.05, 0.05, 0.05 }))
             health.colorDisconnected = false
         else
             health.colorTapping = true	
@@ -901,23 +914,23 @@ local function Hud(self, unit)
             health.colorDisconnected = true		
         end
 
-        if TukuiHudCF.powerhud then
+        if ElvUIHudCF.powerhud then
             -- Power Frame Border
             local PowerFrame = CreateFrame("Frame", nil, self)
             PowerFrame:SetHeight(hud_height * .75)
             PowerFrame:SetWidth(hud_power_width)
             PowerFrame:SetFrameLevel(self:GetFrameLevel() + 4)
-            PowerFrame:SetPoint("LEFT", self.Health, "RIGHT", TukuiDB.Scale(4), 0)
+            PowerFrame:SetPoint("LEFT", self.Health, "RIGHT", E:Scale(4), 0)
 
-            TukuiDB.SetTemplate(PowerFrame)
-            PowerFrame:SetBackdropBorderColor(unpack(TukuiCF["media"].altbordercolor or TukuiCF["media"].bordercolor))	
+            PowerFrame:SetTemplate("Default")
+            PowerFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
             self.PowerFrame = PowerFrame
-            TukuiDB.CreateShadow(self.PowerFrame)
+            self.PowerFrame:CreateShadow("Default")
 
             -- Power Bar (Last because we change width of frame, and i don't want to fuck up everything else
             local power = CreateFrame('StatusBar', nil, self)
-            power:SetPoint("TOPLEFT", PowerFrame, "TOPLEFT", TukuiDB.mult*2, -TukuiDB.mult*2)
-            power:SetPoint("BOTTOMRIGHT", PowerFrame, "BOTTOMRIGHT", -TukuiDB.mult*2, TukuiDB.mult*2)
+            power:SetPoint("TOPLEFT", PowerFrame, "TOPLEFT", E.mult*2, -E.mult*2)
+            power:SetPoint("BOTTOMRIGHT", PowerFrame, "BOTTOMRIGHT", -E.mult*2, E.mult*2)
             power:SetStatusBarTexture(normTex)
             power:SetOrientation("VERTICAL")
             power:SetFrameLevel(PowerFrame:GetFrameLevel()+1)
@@ -927,12 +940,13 @@ local function Hud(self, unit)
             powerBG:SetAllPoints(power)
             powerBG:SetTexture(normTex)
             powerBG.multiplier = 0.3
-			if TukuiHudCF.showvalues then
-				power.value = TukuiDB.SetFontString(health, db.font, db.fontsize, "THINOUTLINE")
-				power.value:SetPoint("LEFT", power, "RIGHT", TukuiDB.Scale(4), 0)
+			if ElvUIHudCF.showvalues then
+				power.value = power:CreateFontString(nil, "THINOUTLINE") 				
+                power.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+				power.value:SetPoint("LEFT", power, "RIGHT", E:Scale(4), 0)
 			end
-            power.PreUpdate = TukuiHud.PreUpdatePowerHud
-            power.PostUpdate = TukuiHud.PostUpdatePowerHud
+            power.PreUpdate = ElvUIHud.PreUpdatePowerHud
+            power.PostUpdate = ElvUIHud.PostUpdatePowerHud
 
             self.Power = power
             self.Power.bg = powerBG
@@ -952,79 +966,132 @@ local function Hud(self, unit)
             end
 		end
 		
-		self:RegisterEvent("UNIT_PET", TukuiHud.updateAllElements)
+		if unit == "pet" then
+			self:RegisterEvent("UNIT_PET", ElvUIHud.updateAllElements)
+		end
 	end
 end
 
-oUF:RegisterStyle('TukzHud',Hud)
-oUF:RegisterStyle('TukzHudSimpleHealth',SimpleHealth)
-oUF:RegisterStyle('TukzHudSimplePower',SimplePower)
-oUF:SetActiveStyle('TukzHud')
+ElvUF:RegisterStyle('ElvHud',Hud)
+ElvUF:RegisterStyle('ElvHudSimpleHealth',SimpleHealth)
+ElvUF:RegisterStyle('ElvHudSimplePower',SimplePower)
+ElvUF:SetActiveStyle('ElvHud')
 
-if TukuiHudCF.warningText then
-	TukuiHud.CreateWarningFrame()
+if ElvUIHudCF.warningText then
+	ElvUIHud.CreateWarningFrame()
 end
 
-if TukuiHudCF.simpleLayout then	
-	local alpha = TukuiHudCF.alpha
+if ElvUIHudCF.simpleLayout then	
+	local alpha = ElvUIHudCF.alpha
 	
-	oUF:SetActiveStyle('TukzHudSimpleHealth')
-	local player_health = oUF:Spawn('player', "oUF_Tukz_player_HudHealth")
-	player_health:SetPoint("RIGHT", UIParent, "CENTER", TukuiDB.Scale(-TukuiHudCF.offset), 0)
+	ElvUF:SetActiveStyle('ElvHudSimpleHealth')
+	local player_health = ElvUF:Spawn('player', "oUF_Elv_player_HudHealth")
+	player_health:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-ElvUIHudCF.offset), 0)
 	player_health:SetSize(hud_width, hud_height)
 	player_health:SetAlpha(alpha)
 
-	TukuiHud.HideOOC(player_health)
+	ElvUIHud.HideOOC(player_health)
 	
-	oUF:SetActiveStyle('TukzHudSimplePower')
-	local player_power = oUF:Spawn('player', "oUF_Tukz_player_HudPower")
-	player_power:SetPoint("LEFT", UIParent, "CENTER", TukuiDB.Scale(TukuiHudCF.offset), 0)
+	if ElvUIHudCF.simpleTarget then
+		local target_health = ElvUF:Spawn('target', "oUF_Elv_target_HudHealth")
+		target_health:SetPoint("LEFT", player_health, "RIGHT", E:Scale(15) + hud_width, 0)
+		target_health:SetSize(hud_width, hud_height)
+		target_health:SetAlpha(alpha)
+		
+		ElvUIHud.HideOOC(target_health)
+	end
+	
+	ElvUF:SetActiveStyle('ElvHudSimplePower')
+	local player_power = ElvUF:Spawn('player', "oUF_Elv_player_HudPower")
+	player_power:SetPoint("LEFT", UIParent, "CENTER", E:Scale(ElvUIHudCF.offset), 0)
 	player_power:SetSize(hud_width, hud_height)
 	player_power:SetAlpha(alpha)
 	
-	TukuiHud.HideOOC(player_power)
+	ElvUIHud.HideOOC(player_power)
+	
+	if ElvUIHudCF.simpleTarget then
+		local target_power = ElvUF:Spawn('target', "oUF_Elv_target_HudPower")
+		target_power:SetPoint("RIGHT", player_power, "LEFT", E:Scale(-15) - hud_width, 0)
+		target_power:SetSize(hud_width, hud_height)
+		target_power:SetAlpha(alpha)
+		
+		ElvUIHud.HideOOC(target_power)
+	end
 else
 	local width = hud_width
-	if TukuiHudCF.powerhud then
+	if ElvUIHudCF.powerhud then
 		width = width + hud_power_width + 2
 	end
 
-	if TukuiHudCF.showthreat then
+	if ElvUIHudCF.showthreat then
 		width = width + hud_power_width + 2
 	end
 
-	local alpha = TukuiHudCF.alpha
+	local alpha = ElvUIHudCF.alpha
 
-	local player_hud = oUF:Spawn('player', "oUF_Tukz_player_Hud")
-	player_hud:SetPoint("RIGHT", UIParent, "CENTER", TukuiDB.Scale(-TukuiHudCF.offset), 0)
+	local player_hud = ElvUF:Spawn('player', "oUF_Elv_player_Hud")
+	player_hud:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-ElvUIHudCF.offset), 0)
 	player_hud:SetSize(width, hud_height)
 	player_hud:SetAlpha(alpha)
 
-	TukuiHud.HideOOC(player_hud)
+	ElvUIHud.HideOOC(player_hud)
 
 	width = hud_width
-	if TukuiHudCF.powerhud then
+	if ElvUIHudCF.powerhud then
 		width = width + hud_power_width + 2
 	end
 
-	local target_hud = oUF:Spawn('target', "oUF_Tukz_target_Hud")
-	target_hud:SetPoint("LEFT", UIParent, "CENTER", TukuiDB.Scale(TukuiHudCF.offset), 0)
+	local target_hud = ElvUF:Spawn('target', "oUF_Elv_target_Hud")
+	target_hud:SetPoint("LEFT", UIParent, "CENTER", E:Scale(ElvUIHudCF.offset), 0)
 	target_hud:SetSize(width, hud_height)
 	target_hud:SetAlpha(alpha)
 
-	TukuiHud.HideOOC(target_hud)
+	ElvUIHud.HideOOC(target_hud)
 
-	if TukuiHudCF.pethud then
+	if ElvUIHudCF.pethud then
 		width = hud_width
-		if TukuiHudCF.powerhud then
+		if ElvUIHudCF.powerhud then
 			width = width + hud_power_width + 2
 		end
 
-		local pet_hud = oUF:Spawn('pet', "oUF_Tukz_pet_Hud")
-		pet_hud:SetPoint("BOTTOMRIGHT", oUF_Tukz_player_Hud, "BOTTOMLEFT", TukuiDB.Scale(-width) - TukuiDB.Scale(15), 0)
+		local pet_hud = ElvUF:Spawn('pet', "oUF_Elv_pet_Hud")
+		pet_hud:SetPoint("BOTTOMRIGHT", oUF_Elv_player_Hud, "BOTTOMLEFT", -E:Scale(80), 0)
 		pet_hud:SetSize(width, hud_height * .75)
 		pet_hud:SetAlpha(alpha)
 		
-		TukuiHud.HideOOC(pet_hud)
+		ElvUIHud.HideOOC(pet_hud)
+	end
+	
+	if ElvUIHudCF.tothud then
+		width = hud_width
+		if ElvUIHudCF.powerhud then
+			width = width + hud_power_width + 2
+		end
+
+		local tot_hud = ElvUF:Spawn('targettarget', "oUF_Elv_targettarget_Hud")
+		tot_hud:SetPoint("BOTTOMLEFT", oUF_Elv_target_Hud, "BOTTOMRIGHT", E:Scale(80), 0)
+		tot_hud:SetSize(width, hud_height * .75)
+		tot_hud:SetAlpha(alpha)
+		
+		ElvUIHud.HideOOC(tot_hud)
+	end
+	
+	if ElvUIHudCF.focushud then
+		width = hud_width
+		if ElvUIHudCF.powerhud then
+			width = width + hud_power_width + 2
+		end
+		
+		local frame = oUF_Elv_player_Hud
+		if ElvUIHudCF.pethud then
+			frame = oUF_Elv_pet_Hud
+		end
+		
+		local focus_hud = ElvUF:Spawn('focus', "oUF_Elv_focus_Hud")
+		focus_hud:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", -E:Scale(80), 0)
+		focus_hud:SetSize(width, hud_height * .75)
+		focus_hud:SetAlpha(alpha)
+		
+		ElvUIHud.HideOOC(focus_hud)
 	end
 end
