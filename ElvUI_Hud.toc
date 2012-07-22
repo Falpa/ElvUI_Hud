@@ -1,12 +1,18 @@
-## Interface: 40000
+## Interface: 40300
+## Title: |cff1784d1ElvUI |rHud
 ## Author: Sortokk
-## Version: 1.6.6
-## Title: |cffC495DDElvUI_HUD|r
-## Notes: HUD frames for ElvUI
+## Version: 2.0
+## Notes: Hud frames for ElvUI
 ## RequiredDeps: ElvUI
 
 libs\oUF_ThreatBar\oUF_ThreatBar.lua
 
-config.lua
-functions.lua
-hud.lua
+core/core.lua
+core/profile.lua
+core/options.lua
+modules/hud/layouts/normal/player.lua
+modules/hud/layouts/normal/target.lua
+modules/hud/layouts/normal/pet.lua
+modules/hud/layouts/simple.lua
+modules/hud/update_elements.lua
+modules/hud/hud.lua
