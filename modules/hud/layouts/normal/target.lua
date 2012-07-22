@@ -1,9 +1,9 @@
-local E, L, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
 local UF = E:GetModule('UnitFrames');
 
-local db = E.Options.Hud
+local db = E.db.hud or P.hud
 
 local backdrop = {
 	bgFile = E["media"].blankTex,
@@ -14,7 +14,7 @@ local hud_height = E:Scale(db.height)
 local hud_width = E:Scale(db.width)
 local hud_power_width = E:Scale((hud_width/3)*2)
 
-local normTex = G["hud"].texture
+local normTex = LSM:Fetch("statusbar",db.texture)
 
 function Construct_TargetHealth(self,unit)
 	-- Health Bar

@@ -1,11 +1,11 @@
-local E, L, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
-local db = E.Options.Hud
+local db = E.db.hud or P.hud
 
 local warningTextShown = false;
 
-function H:PostUpdateHealth(health, unit, min, max)
+function H.PostUpdateHealth(health, unit, min, max)
     local r, g, b
 
     -- overwrite healthbar color for enemy player (a tukui option if enabled), target vehicle/pet too far away returning unitreaction nil and friend unit not a player. (mostly for overwrite tapped for friendly)
@@ -40,7 +40,7 @@ function H:PostUpdateHealth(health, unit, min, max)
 	end
 end
 
-function H:PreUpdatePowerHud(power,unit)
+function H.PreUpdatePowerHud(power, unit)
     local _, pType = UnitPowerType(unit)
 
     local color = ElvUF["colors"].power[pType]
@@ -49,12 +49,12 @@ function H:PreUpdatePowerHud(power,unit)
     end
 end
 
-function H:PostUpdatePowerHud(power, unit, min, max)
+function H.PostUpdatePowerHud(power, unit, min, max)
     local self = power:GetParent()
     local pType, pToken = UnitPowerType(unit)
     local color = ElvUF["colors"].power[pToken]
 
-    if color and db.showvalues then
+    if color and db.showValues then
         power.value:SetTextColor(color[1], color[2], color[3])
 		power.value:SetText(format("%.f",min / max * 100).." %")
     end
@@ -105,7 +105,7 @@ function H:ComboDisplay(event, unit)
 	end
 end
 
-function H:UpdateHoly(event,unit,powerType)
+function H.UpdateHoly(event,unit,powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
 	for i = 1, MAX_HOLY_POWER do
@@ -117,7 +117,7 @@ function H:UpdateHoly(event,unit,powerType)
 	end
 end
 
-function H:UpdateShards(event, unit, powerType)
+function H.UpdateShards(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
 	local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
 	for i = 1, SHARD_BAR_NUM_SHARDS do

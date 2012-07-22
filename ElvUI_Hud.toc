@@ -7,12 +7,7 @@
 
 libs\oUF_ThreatBar\oUF_ThreatBar.lua
 
-core\core.lua
-core\profile.lua
-core\options.lua
-modules\hud\layouts\normal\player.lua
-modules\hud\layouts\normal\target.lua
-modules\hud\layouts\normal\pet.lua
-modules\hud\layouts\simple.lua
-modules\hud\update_elements.lua
-modules\hud\hud.lua
+core\load_core.xml
+config\load_config.xml
+modules\load_modules.xml
+ElvUI_Hud.lua

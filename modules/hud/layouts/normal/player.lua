@@ -1,8 +1,8 @@
-local E, L, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
 local UF = E:GetModule('UnitFrames');
-local db = E.Options.Hud
+local db = E.db.hud or P.hud
 
 local backdrop = {
 	bgFile = E["media"].blankTex,
@@ -13,7 +13,7 @@ local hud_height = E:Scale(db.height)
 local hud_width = E:Scale(db.width)
 local hud_power_width = E:Scale((hud_width/3)*2)
 
-local normTex = G["hud"].texture
+local normTex = LSM:Fetch("statusbar",db.texture)
 
 function Construct_PlayerHealth(self, unit)
 	-- Health Bar
@@ -345,11 +345,8 @@ function Construct_Threat(self,unit)
 	ThreatFrame:SetHeight(hud_height * .75)
 	ThreatFrame:SetWidth(hud_power_width)
 	ThreatFrame:SetFrameLevel(self:GetFrameLevel() + 4)
-	if ElvUIHudCF.powerhud then
-		ThreatFrame:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMRIGHT", E:Scale(2), 0)
-	else
-		ThreatFrame:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", E:Scale(4), 0)
-	end
+	ThreatFrame:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMRIGHT", E:Scale(2), 0)
+	
 	ThreatFrame:SetTemplate("Default")
     ThreatFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
     self.ThreatFrame = ThreatFrame
@@ -365,7 +362,7 @@ function Construct_Threat(self,unit)
 	ThreatBar:SetBackdrop(backdrop)
 	ThreatBar:SetBackdropColor(0, 0, 0, 0)
 
-	if ElvUIHudCF.showvalues then
+	if db.showValues then
 		ThreatBar.Text = ThreatBar:CreateFontString(nil, "THINOUTLINE") 				
         ThreatBar.Text:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
 		ThreatBar.Text:SetPoint("LEFT", ThreatBar, "RIGHT", E:Scale(10), 0)

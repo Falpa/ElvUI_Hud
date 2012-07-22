@@ -1,0 +1,5 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui">
+    <Include file="layouts\load_layouts.xml"/>
+    <Script file="hud.lua"/>
+    <Script file="update_elements.lua"/>
+</Ui>
