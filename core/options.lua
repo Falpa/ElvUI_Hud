@@ -47,6 +47,7 @@ E.Options.args.hud = {
             name = L["Hud Options"],
             guiInline = true,
             get = function(info) return E.db.hud[info[#info]] end,
+            set = function(info,value) E.db.hud[info[#info] = value end,
             args = {
                 simpleLayout = {
                     type = "toggle",
