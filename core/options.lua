@@ -37,7 +37,7 @@ E.Options.args.hud = {
                     order = 2,
                     name = L["Reset Settings"],
                     desc = L["Reset the settings of this addon to their defaults."],
-                    func = function() E:CopyTable(E.db.hud,P.hud) end
+                    func = function() E:CopyTable(E.db.hud,P.hud); H:Enable(); H:UpdateHideSetting(); H:UpdateMedia(); H:UpdateMouseSetting(); end
                 },
             },
         },
@@ -47,20 +47,23 @@ E.Options.args.hud = {
             name = L["Hud Options"],
             guiInline = true,
             get = function(info) return E.db.hud[info[#info]] end,
-            set = function(info,value) E.db.hud[info[#info] = value end,
+            set = function(info,value) E.db.hud[info[#info]] = value; end, 
             args = {
                 simpleLayout = {
                     type = "toggle",
                     order = 4,
                     name = L["Simple Layout"],
                     desc = L["A simple layout inspired by Hydra, player health on left, power on right, no target/pet hud /n(Overwrites all other settings except Offsets)"],
-                    
+                    get = function(info) return E.db.hud[info[#info]] end,
+                    set = function(info,value) E.db.hud[info[#info]] = value; StaticPopup_Show("CONFIG_RL"); end, 
                 },
                 simpleTarget = {
                     type = "toggle",
                     order = 5,
                     name = L["Simple Layout Target"],
                     desc = L["Show target health/power in the simple layout"],
+                    get = function(info) return E.db.hud[info[#info]] end,
+                    set = function(info,value) E.db.hud[info[#info]] = value; StaticPopup_Show("CONFIG_RL"); end,
                 },
                 petHud = {
                     type = "toggle",
@@ -89,7 +92,7 @@ E.Options.args.hud = {
                 unicolor = {
                     type = "toggle",
                     order = 11,
-                    name = L["Theme Colour"],
+                    name = L["Unicolor"],
                     desc = L["Use a unicolor theme"],
                 },
                 smooth = {
@@ -101,14 +104,14 @@ E.Options.args.hud = {
                 flash = {
                     type = "toggle",
                     order = 13,
-                    name = L["Flash a Warning"],
-                    desc = L["Flash a warning when the threshold is reached"],
+                    name = L["Flash"],
+                    desc = L["Flash health/power when the low threshold is reached"],
                 },
                 warningText = {
                     type = "toggle",
                     order = 14,
                     name = L["Text Warning"],
-                    desc = L["Show a Text Warning when the Threshold is reached"],
+                    desc = L["Show a Text Warning when the low threshold is reached"],
                 },
                 hideOOC  = {
                     type = "toggle",
@@ -158,6 +161,7 @@ E.Options.args.hud = {
             name = L["Variables and Movers"],
             guiInline = true,
             get = function(info) return E.db.hud[info[#info]] end,
+            set = function(info,value) E.db.hud[info[#info]] = value; end,
             args = {
                 offset = {
                     type = "range",
