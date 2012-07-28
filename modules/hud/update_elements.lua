@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
-local db = E.db.hud or P.hud
 
 local warningTextShown = false;
 
@@ -10,7 +9,7 @@ function H.PostUpdateHealth(health, unit, min, max)
 
     -- overwrite healthbar color for enemy player (a tukui option if enabled), target vehicle/pet too far away returning unitreaction nil and friend unit not a player. (mostly for overwrite tapped for friendly)
     -- I don't know if we really need to call ElvUICF["unitframes"].unicolor but anyway, it's safe this way.
-    if (db.unicolor ~= true and unit == "target" and UnitIsEnemy(unit, "player")) or (db.unicolor ~= true and unit == "target" and not UnitIsPlayer(unit) and UnitIsFriend(unit, "player")) then
+    if (E.db.hud.unicolor ~= true and unit == "target" and UnitIsEnemy(unit, "player")) or (E.db.hud.unicolor ~= true and unit == "target" and not UnitIsPlayer(unit) and UnitIsFriend(unit, "player")) then
         local c = ElvUF["colors"].reaction[UnitReaction(unit, "player")]
         if c then 
             r, g, b = c[1], c[2], c[3]
@@ -23,14 +22,14 @@ function H.PostUpdateHealth(health, unit, min, max)
         end					
     end
 
-	if db.showValues then
+	if E.db.hud.showValues then
 		health.value:SetText(format("%.f", min / max * 100).." %")
 	end
 	
     -- Flash health below threshold %
-	if (min / max * 100) < (db.lowThreshold) then
-		H:Flash(health, 0.6)
-		if (not warningTextShown and unit == "player") and db.warningText then
+	if (min / max * 100) < (E.db.hud.lowThreshold) then
+		H.Flash(health, 0.6)
+		if (not warningTextShown and unit == "player") and E.db.hud.warningText then
 			ElvUIHudWarning:AddMessage("|cffff0000LOW HEALTH")
 			warningTextShown = true
 		else
@@ -54,16 +53,16 @@ function H.PostUpdatePowerHud(power, unit, min, max)
     local pType, pToken = UnitPowerType(unit)
     local color = ElvUF["colors"].power[pToken]
 
-    if color and db.showValues then
+    if color and E.db.hud.showValues then
         power.value:SetTextColor(color[1], color[2], color[3])
 		power.value:SetText(format("%.f",min / max * 100).." %")
     end
 	
 	-- Flash mana below threshold %
 	local powerMana, _ = UnitPowerType(unit)
-	if (min / max * 100) < (db.lowThreshold) and (powerMana == SPELL_POWER_MANA) and db.flash then
-		H:Flash(power, 0.4)
-		if db.warningText then
+	if (min / max * 100) < (E.db.hud.lowThreshold) and (powerMana == SPELL_POWER_MANA) and E.db.hud.flash then
+		H.Flash(power, 0.4)
+		if E.db.hud.warningText then
 			if not warningTextShown and unit == "player" then
 				ElvUIHudWarning:AddMessage("|cff00ffffLOW MANA")
 				warningTextShown = true
@@ -105,7 +104,7 @@ function H:ComboDisplay(event, unit)
 	end
 end
 
-function H.UpdateHoly(event,unit,powerType)
+function H:UpdateHoly(event,unit,powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
 	for i = 1, MAX_HOLY_POWER do
@@ -117,7 +116,7 @@ function H.UpdateHoly(event,unit,powerType)
 	end
 end
 
-function H.UpdateShards(event, unit, powerType)
+function H:UpdateShards(event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'SOUL_SHARDS')) then return end
 	local num = UnitPower(unit, SPELL_POWER_SOUL_SHARDS)
 	for i = 1, SHARD_BAR_NUM_SHARDS do

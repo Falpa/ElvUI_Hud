@@ -2,20 +2,21 @@ local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, Globa
 local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
 local UF = E:GetModule('UnitFrames');
-local db = E.db.hud or P.hud
 
 local backdrop = {
 	bgFile = E["media"].blankTex,
 	insets = {top = -E.mult, left = -E.mult, bottom = -E.mult, right = -E.mult},
 }
 
-local hud_height = E:Scale(db.height)
-local hud_width = E:Scale(db.width)
-local hud_power_width = E:Scale((hud_width/3)*2)
-
-local normTex = LSM:Fetch("statusbar",db.texture)
+local function r(f) H:RegisterFrame(f) end;
 
 function Construct_PlayerHealth(self, unit)
+    local hud_width = E:Scale(E.db.hud.width)
+    local hud_power_width = E:Scale((hud_width/3)*2)
+    local hud_height = E:Scale(E.db.hud.height)
+
+    local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+
 	-- Health Bar
     local health = CreateFrame('StatusBar', nil, self)
     health:SetWidth(hud_width - 4)
@@ -24,6 +25,7 @@ function Construct_PlayerHealth(self, unit)
     health:SetStatusBarTexture(normTex)
     health:SetOrientation("VERTICAL")
     health:SetFrameLevel(self:GetFrameLevel() + 5)
+
     self.health = health
 
     -- Health Frame Border
@@ -41,27 +43,27 @@ function Construct_PlayerHealth(self, unit)
     local healthBG = health:CreateTexture(nil, 'BORDER')
     healthBG:SetAllPoints()
     healthBG:SetTexture(.1, .1, .1)
-    healthBG:SetAlpha(.1)
+    healthBG:SetAlpha(.2)
 
-	if db.showValues then
+	if E.db.hud.showValues then
 		health.value = health:CreateFontString(nil, "THINOUTLINE") 			
-        health.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+        health.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
 		health.value:SetPoint("TOPRIGHT", health, "TOPLEFT", E:Scale(-20), E:Scale(-15))
 	end
 
-    health.PostUpdate = H.PostUpdateHealthHud
+    health.PostUpdate = H.PostUpdateHealth
     self.Health = health
     self.Health.bg = healthBG
     health.frequentUpdates = true
 
     -- Smooth Bar Animation
-    if db.smooth == true then
+    if E.db.hud.smooth == true then
 		health.Smooth = UF.db.smoothbars
 		health.colorSmooth = true
 	end
 
     -- Setup Colors
-    if db.unicolor ~= false then
+    if E.db.hud.unicolor ~= false then
         health.colorTapping = false
         health.colorClass = false
         health:SetStatusBarColor(unpack({ 0.05, 0.05, 0.05 }))
@@ -72,9 +74,17 @@ function Construct_PlayerHealth(self, unit)
         health.colorReaction = true
         health.colorDisconnected = true		
     end
+    
+    r(health)
 end
 
 function Construct_PlayerPower(self, unit)
+	local hud_height = E:Scale(E.db.hud.height)
+	local hud_width = E:Scale(E.db.hud.width)
+	local hud_power_width = E:Scale((hud_width/3)*2)
+
+	local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+	
 	-- Power Frame Border
     local PowerFrame = CreateFrame("Frame", nil, self)
     PowerFrame:SetHeight(hud_height)
@@ -100,9 +110,9 @@ function Construct_PlayerPower(self, unit)
     powerBG:SetAllPoints(power)
     powerBG:SetTexture(.1,.1,.1)
     powerBG.multiplier = 0.3
-	if db.showValues then
+	if E.db.hud.showValues then
 		power.value = power:CreateFontString(nil, "THINOUTLINE") 				
-        power.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+        power.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
 		power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", E:Scale(10), E:Scale(-15))
 	end
     power.PreUpdate = H.PreUpdatePowerHud
@@ -120,12 +130,20 @@ function Construct_PlayerPower(self, unit)
 	power.colorDisconnected = true		
 	
     -- Smooth Animation
-    if db.smooth == true then
+    if E.db.hud.smooth == true then
         power.Smooth = true
     end
+
+    r(power)
 end	
 
 function Construct_EclipseBar(self,unit)
+	local hud_height = E:Scale(E.db.hud.height)
+	local hud_width = E:Scale(E.db.hud.width)
+	local hud_power_width = E:Scale((hud_width/3)*2)
+
+	local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+
 	local eclipseBar = CreateFrame('Frame', nil, self)
 	eclipseBar:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMLEFT", E:Scale(-6), 0)
 	eclipseBar:SetSize(hud_width-8, hud_height-4)
@@ -152,7 +170,7 @@ function Construct_EclipseBar(self,unit)
 	
 	local eclipseBarText = eclipseBar:CreateFontString(nil, 'OVERLAY')
 	eclipseBarText:SetPoint("LEFT", eclipseBar, "RIGHT", E:Scale(10), 0)
-	eclipseBarText:FontTemplate(LSM:Fetch("font",db.font), db.fontsize, "THINOUTLINE")
+	eclipseBarText:FontTemplate(LSM:Fetch("font",E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
 	
 	eclipseBar.PostUpdatePower = H.EclipseDirection
 	self.EclipseBar = eclipseBar
@@ -164,9 +182,17 @@ function Construct_EclipseBar(self,unit)
 	eclipseBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", lunarBar, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
 	eclipseBar.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 	eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
+
+	r(eclipseBar)
 end
 
 function Construct_Shards(self,unit)
+	local hud_height = E:Scale(E.db.hud.height)
+	local hud_width = E:Scale(E.db.hud.width)
+	local hud_power_width = E:Scale((hud_width/3)*2)
+
+	local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+
 	local bars = CreateFrame("Frame", nil, self)
 	bars:SetHeight(hud_height-4)
 	bars:SetWidth(hud_width-8)
@@ -199,6 +225,7 @@ function Construct_Shards(self,unit)
 		
 		bars[i].bg:SetTexture(normTex)					
 		bars[i].bg:SetAlpha(.15)
+		r(bars[i])
 	end
 	
 	bars.Override = H.UpdateShards				
@@ -213,6 +240,12 @@ function Construct_Shards(self,unit)
 end
 
 function Construct_HolyPower(self,unit)
+	local hud_height = E:Scale(E.db.hud.height)
+	local hud_width = E:Scale(E.db.hud.width)
+	local hud_power_width = E:Scale((hud_width/3)*2)
+
+	local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+
 	local bars = CreateFrame("Frame", nil, self)
 	bars:SetHeight(hud_height-4)
 	bars:SetWidth(hud_width-8)
@@ -245,9 +278,10 @@ function Construct_HolyPower(self,unit)
 		
 		bars[i].bg:SetTexture(normTex)					
 		bars[i].bg:SetAlpha(.15)
+		r(bars[i])
 	end
 	
-	bars.Override = UF.UpdateHoly
+	bars.Override = H.UpdateHoly
 	self.HolyPower = bars
 
 	bars.FrameBackdrop = CreateFrame("Frame", nil, bars)
@@ -259,6 +293,12 @@ function Construct_HolyPower(self,unit)
 end
 
 function Construct_Runes(self,unit)
+	local hud_height = E:Scale(E.db.hud.height)
+	local hud_width = E:Scale(E.db.hud.width)
+	local hud_power_width = E:Scale((hud_width/3)*2)
+
+	local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+
 	local Runes = CreateFrame("Frame", nil, self)
 	Runes:SetHeight(hud_height-4)
 	Runes:SetWidth(hud_width-8)
@@ -281,6 +321,7 @@ function Construct_Runes(self,unit)
 		Runes[i]:SetStatusBarTexture(normTex)
 		Runes[i]:GetStatusBarTexture():SetHorizTile(false)
 		Runes[i]:SetOrientation('VERTICAL')
+		r(Runes[i])
 	end
 	
 	Runes.FrameBackdrop = CreateFrame("Frame", nil, Runes)
@@ -294,6 +335,12 @@ function Construct_Runes(self,unit)
 end
 
 function Construct_Totems(self,unit)
+	local hud_height = E:Scale(E.db.hud.height)
+	local hud_width = E:Scale(E.db.hud.width)
+	local hud_power_width = E:Scale((hud_width/3)*2)
+
+	local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+
 	local TotemBar = CreateFrame("Frame", nil, self)
 	TotemBar.Destroy = true
 	TotemBar:SetHeight(hud_height-4)
@@ -327,6 +374,7 @@ function Construct_Totems(self,unit)
 		TotemBar[i].bg:SetAllPoints(TotemBar[i])
 		TotemBar[i].bg:SetTexture(normTex)
 		TotemBar[i].bg.multiplier = 0.3
+		r(TotemBar[i])
 	end
 
 
@@ -340,6 +388,12 @@ function Construct_Totems(self,unit)
 end
 
 function Construct_Threat(self,unit)
+	local hud_height = E:Scale(E.db.hud.height)
+	local hud_width = E:Scale(E.db.hud.width)
+	local hud_power_width = E:Scale((hud_width/3)*2)
+
+	local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+
 	-- Threat Bar Border
 	local ThreatFrame = CreateFrame("Frame", nil, self)
 	ThreatFrame:SetHeight(hud_height * .75)
@@ -362,9 +416,9 @@ function Construct_Threat(self,unit)
 	ThreatBar:SetBackdrop(backdrop)
 	ThreatBar:SetBackdropColor(0, 0, 0, 0)
 
-	if db.showValues then
+	if E.db.hud.showValues then
 		ThreatBar.Text = ThreatBar:CreateFontString(nil, "THINOUTLINE") 				
-        ThreatBar.Text:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+        ThreatBar.Text:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
 		ThreatBar.Text:SetPoint("LEFT", ThreatBar, "RIGHT", E:Scale(10), 0)
 	end
 
@@ -374,4 +428,5 @@ function Construct_Threat(self,unit)
 
 	ThreatBar.useRawThreat = false
 	self.ThreatBar = ThreatBar
+	r(ThreatBar)
 end

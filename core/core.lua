@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, Globa
 local H = E:NewModule('HUD','AceTimer-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 
-local db
+H.frames = {}
 
 function H:updateAllElements(frame)
     for _, v in ipairs(frame.__elements) do
@@ -10,7 +10,7 @@ function H:updateAllElements(frame)
     end
 end
 
-function H:SetUpAnimGroup()
+function H.SetUpAnimGroup(self)
 -- The following functions are thanks to Hydra from the ElvUI forums
     self.anim = self:CreateAnimationGroup("Flash")
     self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
@@ -22,9 +22,9 @@ function H:SetUpAnimGroup()
     self.anim.fadeout:SetOrder(1)
 end
 
-function H:Flash(duration)
+function H.Flash(self,duration)
     if not self.anim then
-        self:SetUpAnimGroup()
+        H.SetUpAnimGroup(self)
     end
 
     self.anim.fadein:SetDuration(duration)
@@ -64,6 +64,8 @@ local __Hide = function(frame,event)
 	end
 end
 
+local frames = { }
+
 function H:HideOOC(frame)
 	if E.db.hud.hideOOC == true then
 		local hud_hider = CreateFrame("Frame", nil, UIParent)
@@ -73,86 +75,74 @@ function H:HideOOC(frame)
 		hud_hider:SetScript("OnEvent", function(self,event) __Hide(frame,event) end)
 		frame.hud_hider = hud_hider
 	end
+    tinsert(frames,frame)
 end
 
-function ShowFrames()
-    if E.db.hud.simpleLayout then
-        oUF_Elv_player_HudHealth:Show()
-        oUF_Elv_player_HudPower:Show()
-        if E.db.hud.simpleTarget then
-            oUF_Elv_target_HudHealth:Show()
-            oUF_Elv_target_HudPower:Show()
+function H:UpdateHideSetting()
+    if not E.db.hud.hideOOC then
+        for _,f in pairs(frames) do
+            local hud_hider = f.hud_hider
+            hud_hider:UnregisterEvent("PLAYER_REGEN_DISABLED")
+            hud_hider:UnregisterEvent("PLAYER_REGEN_ENABLED")
+            hud_hider:UnregisterEvent("PLAYER_ENTERING_WORLD")
+            __Hide(f,"PLAYER_REGEN_DISABLED")
         end
     else
-        oUF_Elv_player_Hud:Show()
-        oUF_Elv_target_Hud:Show()
-        if oUF_Elv_pet_Hud then oUF_Elv_pet_Hud:Show() end
-    end
-end
-
-function HideFrames()
-       if E.db.hud.simpleLayout then
-        oUF_Elv_player_HudHealth:Hide()
-        oUF_Elv_player_HudPower:Hide()
-        if E.db.hud.simpleTarget then
-            oUF_Elv_target_HudHealth:Hide()
-            oUF_Elv_target_HudPower:Hide()
+        for _,f in pairs(frames) do
+            local hud_hider = f.hud_hider or CreateFrame("Frame",nil,UIParent)
+            hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
+            hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
+            hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
+            hud_hider:SetScript("OnEvent", function(self,event) __Hide(f,event) end)
+            f.hud_hider = hud_hider
+            __Hide(f,"PLAYER_REGEN_ENABLED")
         end
-    else
-        oUF_Elv_player_Hud:Hide()
-        oUF_Elv_target_Hud:Hide()
-        if oUF_Elv_pet_Hud then oUF_Elv_pet_Hud:Hide() end
     end
 end
 
 function H:Enable()
-	if E.db.hud.enabled then
-		ShowFrames()
-	else
-		HideFrames()
-	end
-end
-
-G["hud"] = {}
-G["hud"].frames = {}
-
-function merge(t1, t2)
-    for k, v in pairs(t2) do
-        if (type(v) == "table") and (type(t1[k] or false) == "table") then
-            merge(t1[k], t2[k])
+    for _,f in pairs(frames) do
+        f:SetScript("OnEvent", function(self,event) __CheckEnabled(f) end)
+        if not E.db.hud.enabled then
+            if E.db.hud.hideOOC then
+                local hud_hider = f.hud_hider
+                hud_hider:UnregisterEvent("PLAYER_REGEN_DISABLED")
+                hud_hider:UnregisterEvent("PLAYER_REGEN_ENABLED")
+                hud_hider:UnregisterEvent("PLAYER_ENTERING_WORLD")
+            end
+            f:Hide()
+            f:EnableMouse(false)
+            f:SetAlpha(0)
         else
-            t1[k] = v
+            if E.db.hud.hideOOC then            
+                local hud_hider = f.hud_hider or CreateFrame("Frame",nil,UIParent)
+                hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
+                hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
+                hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
+                hud_hider:SetScript("OnEvent", function(self,event) __Hide(f,event) end)
+                f.hud_hider = hud_hider
+                __Hide(f,"PLAYER_REGEN_ENABLED")
+            else
+                f:Show()
+                f:EnableMouse(E.db.hud.enableMouse)
+                f:SetAlpha(E.db.hud.alpha)
+            end
         end
     end
-    return t1
 end
 
-function GetChildrenTree(frame)
-    frames = {}
-    if frame:GetChildren() then
-        for _,child in pairs(frame:GetChildren()) do
-            tinsert(frames,child)
-            nf = GetChildrenTree(child)
-            merge(frames,nf)
-        end
-    end
-    tinsert(frames,frame)
-    return frames
-end
+local media_frames = {}
 
-function H:RegisterHudFrames(frame)
-    merge(G["hud"].frames,GetChildrenTree(frame))
+function H:RegisterFrame(frame)
+    tinsert(media_frames,frame)
 end
 
 function H:UpdateMedia()
-    if not G["hud"].textureRotated then H:Rotate(G["hud"].texture) end
-    for _,f in pairs(frames) do
-        if f:GetObjectType() == "StatusBar" then
-            f:SetStatusBarTexture(G["hud"].texture)
-        end
+    for _,f in pairs(media_frames) do
+        f:SetStatusBarTexture(LSM:Fetch("statusbar", E.db.hud.texture))
         if E.db.hud.showValues then
             if f.value ~= nil then
-                f.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+                f.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
             end
         end
     end
@@ -161,7 +151,7 @@ end
 function H:UpdateMouseSetting()
     for _,f in pairs(frames) do
         if f:IsMouseEnabled() then
-            if db.enableMouse then
+            if E.db.hud.enableMouse then
                 f:EnableMouse(true)
             else
                 f:EnableMouse(false)

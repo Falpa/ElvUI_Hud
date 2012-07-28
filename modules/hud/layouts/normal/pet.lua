@@ -3,20 +3,20 @@ local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
 local UF = E:GetModule('UnitFrames');
 
-local db = E.db.hud or P.hud
-
 local backdrop = {
 	bgFile = E["media"].blankTex,
 	insets = {top = -E.mult, left = -E.mult, bottom = -E.mult, right = -E.mult},
 }
 
-local hud_height = E:Scale(db.height)
-local hud_width = E:Scale(db.width)
-local hud_power_width = E:Scale((hud_width/3)*2)
-
-local normTex = LSM:Fetch("statusbar",db.texture)
+local function r(f) H:RegisterFrame(f) end;
 
 function Construct_PetHealth(self,unit)
+    local hud_height = E:Scale(E.db.hud.height)
+    local hud_width = E:Scale(E.db.hud.width)
+    local hud_power_width = E:Scale((hud_width/3)*2)
+
+    local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+
 	-- Health Bar
     local health = CreateFrame('StatusBar', nil, self)
     health:SetWidth(hud_width - 4)
@@ -43,9 +43,9 @@ function Construct_PetHealth(self,unit)
     healthBG:SetAllPoints()
     healthBG:SetTexture(.1, .1, .1)
     healthBG:SetAlpha(.1)
-	if db.showValues then
+	if E.db.hud.showValues then
 		health.value = health:CreateFontString(nil, "THINOUTLINE") 			
-        health.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+        health.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
 		health.value:SetPoint("RIGHT", health, "LEFT", E:Scale(-4), E:Scale(0))
 	end
     health.PostUpdate = H.PostUpdateHealthHud
@@ -54,13 +54,13 @@ function Construct_PetHealth(self,unit)
     health.frequentUpdates = true
 
     -- Smooth Bar Animation
-    if db.smooth == true then
+    if E.db.hud.smooth == true then
 		health.Smooth = UF.db.smoothbars
 		health.colorSmooth = true
 	end
 
     -- Setup Colors
-    if db.unicolor ~= false then
+    if E.db.hud.unicolor ~= false then
         health.colorTapping = false
         health.colorClass = false
         health:SetStatusBarColor(unpack({ 0.05, 0.05, 0.05 }))
@@ -71,10 +71,18 @@ function Construct_PetHealth(self,unit)
         health.colorReaction = true
         health.colorDisconnected = true		
     end
+
+    r(health)
 end
 
 function Construct_PetPower(self,unit)
-	-- Power Frame Border
+    local hud_height = E:Scale(E.db.hud.height)
+    local hud_width = E:Scale(E.db.hud.width)
+    local hud_power_width = E:Scale((hud_width/3)*2)
+
+    local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+	
+    -- Power Frame Border
     local PowerFrame = CreateFrame("Frame", nil, self)
     PowerFrame:SetHeight(hud_height * .75)
     PowerFrame:SetWidth(hud_power_width)
@@ -99,9 +107,9 @@ function Construct_PetPower(self,unit)
     powerBG:SetAllPoints(power)
     powerBG:SetTexture(normTex)
     powerBG.multiplier = 0.3
-	if db.showValues then
+	if E.db.hud.showValues then
 		power.value = power:CreateFontString(nil, "THINOUTLINE") 				
-        power.value:FontTemplate(LSM:Fetch("font", db.font), db.fontsize, "THINOUTLINE")
+        power.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
 		power.value:SetPoint("LEFT", power, "RIGHT", E:Scale(4), 0)
 	end
     power.PreUpdate = H.PreUpdatePowerHud
@@ -120,7 +128,9 @@ function Construct_PetPower(self,unit)
 	power.colorDisconnected = true		
 	
     -- Smooth Animation
-    if db.smooth == true then
+    if E.db.hud.smooth == true then
         power.Smooth = true
     end
+
+    r(power)
 end

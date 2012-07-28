@@ -3,21 +3,15 @@ local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
 local UF = E:GetModule('UnitFrames');
 
-local db = E.db.hud or P.hud
-
 local backdrop = {
 	bgFile = E["media"].blankTex,
 	insets = {top = -E.mult, left = -E.mult, bottom = -E.mult, right = -E.mult},
 }
 
-local hud_height = E:Scale(db.height)
-local hud_width = E:Scale(db.width)
-local hud_power_width = E:Scale((hud_width/3)*2)
-
 local function SimpleHealth(self,unit)
 	Construct_SimpleHealth(self,unit)
 
-	if db.classBars and unit == "player" then
+	if E.db.hud.classBars and unit == "player" then
 		if E.myclass == "DRUID" then
 			Construct_EclipseBar(self,unit)
 		end
@@ -61,7 +55,7 @@ local function Hud(self,unit)
 
 		Construct_PlayerPower(self,unit)
 
-		if db.classBars then
+		if E.db.hud.classBars then
 			if E.myclass == "DRUID" then
 				Construct_EclipseBar(self,unit)
 			end
@@ -70,7 +64,7 @@ local function Hud(self,unit)
 				Construct_Shards(self,unit)
 			end
 
-			if E.myclass == "DRUID" then
+			if E.myclass == "PALADIN" then
 				Construct_HolyPower(self,unit)
 			end
 
@@ -83,7 +77,7 @@ local function Hud(self,unit)
 			end
 		end
 
-		if db.showThreat then
+		if E.db.hud.showThreat then
 			Construct_Threat(self,unit)
 		end
 	elseif unit == "target" then
@@ -103,24 +97,28 @@ ElvUF:RegisterStyle('ElvUI_Hud',Hud)
 ElvUF:RegisterStyle('ElvUI_Hud_Simple_Health',SimpleHealth)
 ElvUF:RegisterStyle('ElvUI_Hud_Simple_Power',SimplePower)
 
-if db.warningText then
-	H:CreateWarningFrame()
-end
-
 function H:Construct_Hud()
-	if db.simpleLayout then
-		local alpha = db.alpha
+	local hud_height = E:Scale(E.db.hud.height)
+	local hud_width = E:Scale(E.db.hud.width)
+	local hud_power_width = E:Scale((hud_width/3)*2)
+
+	if E.db.hud.warningText then
+		H:CreateWarningFrame()
+	end
+
+	if E.db.hud.simpleLayout then
+		local alpha = E.db.hud.alpha
 
 		ElvUF:SetActiveStyle('ElvUI_Hud_Simple_Health')
 
 		local player_health = ElvUF:Spawn('player', "oUF_Elv_player_HudHealth")
-		player_health:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-db.offset), 0)
+		player_health:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-E.db.hud.offset), 0)
 		player_health:SetSize(hud_width, hud_height)
 		player_health:SetAlpha(alpha)
 
 		H:HideOOC(player_health)
 
-		if db.simpleTarget then
+		if E.db.hud.simpleTarget then
 			local target_health = ElvUF:Spawn('target', "oUF_Elv_target_HudHealth")
 			target_health:SetPoint("LEFT", player_health, "RIGHT", E:Scale(15) + hud_width, 0)
 			target_health:SetSize(hud_width, hud_height)
@@ -131,13 +129,13 @@ function H:Construct_Hud()
 
 		ElvUF:SetActiveStyle('ElvUI_Hud_Simple_Power')
 		local player_power = ElvUF:Spawn('player', "oUF_Elv_player_HudPower")
-		player_power:SetPoint("LEFT", UIParent, "CENTER", E:Scale(db.offset), 0)
+		player_power:SetPoint("LEFT", UIParent, "CENTER", E:Scale(E.db.hud.offset), 0)
 		player_power:SetSize(hud_width, hud_height)
 		player_power:SetAlpha(alpha)
 		
 		H:HideOOC(player_power)
 
-		if db.simpleTarget then
+		if E.db.hud.simpleTarget then
 			local target_power = ElvUF:Spawn('target', "oUF_Elv_target_HudPower")
 			target_power:SetPoint("RIGHT", player_power, "LEFT", E:Scale(-15) - hud_width, 0)
 			target_power:SetSize(hud_width, hud_height)
@@ -146,19 +144,18 @@ function H:Construct_Hud()
 			H:HideOOC(target_power)
 		end
 	else
-		print("Spawning hud...")
         ElvUF:SetActiveStyle('ElvUI_Hud')
 		local width = hud_width
 		width = width + hud_power_width + 2
 
-		if db.showThreat then
+		if E.db.hud.showThreat then
 			width = width + hud_power_width + 2
 		end
 
-		local alpha = db.alpha
+		local alpha = E.db.hud.alpha
 
 		local player_hud = ElvUF:Spawn('player', "oUF_Elv_player_Hud")
-		player_hud:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-db.offset), 0)
+		player_hud:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-E.db.hud.offset), 0)
 		player_hud:SetSize(width, hud_height)
 		player_hud:SetAlpha(alpha)
 
@@ -168,13 +165,13 @@ function H:Construct_Hud()
 		width = width + hud_power_width + 2
 
 		local target_hud = ElvUF:Spawn('target', "oUF_Elv_target_Hud")
-		target_hud:SetPoint("LEFT", UIParent, "CENTER", E:Scale(db.offset), 0)
+		target_hud:SetPoint("LEFT", UIParent, "CENTER", E:Scale(E.db.hud.offset), 0)
 		target_hud:SetSize(width, hud_height)
 		target_hud:SetAlpha(alpha)
 
 		H:HideOOC(target_hud)
 
-		if db.petHud then
+		if E.db.hud.petHud then
 			width = hud_width
 			width = width + hud_power_width + 2
 
@@ -185,5 +182,11 @@ function H:Construct_Hud()
 			
 			H:HideOOC(pet_hud)
 		end
+	end
+
+	H:UpdateMouseSetting()
+	
+	if not E.db.hud.enabled then
+		H:Enable()
 	end
 end
