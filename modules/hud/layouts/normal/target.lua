@@ -136,6 +136,66 @@ function Construct_TargetHealth(self,unit)
     r(power)
  end
 
+function Construct_TargetCastbar(self)
+    local hud_width = E:Scale(E.db.hud.width)
+    local hud_power_width = E:Scale((hud_width/3)*2)
+    local hud_height = E:Scale(E.db.hud.height)
+
+    local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
+    local castbar = CreateFrame("StatusBar", nil, self)
+
+    castbar:SetWidth(hud_width - 4)
+    castbar:SetHeight(hud_height - 4)
+    castbar:SetPoint("BOTTOM", self.PowerFrame, "BOTTOM")
+    castbar:SetStatusBarTexture(normTex)
+    castbar:SetStatusBarColor(E.db.unitframe.units.player.castbar.color)
+    castbar.PostCastStart = H.PostCastStart
+    castbar.PostChannelStart = H.PostCastStart
+    castbar.OnUpdate = H.CastbarUpdate
+    --castbar.PostCastInterruptible = H.PostCastInterruptible
+    --castbar.PostCastNotInterruptible = H.PostCastNotInterruptible
+    castbar:SetOrientation("VERTICAL")
+    castbar:SetFrameLevel(self:GetFrameLevel() + 9)
+    castbar:SetClampedToScreen(true)
+    castbar:CreateBackdrop('Default')
+    
+    castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
+    castbar.Time:FontTemplate(LSM:Fetch("font",E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+    castbar.Time:Point("BOTTOM", castbar, "TOP", 0, 4)
+    castbar.Time:SetTextColor(0.84, 0.75, 0.65)
+    castbar.Time:SetJustifyH("RIGHT")
+    
+    castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
+    castbar.Text:FontTemplate(LSM:Fetch("font",E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+    castbar.Text:SetPoint("TOP", castbar, "BOTTOM", 0, -4)
+    castbar.Text:SetTextColor(0.84, 0.75, 0.65)
+    
+    castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
+    castbar.Spark:SetBlendMode('ADD')
+    castbar.Spark:SetVertexColor(1, 1, 1)
+
+    --Set to castbar.SafeZone
+    castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
+    castbar.LatencyTexture:SetTexture(normTex)
+    castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)   
+
+    local button = CreateFrame("Frame", nil, castbar)
+    button:SetTemplate("Default")
+    
+    button:Point("BOTTOM", castbar, "BOTTOM", 0, 0)
+    
+    local icon = button:CreateTexture(nil, "ARTWORK")
+    icon:Point("TOPLEFT", button, 2, -2)
+    icon:Point("BOTTOMRIGHT", button, -2, 2)
+    icon:SetTexCoord(0.08, 0.92, 0.08, .92)
+    icon.bg = button
+    
+    --Set to castbar.Icon
+    castbar.ButtonIcon = icon
+
+    self.Castbar = castbar
+end
+
  function Construct_ComboPoints(self,unit)
     local hud_height = E:Scale(E.db.hud.height)
     local hud_width = E:Scale(E.db.hud.width)

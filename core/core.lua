@@ -101,7 +101,44 @@ function H:UpdateHideSetting()
     end
 end
 
+local function __Disable(f)
+    f:Hide()
+    f:EnableMouse(false)
+    f:SetAlpha(0)
+end
+
+local function __Enable(f,...)
+    local a,m = select(2,...)
+    if a == nil then a = 1 end
+    if m == nil then m = true end
+    f:Show()
+    f:EnableMouse(m)
+    f:SetAlpha(a)
+end
+
+H.updateElvFunction = nil
+
+function H:UpdateElvUFSetting(enableChanged,init)
+    if enableChanged then
+        local e = E.db.hud.enabled
+        if not e or not E.db.hud.hideElv then
+            H.updateElvFunction = function(self) __Enable(self) end
+        else
+            H.updateElvFunction = function(self) __Disable(self) end
+        end
+    else
+        if E.db.hud.hideElv then
+            H.updateElvFunction = function(self) __Disable(self) end
+        else
+            H.updateElvFunction = function(self) __Enable(self) end
+        end
+    end
+    ElvUF_Player:Hide()
+    ElvUF_Player:Show()
+end
+
 function H:Enable()
+    self:UpdateElvUFSetting(true)
     for _,f in pairs(frames) do
         f:SetScript("OnEvent", function(self,event) __CheckEnabled(f) end)
         if not E.db.hud.enabled then
@@ -111,9 +148,7 @@ function H:Enable()
                 hud_hider:UnregisterEvent("PLAYER_REGEN_ENABLED")
                 hud_hider:UnregisterEvent("PLAYER_ENTERING_WORLD")
             end
-            f:Hide()
-            f:EnableMouse(false)
-            f:SetAlpha(0)
+            __Disable(f)
         else
             if E.db.hud.hideOOC then            
                 local hud_hider = f.hud_hider or CreateFrame("Frame",nil,UIParent)
@@ -124,9 +159,7 @@ function H:Enable()
                 f.hud_hider = hud_hider
                 __Hide(f,"PLAYER_REGEN_ENABLED")
             else
-                f:Show()
-                f:EnableMouse(E.db.hud.enableMouse)
-                f:SetAlpha(E.db.hud.alpha)
+                __Enable(f,E.db.hud.alpha,E.db.hud.enableMouse)
             end
         end
     end

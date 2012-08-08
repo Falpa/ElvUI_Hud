@@ -5,6 +5,7 @@ P['hud'] = {
     ['simpleLayout'] = false,
     ['simpleTarget'] = false,
     ['petHud'] = true,
+    ['hideElv'] = true,
     ['showThreat'] = true,
     ['classBars'] = true,
     ['showValues'] = true,

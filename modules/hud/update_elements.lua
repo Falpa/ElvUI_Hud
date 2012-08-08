@@ -104,6 +104,111 @@ function H:ComboDisplay(event, unit)
 	end
 end
 
+local updateSafeZone = function(self)
+	local sz = self.SafeZone
+	local height = self:GetHeight()
+	local _, _, _, ms = GetNetStats()
+
+	sz:ClearAllPoints()
+	sz:SetPoint('TOP')
+	sz:SetPoint('LEFT')
+	sz:SetPoint('RIGHT')
+
+	-- Guard against GetNetStats returning latencies of 0.
+	if(ms ~= 0) then
+		-- MADNESS!
+		local safeZonePercent = (height / self.max) * (ms / 1e5)
+		if(safeZonePercent > 1) then safeZonePercent = 1 end
+		sz:SetWidth(height * safeZonePercent)
+		sz:Show()
+	else
+		sz:Hide()
+	end
+end
+
+function H:PostCastStart(unit, name, rank, castid)
+	local sz = self.SafeZone
+	if sz then
+		updateSafeZone(self)
+	end
+end
+
+function H:CastbarUpdate(elapsed)
+	if(self.casting) then
+		local duration = self.duration + elapsed
+		if(duration >= self.max) then
+			self.casting = nil
+			self:Hide()
+
+			if(self.PostCastStop) then self:PostCastStop(self.__owner.unit) end
+			return
+		end
+
+		if(self.Time) then
+			if(self.delay ~= 0) then
+				if(self.CustomDelayText) then
+					self:CustomDelayText(duration)
+				else
+					self.Time:SetFormattedText("%.1f|cffff0000-%.1f|r", duration, self.delay)
+				end
+			else
+				if(self.CustomTimeText) then
+					self:CustomTimeText(duration)
+				else
+					self.Time:SetFormattedText("%.1f", duration)
+				end
+			end
+		end
+
+		self.duration = duration
+		self:SetValue(duration)
+
+		if(self.Spark) then
+			self.Spark:SetPoint("CENTER", self, "BOTTOM", 0, (duration / self.max) * self:GetHeight())
+		end
+	elseif(self.channeling) then
+		local duration = self.duration - elapsed
+
+		if(duration <= 0) then
+			self.channeling = nil
+			self:Hide()
+
+			if(self.PostChannelStop) then self:PostChannelStop(self.__owner.unit) end
+			return
+		end
+
+		if(self.Time) then
+			if(self.delay ~= 0) then
+				if(self.CustomDelayText) then
+					self:CustomDelayText(duration)
+				else
+					self.Time:SetFormattedText("%.1f|cffff0000-%.1f|r", duration, self.delay)
+				end
+			else
+				if(self.CustomTimeText) then
+					self:CustomTimeText(duration)
+				else
+					self.Time:SetFormattedText("%.1f", duration)
+				end
+			end
+		end
+
+		self.duration = duration
+		self:SetValue(duration)
+		if(self.Spark) then
+			self.Spark:SetPoint("CENTER", self, "BOTTOM", 0, (duration / self.max) * self:GetHeight())
+		end
+	else
+		self.unitName = nil
+		self.casting = nil
+		self.castid = nil
+		self.channeling = nil
+
+		self:SetValue(1)
+		self:Hide()
+	end
+end
+
 function H:UpdateHoly(event,unit,powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
