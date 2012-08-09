@@ -154,7 +154,8 @@ function Construct_PetCastbar(self)
     --castbar.PostCastInterruptible = H.PostCastInterruptible
     --castbar.PostCastNotInterruptible = H.PostCastNotInterruptible
     castbar:SetOrientation("VERTICAL")
-    castbar:SetFrameLevel(self:GetFrameLevel() + 9)
+    castbar:SetFrameStrata(self.Power:GetFrameStrata())
+    castbar:SetFrameLevel(self.Power:GetFrameLevel()+2)
     castbar:SetClampedToScreen(true)
     castbar:CreateBackdrop('Default')
     

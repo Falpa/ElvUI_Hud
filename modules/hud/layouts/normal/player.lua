@@ -86,58 +86,107 @@ function Construct_PlayerCastbar(self)
     local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
 	local castbar = CreateFrame("StatusBar", nil, self)
 
-	castbar:SetWidth(hud_width - 4)
-    castbar:SetHeight(hud_height - 4)
-    castbar:SetPoint("BOTTOM", self.PowerFrame, "BOTTOM")
-    castbar:SetStatusBarTexture(normTex)
-    castbar:SetStatusBarColor(E.db.unitframe.units.player.castbar.color)
-    castbar.PostCastStart = H.PostCastStart
-	castbar.PostChannelStart = H.PostCastStart
-	castbar.OnUpdate = H.CastbarUpdate
-	--castbar.PostCastInterruptible = H.PostCastInterruptible
-	--castbar.PostCastNotInterruptible = H.PostCastNotInterruptible
-    castbar:SetOrientation("VERTICAL")
-    castbar:SetFrameLevel(self:GetFrameLevel() + 9)
-	castbar:SetClampedToScreen(true)
-	castbar:CreateBackdrop('Default')
-	
-	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
-	castbar.Time:FontTemplate(LSM:Fetch("font",E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
-	castbar.Time:Point("BOTTOM", castbar, "TOP", 0, 4)
-	castbar.Time:SetTextColor(0.84, 0.75, 0.65)
-	castbar.Time:SetJustifyH("RIGHT")
-	
-	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
-	castbar.Text:FontTemplate(LSM:Fetch("font",E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
-	castbar.Text:SetPoint("TOP", castbar, "BOTTOM", 0, -4)
-	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
-	
-	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
-	castbar.Spark:SetBlendMode('ADD')
-	castbar.Spark:SetVertexColor(1, 1, 1)
+	if not E.db.hud.horizCastbar then
+		castbar:SetWidth(hud_width - 4)
+	    castbar:SetHeight(hud_height - 4)
+	    castbar:SetPoint("BOTTOM", self.PowerFrame, "BOTTOM")
+	    castbar:SetStatusBarTexture(normTex)
+	    castbar:SetStatusBarColor(E.db.unitframe.units.player.castbar.color)
+	    castbar.PostCastStart = H.PostCastStart
+		castbar.PostChannelStart = H.PostCastStart
+		castbar.OnUpdate = H.CastbarUpdate
+		--castbar.PostCastInterruptible = H.PostCastInterruptible
+		--castbar.PostCastNotInterruptible = H.PostCastNotInterruptible
+	    castbar:SetOrientation("VERTICAL")
+	    castbar:SetFrameStrata(self.Power:GetFrameStrata())
+		castbar:SetFrameLevel(self.Power:GetFrameLevel()+2)
+		castbar:SetClampedToScreen(true)
+		castbar:CreateBackdrop('Default')
+		
+		castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
+		castbar.Time:FontTemplate(LSM:Fetch("font",E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+		castbar.Time:Point("BOTTOM", castbar, "TOP", 0, 4)
+		castbar.Time:SetTextColor(0.84, 0.75, 0.65)
+		castbar.Time:SetJustifyH("RIGHT")
+		
+		castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
+		castbar.Text:FontTemplate(LSM:Fetch("font",E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+		castbar.Text:SetPoint("TOP", castbar, "BOTTOM", 0, -4)
+		castbar.Text:SetTextColor(0.84, 0.75, 0.65)
+		
+		castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
+		castbar.Spark:SetBlendMode('ADD')
+		castbar.Spark:SetVertexColor(1, 1, 1)
 
-	--Set to castbar.SafeZone
-	castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
-	castbar.LatencyTexture:SetTexture(normTex)
-	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)	
-	castbar.SafeZone = castbar.LatencyTexture
-	castbar.LatencyTexture:Show()
+		--Set to castbar.SafeZone
+		castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
+		castbar.LatencyTexture:SetTexture(normTex)
+		castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)	
+		castbar.SafeZone = castbar.LatencyTexture
+		castbar.LatencyTexture:Show()
 
-	local button = CreateFrame("Frame", nil, castbar)
-	button:SetTemplate("Default")
-	
-	button:Point("BOTTOM", castbar, "BOTTOM", 0, 0)
-	
-	local icon = button:CreateTexture(nil, "ARTWORK")
-	icon:Point("TOPLEFT", button, 2, -2)
-	icon:Point("BOTTOMRIGHT", button, -2, 2)
-	icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-	icon.bg = button
-	
-	--Set to castbar.Icon
-	castbar.ButtonIcon = icon
+		local button = CreateFrame("Frame", nil, castbar)
+		button:SetTemplate("Default")
+		
+		button:Point("BOTTOM", castbar, "BOTTOM", 0, 0)
+		
+		local icon = button:CreateTexture(nil, "ARTWORK")
+		icon:Point("TOPLEFT", button, 2, -2)
+		icon:Point("BOTTOMRIGHT", button, -2, 2)
+		icon:SetTexCoord(0.08, 0.92, 0.08, .92)
+		icon.bg = button
+		
+		--Set to castbar.Icon
+		castbar.ButtonIcon = icon
+		self.Castbar = castbar
+	else
+		-- castbar of player and target
+		local castbar = CreateFrame("StatusBar", self:GetName().."CastBar", self)
+		castbar:SetStatusBarTexture(normTex)
+		castbar:SetWidth(E:Scale(hud_height * 2))
+	    castbar:SetHeight(26)
+		castbar:SetFrameLevel(6)
+	    castbar:SetPoint("CENTER", UIParent, "CENTER", 0, E:Scale(-75))
 
-	self.Castbar = castbar
+		castbar:CreateBackdrop('Default')
+		
+		castbar.CustomTimeText = H.CustomCastTimeText
+		castbar.CustomDelayText = H.CustomCastDelayText
+		castbar.PostCastStart = H.CheckCast
+		castbar.PostChannelStart = H.CheckCast
+
+		castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
+		castbar.Time:FontTemplate(LSM:Fetch("font",E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+		castbar.Time:SetPoint("RIGHT", castbar, "RIGHT", -4, 0)
+		castbar.Time:SetTextColor(0.84, 0.75, 0.65)
+		castbar.Time:SetJustifyH("RIGHT")
+		
+		castbar.button = CreateFrame("Frame", nil, castbar)
+		castbar.button:Size(26)
+		castbar.button:SetTemplate("Default")
+		castbar.button:CreateShadow("Default")
+
+		castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
+		castbar.Text:FontTemplate(LSM:Fetch("font",E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+		castbar.Text:SetTextColor(0.84, 0.75, 0.65)
+		castbar.Text:SetPoint("LEFT", castbar.button, "RIGHT", 4, 0)
+
+		castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
+		castbar.icon:Point("TOPLEFT", castbar.button, 2, -2)
+		castbar.icon:Point("BOTTOMRIGHT", castbar.button, -2, 2)
+		castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
+	
+		castbar.button:SetPoint("LEFT")
+	
+		-- cast bar latency on player
+		castbar.safezone = castbar:CreateTexture(nil, "ARTWORK")
+		castbar.safezone:SetTexture(normTex)
+		castbar.safezone:SetVertexColor(0.69, 0.31, 0.31, 0.75)
+		castbar.SafeZone = castbar.safezone
+				
+		self.Castbar = castbar
+		self.Castbar.Icon = castbar.icon
+	end
 end
 
 function Construct_PlayerPower(self, unit)
@@ -198,6 +247,20 @@ function Construct_PlayerPower(self, unit)
 
     r(power)
 end	
+
+function Construct_Name(self,unit)
+	local name = self:CreateFontString(nil, 'OVERLAY')
+	name:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+	name:SetPoint("BOTTOM", self.Health, "TOP", 0, E:Scale(15))
+	if unit == 'player' then
+		self:Tag(name, '[level] [shortclassification] [Elv:getnamecolor][Elv:namelong] [Elv:diffcolor]')
+	elseif unit == 'target' then
+		self:Tag(name, '[Elv:getnamecolor][Elv:namelong] [Elv:diffcolor][level] [shortclassification]')
+	else
+		self:Tag(name, '[Elv:getnamecolor][Elv:namemedium]')
+	end
+	self.Name = name
+end
 
 function Construct_EclipseBar(self,unit)
 	local hud_height = E:Scale(E.db.hud.height)

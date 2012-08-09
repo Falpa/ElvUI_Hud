@@ -10,7 +10,12 @@ function H:updateAllElements(frame)
     end
 end
 
-function H.SetUpAnimGroup(self)
+function H:SetUpParameters()
+    H.width = E:Scale(E.db.hud.width)
+    H.height = E:Scale(E.db.hud.height)
+end
+
+function H:SetUpAnimGroup()
 -- The following functions are thanks to Hydra from the ElvUI forums
     self.anim = self:CreateAnimationGroup("Flash")
     self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
@@ -22,7 +27,7 @@ function H.SetUpAnimGroup(self)
     self.anim.fadeout:SetOrder(1)
 end
 
-function H.Flash(self,duration)
+function H:Flash(duration)
     if not E.db.hud.flash then return end
     if not self.anim then
         H.SetUpAnimGroup(self)

@@ -39,6 +39,32 @@ function H.PostUpdateHealth(health, unit, min, max)
 	end
 end
 
+-- used to check if a spell is interruptable
+function H:CheckInterrupt(unit)
+	if unit == "vehicle" then unit = "player" end
+
+	if self.interrupt and UnitCanAttack("player", unit) then
+		self:SetStatusBarColor(E.db.unitframe.units.player.castbar.interruptcolor)	
+	else
+		self:SetStatusBarColor(E.db.unitframe.units.player.castbar.color)	
+	end
+end
+
+-- check if we can interrupt on cast
+function H:CheckCast(unit, name, rank, castid)
+	H.CheckInterrupt(self,unit)
+end
+
+-- display casting time
+function H:CustomCastTimeText(duration)
+	self.Time:SetText(("%.1f / %.1f"):format(self.channeling and duration or self.max - duration, self.max))
+end
+
+-- display delay in casting time
+function H:CustomCastDelayText(duration)
+	self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(self.channeling and duration or self.max - duration, self.channeling and "- " or "+", self.delay))
+end
+
 function H.PreUpdatePowerHud(power, unit)
     local _, pType = UnitPowerType(unit)
 
