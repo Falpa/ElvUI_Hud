@@ -15,6 +15,7 @@ build/
 *.out
 *.xcodeproj
 *.xcworkspace
+*.sublime-workspace
 *.tar.bz2
 xcuserdata/
 releases/
