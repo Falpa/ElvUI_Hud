@@ -88,7 +88,7 @@ function H:HideOOC(frame)
 		frame.hud_hider = hud_hider
         frame:SetScript("OnEnter",function(self) __Hide(frame,"PLAYER_REGEN_DISABLED") end)
         frame:SetScript("OnLeave",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
-        frame:SetScript("OnShow",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
+        frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC then __Hide(frame,"PLAYER_REGEN_ENABLED") end end)
 	end
     tinsert(frames,frame)
 end
@@ -122,7 +122,7 @@ function H:UpdateHideSetting()
             hud_hider:SetScript("OnEvent", function(self,event) __Hide(f,event) end)
             f:SetScript("OnEnter",function(self) __Hide(frame,"PLAYER_REGEN_DISABLED") end)
             f:SetScript("OnLeave",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
-            f:SetScript("OnShow",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
+            f:HookScript("OnShow",function(self) if E.db.hud.hideOOC then __Hide(frame,"PLAYER_REGEN_ENABLED") end end)
             f.hud_hider = hud_hider
             __Hide(f,"PLAYER_REGEN_ENABLED")
         end
@@ -198,7 +198,7 @@ function H:Enable()
                 hud_hider:SetScript("OnEvent", function(self,event) __Hide(f,event) end)
                 f:SetScript("OnEnter",function(self) __Hide(frame,"PLAYER_REGEN_DISABLED") end)
                 f:SetScript("OnLeave",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
-                f:SetScript("OnShow",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
+                f:HookScript("OnShow",function(self) if E.db.hud.hideOOC then __Hide(frame,"PLAYER_REGEN_ENABLED") end end)
                 f.hud_hider = hud_hider
                 __Hide(f,"PLAYER_REGEN_ENABLED")
             else
