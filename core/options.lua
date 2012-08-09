@@ -79,51 +79,72 @@ E.Options.args.hud = {
                     get = function(info) return E.db.hud[ info[#info] ] end,   
                     set = function(info, value) E.db.hud[ info[#info] ] = value; H:UpdateElvUFSetting(false) end,
                 },
-                showThreat = {
+                names = {
                     type = "toggle",
                     order = 9,
+                    name = L["Show Names"],
+                    desc = L["Show names of units on Hud"],
+                    get = function(info) return E.db.hud[ info[#info] ] end,
+                    set = function(info, value)
+                        E.db.hud[ info[#info] ] = value;
+                        if value then
+                            if oUF_Elv_player_Hud then
+                                oUF_Elv_player_Hud.Name:Show()
+                                oUF_Elv_target_Hud.Name:Show()
+                            end
+                        else
+                            if oUF_Elv_player_Hud then
+                                oUF_Elv_player_Hud.Name:Hide()
+                                oUF_Elv_target_Hud.Name:Hide()
+                            end
+                        end
+                    end,
+                },
+                showThreat = {
+                    type = "toggle",
+                    order = 10,
                     name = L["Threat"],
                     desc = L["Show a Threatbar next to the Player Hud"],
                 },
                 classBars = {
                     type = "toggle",
-                    order = 10,
+                    order = 11,
                     name = L["Class Bar"],
                     desc = L["Show a Class Bar (rune bar, totem bar, eclipse bar, etc.)"],
                 },
                 showValues = {
                     type = "toggle",
-                    order = 11,
+                    order = 12,
                     name = L["Text Values"],
                     desc = L["Show Text Values (Health/Mana) in the Hud"],
                 },
                 unicolor = {
                     type = "toggle",
-                    order = 12,
+                    order = 13,
                     name = L["Unicolor"],
                     desc = L["Use a unicolor theme"],
                 },
                 smooth = {
                     type = "toggle",
-                    order = 13,
+                    order = 14,
                     name = L["Smooth Bars"],
                     desc = L["Show smooth bars"],
                 },
                 flash = {
                     type = "toggle",
-                    order = 14,
+                    order = 15,
                     name = L["Flash"],
                     desc = L["Flash health/power when the low threshold is reached"],
                 },
                 warningText = {
                     type = "toggle",
-                    order = 15,
+                    order = 16,
                     name = L["Text Warning"],
                     desc = L["Show a Text Warning when the low threshold is reached"],
                 },
                 hideOOC  = {
                     type = "toggle",
-                    order = 16,
+                    order = 17,
                     name = L["Hide Out of Combat"],
                     desc = L["Hide the Hud when out of Combat"],
                     get = function(info) return E.db.hud[ info[#info] ] end,   
@@ -131,17 +152,25 @@ E.Options.args.hud = {
                 },
                 colorHealthByValue = {
                     type = "toggle",
-                    order = 17,
+                    order = 18,
                     name = L["Color Health By Value"],
                     desc = L["Color the health bars relative to their value"],
                 },
                 enableMouse = {
                     type = "toggle",
-                    order = 18,
+                    order = 19,
                     name = L["Enable Mouse"],
-                    desc = L["Enable the mouse to interface with the hud"],
+                    desc = L["Enable the mouse to interface with the hud (this option has no effect is ElvUI Unitframes are hidden)"],
                     get = function(info) return E.db.hud[ info[#info] ] end,   
                     set = function(info, value) E.db.hud[ info[#info] ] = value; H:UpdateMouseSetting() end,
+                },
+                horizCastbar = {
+                    type = "toggle",
+                    order = 20,
+                    name = L["Horizontal Castbar"],
+                    desc = L["Use a horizontal castbar"],
+                    get = function(info) return E.db.hud[info[#info]] end,
+                    set = function(info,value) E.db.hud[info[#info]] = value; StaticPopup_Show("CONFIG_RL"); end,
                 },
                 font = {
                     type = "select", dialogControl = 'LSM30_Font',

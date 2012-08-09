@@ -56,7 +56,14 @@ local function Hud(self,unit)
 		Construct_PlayerPower(self,unit)
 
 		Construct_PlayerCastbar(self,unit)
-		
+
+		Construct_Name(self,unit)
+		if E.db.hud.names then
+			self.Name:Show()
+		else
+			self.Name:Hide()
+		end
+
 		if E.db.hud.classBars then
 			if E.myclass == "DRUID" then
 				Construct_EclipseBar(self,unit)
@@ -84,6 +91,13 @@ local function Hud(self,unit)
 		end
 	elseif unit == "target" then
 		Construct_TargetHealth(self,unit)
+
+		Construct_Name(self,unit)
+		if E.db.hud.names then
+			self.Name:Show()
+		else
+			self.Name:Hide()
+		end
 
 		Construct_TargetPower(self,unit)
 
@@ -202,7 +216,9 @@ function H:Construct_Hud()
 	local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
 
 	ElvUF_Player:HookScript("OnShow", function(self,event) for _,f in pairs(elv_frames) do
-	        if f then H.updateElvFunction(f) end
+	        if f then 
+	        	H.updateElvFunction(f)
+	        end
 	    end 
 	end)
 

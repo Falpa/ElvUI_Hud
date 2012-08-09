@@ -10,7 +10,12 @@ function H:updateAllElements(frame)
     end
 end
 
-function H.SetUpAnimGroup(self)
+function H:SetUpParameters()
+    H.width = E:Scale(E.db.hud.width)
+    H.height = E:Scale(E.db.hud.height)
+end
+
+function H:SetUpAnimGroup()
 -- The following functions are thanks to Hydra from the ElvUI forums
     self.anim = self:CreateAnimationGroup("Flash")
     self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
@@ -22,7 +27,7 @@ function H.SetUpAnimGroup(self)
     self.anim.fadeout:SetOrder(1)
 end
 
-function H.Flash(self,duration)
+function H:Flash(duration)
     if not E.db.hud.flash then return end
     if not self.anim then
         H.SetUpAnimGroup(self)
@@ -83,7 +88,7 @@ function H:HideOOC(frame)
 		frame.hud_hider = hud_hider
         frame:SetScript("OnEnter",function(self) __Hide(frame,"PLAYER_REGEN_DISABLED") end)
         frame:SetScript("OnLeave",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
-        frame:SetScript("OnShow",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
+        frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC then __Hide(frame,"PLAYER_REGEN_ENABLED") end end)
 	end
     tinsert(frames,frame)
 end
@@ -117,7 +122,7 @@ function H:UpdateHideSetting()
             hud_hider:SetScript("OnEvent", function(self,event) __Hide(f,event) end)
             f:SetScript("OnEnter",function(self) __Hide(frame,"PLAYER_REGEN_DISABLED") end)
             f:SetScript("OnLeave",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
-            f:SetScript("OnShow",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
+            f:HookScript("OnShow",function(self) if E.db.hud.hideOOC then __Hide(frame,"PLAYER_REGEN_ENABLED") end end)
             f.hud_hider = hud_hider
             __Hide(f,"PLAYER_REGEN_ENABLED")
         end
@@ -193,7 +198,7 @@ function H:Enable()
                 hud_hider:SetScript("OnEvent", function(self,event) __Hide(f,event) end)
                 f:SetScript("OnEnter",function(self) __Hide(frame,"PLAYER_REGEN_DISABLED") end)
                 f:SetScript("OnLeave",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
-                f:SetScript("OnShow",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
+                f:HookScript("OnShow",function(self) if E.db.hud.hideOOC then __Hide(frame,"PLAYER_REGEN_ENABLED") end end)
                 f.hud_hider = hud_hider
                 __Hide(f,"PLAYER_REGEN_ENABLED")
             else
