@@ -13,6 +13,7 @@ end
 function H:SetUpParameters()
     H.width = E:Scale(E.db.hud.width)
     H.height = E:Scale(E.db.hud.height)
+    H.normTex = LSM:Fetch("statusbar",E.db.hud.texture)
 end
 
 function H:SetUpAnimGroup()

@@ -78,6 +78,65 @@ function Construct_PlayerHealth(self, unit)
     r(health)
 end
 
+function Construct_PlayerPower(self, unit)
+	local hud_height = E:Scale(E.db.hud.height)
+	local hud_width = E:Scale(E.db.hud.width)
+	local hud_power_width = E:Scale((hud_width/3)*2)
+
+
+	
+	-- Power Frame Border
+    local PowerFrame = CreateFrame("Frame", nil, self)
+    PowerFrame:SetHeight(hud_height)
+    PowerFrame:SetWidth(hud_power_width)
+    PowerFrame:SetFrameLevel(self:GetFrameLevel() + 4)
+    PowerFrame:SetPoint("LEFT", self.Health, "RIGHT", E:Scale(4), 0)
+
+    PowerFrame:SetTemplate("Default")
+    PowerFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
+    self.PowerFrame = PowerFrame
+    self.PowerFrame:CreateShadow("Default")
+
+    -- Power Bar (Last because we change width of frame, and i don't want to fuck up everything else
+    local power = CreateFrame('StatusBar', nil, self)
+    power:SetPoint("TOPLEFT", PowerFrame, "TOPLEFT", E.mult*2, -E.mult*2)
+    power:SetPoint("BOTTOMRIGHT", PowerFrame, "BOTTOMRIGHT", -E.mult*2, E.mult*2)
+    power:SetStatusBarTexture(normTex)
+    power:SetOrientation("VERTICAL")
+    power:SetFrameLevel(PowerFrame:GetFrameLevel()+1)
+
+    -- Power Background
+    local powerBG = power:CreateTexture(nil, 'BORDER')
+    powerBG:SetAllPoints(power)
+    powerBG:SetTexture(.1,.1,.1)
+    powerBG.multiplier = 0.3
+	if E.db.hud.showValues then
+		power.value = power:CreateFontString(nil, "THINOUTLINE") 				
+        power.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+		power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", E:Scale(10), E:Scale(-15))
+	end
+    power.PreUpdate = H.PreUpdatePowerHud
+    power.PostUpdate = H.PostUpdatePowerHud
+
+    self.Power = power
+    self.Power.bg = powerBG
+
+    -- Update the Power bar Frequently
+    power.frequentUpdates = true
+
+	power.colorTapping = true	
+	power.colorPower = true
+	power.colorReaction = true
+	power.colorDisconnected = true		
+	
+    -- Smooth Animation
+    if E.db.hud.smooth == true then
+        power.Smooth = true
+    end
+
+    r(power)
+end	
+
 function Construct_PlayerCastbar(self)
 	local hud_width = E:Scale(E.db.hud.width)
     local hud_power_width = E:Scale((hud_width/3)*2)
@@ -188,65 +247,6 @@ function Construct_PlayerCastbar(self)
 		self.Castbar.Icon = castbar.icon
 	end
 end
-
-function Construct_PlayerPower(self, unit)
-	local hud_height = E:Scale(E.db.hud.height)
-	local hud_width = E:Scale(E.db.hud.width)
-	local hud_power_width = E:Scale((hud_width/3)*2)
-
-	local normTex = LSM:Fetch("statusbar",E.db.hud.texture)
-	
-	-- Power Frame Border
-    local PowerFrame = CreateFrame("Frame", nil, self)
-    PowerFrame:SetHeight(hud_height)
-    PowerFrame:SetWidth(hud_power_width)
-    PowerFrame:SetFrameLevel(self:GetFrameLevel() + 4)
-    PowerFrame:SetPoint("LEFT", self.Health, "RIGHT", E:Scale(4), 0)
-
-    PowerFrame:SetTemplate("Default")
-    PowerFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))	
-    self.PowerFrame = PowerFrame
-    self.PowerFrame:CreateShadow("Default")
-
-    -- Power Bar (Last because we change width of frame, and i don't want to fuck up everything else
-    local power = CreateFrame('StatusBar', nil, self)
-    power:SetPoint("TOPLEFT", PowerFrame, "TOPLEFT", E.mult*2, -E.mult*2)
-    power:SetPoint("BOTTOMRIGHT", PowerFrame, "BOTTOMRIGHT", -E.mult*2, E.mult*2)
-    power:SetStatusBarTexture(normTex)
-    power:SetOrientation("VERTICAL")
-    power:SetFrameLevel(PowerFrame:GetFrameLevel()+1)
-
-    -- Power Background
-    local powerBG = power:CreateTexture(nil, 'BORDER')
-    powerBG:SetAllPoints(power)
-    powerBG:SetTexture(.1,.1,.1)
-    powerBG.multiplier = 0.3
-	if E.db.hud.showValues then
-		power.value = power:CreateFontString(nil, "THINOUTLINE") 				
-        power.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
-		power.value:SetPoint("TOPLEFT", power, "TOPRIGHT", E:Scale(10), E:Scale(-15))
-	end
-    power.PreUpdate = H.PreUpdatePowerHud
-    power.PostUpdate = H.PostUpdatePowerHud
-
-    self.Power = power
-    self.Power.bg = powerBG
-
-    -- Update the Power bar Frequently
-    power.frequentUpdates = true
-
-	power.colorTapping = true	
-	power.colorPower = true
-	power.colorReaction = true
-	power.colorDisconnected = true		
-	
-    -- Smooth Animation
-    if E.db.hud.smooth == true then
-        power.Smooth = true
-    end
-
-    r(power)
-end	
 
 function Construct_Name(self,unit)
 	local name = self:CreateFontString(nil, 'OVERLAY')
