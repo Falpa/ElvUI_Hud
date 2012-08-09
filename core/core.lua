@@ -102,7 +102,6 @@ function H:UpdateHideSetting()
 end
 
 local function __Disable(f)
-    f:Hide()
     f:EnableMouse(false)
     f:SetAlpha(0)
 end
@@ -111,7 +110,6 @@ local function __Enable(f,...)
     local a,m = select(2,...)
     if a == nil then a = 1 end
     if m == nil then m = true end
-    f:Show()
     f:EnableMouse(m)
     f:SetAlpha(a)
 end

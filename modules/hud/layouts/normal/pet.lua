@@ -135,7 +135,7 @@ function Construct_PetPower(self,unit)
     r(power)
 end
 
-function Construct_petCastbar(self)
+function Construct_PetCastbar(self)
     local hud_width = E:Scale(E.db.hud.width)
     local hud_power_width = E:Scale((hud_width/3)*2)
     local hud_height = E:Scale(E.db.hud.height)
