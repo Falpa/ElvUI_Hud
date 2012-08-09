@@ -54,12 +54,14 @@ local __Hide = function(frame,event)
     local alpha = E.db.hud.alpha
     local oocalpha = E.db.hud.alphaOOC
 
-	if (event == "PLAYER_REGEN_DISABLED") then
+    local c = InCombatLockdown()
+    if not UnitExists(frame.unit) then return end
+	if (event == "PLAYER_REGEN_DISABLED") or (((event == "UNIT_SPELLCAST_START") or (event == "UNIT_SPELLCAST_CHANNEL_START")) and not c) then
 			UIFrameFadeIn(frame, 0.3 * (alpha - frame:GetAlpha()), frame:GetAlpha(), alpha)
-	elseif (event == "PLAYER_REGEN_ENABLED") then
+	elseif (event == "PLAYER_REGEN_ENABLED") or (((event == "UNIT_SPELLCAST_STOP") or (event == "UNIT_SPELLCAST_CHANNEL_STOP")) and not c) then
 			UIFrameFadeOut(frame, 0.3 * (oocalpha + frame:GetAlpha()), frame:GetAlpha(), oocalpha)
 	elseif (event == "PLAYER_ENTERING_WORLD") then
-			if (not InCombatLockdown()) then
+			if (not c) then
 					frame:SetAlpha(oocalpha)
 			end
 	end
@@ -73,8 +75,15 @@ function H:HideOOC(frame)
 		hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
 		hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
 		hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
+        hud_hider:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+        hud_hider:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+        hud_hider:RegisterEvent("UNIT_SPELLCAST_START")
+        hud_hider:RegisterEvent("UNIT_SPELLCAST_STOP")
 		hud_hider:SetScript("OnEvent", function(self,event) __Hide(frame,event) end)
 		frame.hud_hider = hud_hider
+        frame:SetScript("OnEnter",function(self) __Hide(frame,"PLAYER_REGEN_DISABLED") end)
+        frame:SetScript("OnLeave",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
+        frame:SetScript("OnShow",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
 	end
     tinsert(frames,frame)
 end
@@ -86,6 +95,13 @@ function H:UpdateHideSetting()
             hud_hider:UnregisterEvent("PLAYER_REGEN_DISABLED")
             hud_hider:UnregisterEvent("PLAYER_REGEN_ENABLED")
             hud_hider:UnregisterEvent("PLAYER_ENTERING_WORLD")
+            hud_hider:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+            hud_hider:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+            hud_hider:UnregisterEvent("UNIT_SPELLCAST_START")
+            hud_hider:UnregisterEvent("UNIT_SPELLCAST_STOP")
+            f:SetScript("OnEnter",nil)
+            f:SetScript("OnLeave",nil)
+            f:SetScript("OnShow",nil)
             __Hide(f,"PLAYER_REGEN_DISABLED")
         end
     else
@@ -94,7 +110,14 @@ function H:UpdateHideSetting()
             hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
             hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
             hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
+            hud_hider:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+            hud_hider:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+            hud_hider:RegisterEvent("UNIT_SPELLCAST_START")
+            hud_hider:RegisterEvent("UNIT_SPELLCAST_STOP")
             hud_hider:SetScript("OnEvent", function(self,event) __Hide(f,event) end)
+            f:SetScript("OnEnter",function(self) __Hide(frame,"PLAYER_REGEN_DISABLED") end)
+            f:SetScript("OnLeave",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
+            f:SetScript("OnShow",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
             f.hud_hider = hud_hider
             __Hide(f,"PLAYER_REGEN_ENABLED")
         end
@@ -102,6 +125,7 @@ function H:UpdateHideSetting()
 end
 
 local function __Disable(f)
+    f:Hide()
     f:EnableMouse(false)
     f:SetAlpha(0)
 end
@@ -110,6 +134,7 @@ local function __Enable(f,...)
     local a,m = select(2,...)
     if a == nil then a = 1 end
     if m == nil then m = true end
+    f:Show()
     f:EnableMouse(m)
     f:SetAlpha(a)
 end
@@ -145,6 +170,14 @@ function H:Enable()
                 hud_hider:UnregisterEvent("PLAYER_REGEN_DISABLED")
                 hud_hider:UnregisterEvent("PLAYER_REGEN_ENABLED")
                 hud_hider:UnregisterEvent("PLAYER_ENTERING_WORLD")
+                hud_hider:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+                hud_hider:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+                hud_hider:UnregisterEvent("UNIT_SPELLCAST_START")
+                hud_hider:UnregisterEvent("UNIT_SPELLCAST_STOP")
+                f:SetScript("OnEnter",nil)
+                f:SetScript("OnLeave",nil)
+                f:SetScript("OnShow",nil)
+                hud_hider:SetScript("OnEvent", nil)
             end
             __Disable(f)
         else
@@ -153,7 +186,14 @@ function H:Enable()
                 hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
                 hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
                 hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
+                hud_hider:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+                hud_hider:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+                hud_hider:RegisterEvent("UNIT_SPELLCAST_START")
+                hud_hider:RegisterEvent("UNIT_SPELLCAST_STOP")
                 hud_hider:SetScript("OnEvent", function(self,event) __Hide(f,event) end)
+                f:SetScript("OnEnter",function(self) __Hide(frame,"PLAYER_REGEN_DISABLED") end)
+                f:SetScript("OnLeave",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
+                f:SetScript("OnShow",function(self) __Hide(frame,"PLAYER_REGEN_ENABLED") end)
                 f.hud_hider = hud_hider
                 __Hide(f,"PLAYER_REGEN_ENABLED")
             else
@@ -182,12 +222,10 @@ end
 
 function H:UpdateMouseSetting()
     for _,f in pairs(frames) do
-        if f:IsMouseEnabled() then
-            if E.db.hud.enableMouse then
-                f:EnableMouse(true)
-            else
-                f:EnableMouse(false)
-            end
+        if E.db.hud.enableMouse or E.db.hud.hideElv then
+            f:EnableMouse(true)
+        else
+            f:EnableMouse(false)
         end
     end
 end

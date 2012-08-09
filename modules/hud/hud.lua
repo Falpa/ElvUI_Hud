@@ -164,6 +164,8 @@ function H:Construct_Hud()
 		player_hud:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-E.db.hud.offset), 0)
 		player_hud:SetSize(width, hud_height)
 		player_hud:SetAlpha(alpha)
+		player_hud:RegisterForClicks("AnyUp")
+		player_hud.menu = UF.SpawnMenu
 
 		H:HideOOC(player_hud)
 
@@ -174,6 +176,8 @@ function H:Construct_Hud()
 		target_hud:SetPoint("LEFT", UIParent, "CENTER", E:Scale(E.db.hud.offset), 0)
 		target_hud:SetSize(width, hud_height)
 		target_hud:SetAlpha(alpha)
+		target_hud:RegisterForClicks("AnyUp")
+		target_hud.menu = UF.SpawnMenu
 
 		H:HideOOC(target_hud)
 
@@ -185,7 +189,8 @@ function H:Construct_Hud()
 			pet_hud:SetPoint("BOTTOMRIGHT", oUF_Elv_player_Hud, "BOTTOMLEFT", -E:Scale(80), 0)
 			pet_hud:SetSize(width, hud_height * .75)
 			pet_hud:SetAlpha(alpha)
-			
+			pet_hud:RegisterForClicks("AnyUp")
+			pet_hud.menu = UF.SpawnMenu
 			H:HideOOC(pet_hud)
 		end
 	end
