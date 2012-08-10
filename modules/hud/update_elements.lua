@@ -130,13 +130,13 @@ function H:ComboDisplay(event, unit)
 	end
 end
 
-local updateSafeZone = function(self)
+local updateSafeZone = function(self,c)
 	local sz = self.SafeZone
 	local height = self:GetHeight()
 	local _, _, _, ms = GetNetStats()
 
 	sz:ClearAllPoints()
-	sz:SetPoint('TOP')
+	if c then sz:SetPoint('TOP') else sz:SetPoint('BOTTOM') end
 	sz:SetPoint('LEFT')
 	sz:SetPoint('RIGHT')
 
@@ -155,7 +155,14 @@ end
 function H:PostCastStart(unit, name, rank, castid)
 	local sz = self.SafeZone
 	if sz then
-		updateSafeZone(self)
+		updateSafeZone(self,true)
+	end
+end
+
+function H:PostChannelStart(unit, name, rank, castid)
+	local sz = self.SafeZone
+	if sz then
+		updateSafeZone(self,false)
 	end
 end
 

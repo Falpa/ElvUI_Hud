@@ -179,6 +179,8 @@ function H:Construct_Hud()
 		player_hud:SetSize(width, hud_height)
 		player_hud:SetAlpha(alpha)
 		player_hud:RegisterForClicks("AnyUp")
+		player_hud:SetScript("OnEnter", UnitFrame_OnEnter)
+		player_hud:SetScript("OnLeave", UnitFrame_OnLeave)
 		player_hud.menu = UF.SpawnMenu
 
 		H:HideOOC(player_hud)
@@ -191,6 +193,8 @@ function H:Construct_Hud()
 		target_hud:SetSize(width, hud_height)
 		target_hud:SetAlpha(alpha)
 		target_hud:RegisterForClicks("AnyUp")
+		target_hud:SetScript("OnEnter", UnitFrame_OnEnter)
+		target_hud:SetScript("OnLeave", UnitFrame_OnLeave)
 		target_hud.menu = UF.SpawnMenu
 
 		H:HideOOC(target_hud)
@@ -204,6 +208,8 @@ function H:Construct_Hud()
 			pet_hud:SetSize(width, hud_height * .75)
 			pet_hud:SetAlpha(alpha)
 			pet_hud:RegisterForClicks("AnyUp")
+			pet_hud:SetScript("OnEnter", UnitFrame_OnEnter)
+			pet_hud:SetScript("OnLeave", UnitFrame_OnLeave)
 			pet_hud.menu = UF.SpawnMenu
 			H:HideOOC(pet_hud)
 		end
@@ -216,7 +222,7 @@ function H:Construct_Hud()
 	local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
 
 	ElvUF_Player:HookScript("OnShow", function(self,event) for _,f in pairs(elv_frames) do
-	        if f then 
+	        if f and E.db.hud.hideElv then 
 	        	H.updateElvFunction(f)
 	        end
 	    end 
