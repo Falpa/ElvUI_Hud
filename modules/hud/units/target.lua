@@ -192,6 +192,9 @@ function Construct_TargetCastbar(self)
         icon:SetTexCoord(0.08, 0.92, 0.08, .92)
         icon.bg = button
         
+        castbar:HookScript("OnShow", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(self:GetParent(),"PLAYER_REGEN_DISABLED") end end)
+        castbar:HookScript("OnHide", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(self:GetParent(),"PLAYER_REGEN_ENABLED") end end)
+
         --Set to castbar.Icon
         castbar.ButtonIcon = icon
 

@@ -152,7 +152,7 @@ function Construct_PlayerCastbar(self)
 	    castbar:SetStatusBarTexture(normTex)
 	    castbar:SetStatusBarColor(E.db.unitframe.units.player.castbar.color)
 	    castbar.PostCastStart = H.PostCastStart
-		castbar.PostChannelStart = H.PostCastStart
+		castbar.PostChannelStart = H.PostChannelStart
 		castbar.OnUpdate = H.CastbarUpdate
 		--castbar.PostCastInterruptible = H.PostCastInterruptible
 		--castbar.PostCastNotInterruptible = H.PostCastNotInterruptible
@@ -197,6 +197,8 @@ function Construct_PlayerCastbar(self)
 		
 		--Set to castbar.Icon
 		castbar.ButtonIcon = icon
+		castbar:HookScript("OnShow", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(self:GetParent(),"PLAYER_REGEN_DISABLED") end end)
+		castbar:HookScript("OnHide", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(self:GetParent(),"PLAYER_REGEN_ENABLED") end end)
 		self.Castbar = castbar
 	else
 		-- castbar of player and target

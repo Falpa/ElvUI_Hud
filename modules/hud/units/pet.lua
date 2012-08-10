@@ -179,6 +179,9 @@ function Construct_PetCastbar(self)
     castbar.LatencyTexture:SetTexture(normTex)
     castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)   
 
+        castbar:HookScript("OnShow", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(self:GetParent(),"PLAYER_REGEN_DISABLED") end end)
+        castbar:HookScript("OnHide", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(self:GetParent(),"PLAYER_REGEN_ENABLED") end end)
+
     local button = CreateFrame("Frame", nil, castbar)
     button:SetTemplate("Default")
     
