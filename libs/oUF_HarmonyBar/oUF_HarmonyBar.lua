@@ -24,11 +24,10 @@ local function Update(self, event, unit, powerType)
 	end
 	
 	local spacing = select(4, hb[4]:GetPoint())
-	local w = hb:GetWidth()
+	local w = hb:GetHeight()
 	local s = 0
 	local light = UnitPower("player", SPELL_POWER_LIGHT_FORCE)
 	local maxChi = UnitPowerMax("player", SPELL_POWER_LIGHT_FORCE)
-	
 	if hb.maxChi ~= maxChi then
 		if maxChi == 4 then
 			hb[5]:Hide()			
@@ -38,10 +37,10 @@ local function Update(self, event, unit, powerType)
 		
 		for i = 1, maxChi do
 			if i ~= maxChi then
-				hb[i]:SetWidth(w / maxChi - spacing)
+				hb[i]:SetHeight(w / maxChi - spacing)
 				s = s + (w / maxChi)
 			else
-				hb[i]:SetWidth(w - s)
+				hb[i]:SetHeight(w - s)
 			end
 		end
 		

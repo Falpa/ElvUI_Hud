@@ -36,7 +36,7 @@ function H:ConstructHealth(frame)
     healthBG:SetAllPoints()
     healthBG:SetTexture(.1, .1, .1)
     healthBG:SetAlpha(.2)
-
+    health.bg = healthBG
 	if E.db.hud.showValues then
 		health.value = health:CreateFontString(nil, "THINOUTLINE") 			
         health.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
@@ -48,21 +48,12 @@ function H:ConstructHealth(frame)
     -- Smooth Bar Animation
     if E.db.hud.smooth == true then
 		health.Smooth = UF.db.smoothbars
-		health.colorSmooth = true
+		--health.colorSmooth = true
 	end
 
-    -- Setup Colors
-    if E.db.hud.unicolor ~= false then
-        health.colorTapping = false
-        health.colorClass = false
-        health:SetStatusBarColor(unpack({ 0.05, 0.05, 0.05 }))
-        health.colorDisconnected = false
-    else
-        health.colorTapping = true	
-        health.colorClass = true
-        health.colorReaction = true
-        health.colorDisconnected = true		
-    end
+    health:SetStatusBarColor(unpack({ 0.05, 0.05, 0.05 }))
+    health.colorDisconnected = false
+    health.colorTapping = true	
     
     r(health)
     return health
@@ -182,8 +173,6 @@ function H:ConstructCastbar(frame)
         
         --Set to castbar.Icon
         castbar.ButtonIcon = icon
-        castbar:HookScript("OnShow", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame:GetParent(),"PLAYER_REGEN_DISABLED") end end)
-        castbar:HookScript("OnHide", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame:GetParent(),"PLAYER_REGEN_ENABLED") end end)
     else
         castbar:SetStatusBarTexture(H.normTex)
         castbar:SetWidth(E:Scale(H.height * 2))
@@ -227,6 +216,8 @@ function H:ConstructCastbar(frame)
         castbar.SafeZone = castbar.safezone
     end
 
+    castbar:HookScript("OnShow", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_DISABLED") end end)
+    castbar:HookScript("OnHide", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_ENABLED") end end)
     r(castbar)
     return castbar
 end
@@ -309,7 +300,7 @@ function H:ConstructWarlockSpecBars(frame)
         else
             wb[i]:SetPoint("BOTTOM", wb[i-1], "TOP", 0, E:Scale(1))
         end
-        
+        wb[i].bg = wb[i]:CreateTexture(nil, 'ARTWORK')
         wb[i]:SetOrientation('VERTICAL')
         wb[i].bg:SetAllPoints(wb[i])
         wb[i]:SetHeight(E:Scale(((H.height - 4) - 2)/4))
@@ -318,7 +309,9 @@ function H:ConstructWarlockSpecBars(frame)
         wb[i].bg:SetAlpha(.15)
         r(wb[i])
     end
-
+    wb.value = wb:CreateFontString(nil, "THINOUTLINE")                
+    wb.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+    wb.value:Hide()
     wb.FrameBackdrop = CreateFrame("Frame", nil, wb)
     wb.FrameBackdrop:SetTemplate("Default")
     wb.FrameBackdrop:SetPoint("TOPLEFT", E:Scale(-2), E:Scale(2))

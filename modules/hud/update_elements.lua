@@ -5,23 +5,12 @@ local LSM = LibStub("LibSharedMedia-3.0");
 local warningTextShown = false;
 
 function H.PostUpdateHealth(health, unit, min, max)
-    local r, g, b
+    if E.db.hud.colorHealthByValue then
+		local r, g, b = health:GetStatusBarColor()
+		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
-    -- overwrite healthbar color for enemy player (a tukui option if enabled), target vehicle/pet too far away returning unitreaction nil and friend unit not a player. (mostly for overwrite tapped for friendly)
-    -- I don't know if we really need to call ElvUICF["unitframes"].unicolor but anyway, it's safe this way.
-    if (E.db.hud.unicolor ~= true and unit == "target" and UnitIsEnemy(unit, "player")) or (E.db.hud.unicolor ~= true and unit == "target" and not UnitIsPlayer(unit) and UnitIsFriend(unit, "player")) then
-        local c = ElvUF["colors"].reaction[UnitReaction(unit, "player")]
-        if c then 
-            r, g, b = c[1], c[2], c[3]
-            health:SetStatusBarColor(r, g, b)
-        else
-            -- if "c" return nil it's because it's a vehicle or pet unit too far away, we force friendly color
-            -- this should fix color not updating for vehicle/pet too far away from yourself.
-            r, g, b = 75/255,  175/255, 76/255
-            health:SetStatusBarColor(r, g, b)
-        end					
-    end
-
+		health:SetStatusBarColor(newr, newg, newb)
+	end
 	if E.db.hud.showValues then
 		health.value:SetText(format("%.f", min / max * 100).." %")
 	end

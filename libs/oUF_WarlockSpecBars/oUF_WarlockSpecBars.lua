@@ -28,7 +28,6 @@ local Update = function(self, event, unit, powerType)
 	if(wsb.PreUpdate) then wsb:PreUpdate(unit) end
 	
 	local spec = GetSpecialization()
-	
 	if spec then
 		if (spec == SPEC_WARLOCK_DESTRUCTION) then	
 			local maxPower = UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true)
@@ -54,7 +53,9 @@ local Update = function(self, event, unit, powerType)
 		elseif spec == SPEC_WARLOCK_DEMONOLOGY then
 			local power = UnitPower("player", SPELL_POWER_DEMONIC_FURY)
 			local maxPower = UnitPowerMax("player", SPELL_POWER_DEMONIC_FURY)
-						
+			if wsb.value then
+				wsb.value:SetText(format("%.f",power))
+			end
 			wsb[1]:SetMinMaxValues(0, maxPower)
 			wsb[1]:SetValue(power)
 		end
@@ -68,10 +69,11 @@ end
 local function Visibility(self, event, unit)
 	local wsb = self.WarlockSpecBars
 	local spacing = select(4, wsb[4]:GetPoint())
-	local w = wsb:GetWidth()
+	local w = wsb:GetHeight()
 	local s = 0
 	
 	local spec = GetSpecialization()
+	if wsb.value then wsb.value:Hide() end
 	if spec then
 		if not wsb:IsShown() then 
 			wsb:Show()
@@ -100,10 +102,10 @@ local function Visibility(self, event, unit)
 
 			for i = 1, maxembers do
 				if i ~= maxembers then
-					wsb[i]:SetWidth(w / maxembers - spacing)
+					wsb[i]:SetHeight(w / maxembers - spacing)
 					s = s + (w / maxembers)
 				else
-					wsb[i]:SetWidth(w - s)
+					wsb[i]:SetHeight(w - s)
 				end
 				wsb[i]:SetStatusBarColor(unpack(Colors[SPEC_WARLOCK_DESTRUCTION]))
 				if wsb[i].bg then wsb[i].bg:SetAlpha(0.15) wsb[i].bg:SetTexture(unpack(Colors[SPEC_WARLOCK_DESTRUCTION])) end
@@ -120,10 +122,10 @@ local function Visibility(self, event, unit)
 
 			for i = 1, maxshards do
 				if i ~= maxshards then
-					wsb[i]:SetWidth(w / maxshards - spacing)
+					wsb[i]:SetHeight(w / maxshards - spacing)
 					s = s + (w / maxshards)
 				else
-					wsb[i]:SetWidth(w - s)
+					wsb[i]:SetHeight(w - s)
 				end
 				wsb[i]:SetStatusBarColor(unpack(Colors[SPEC_WARLOCK_AFFLICTION]))
 				if wsb[i].bg then wsb[i].bg:SetAlpha(0) end
@@ -134,8 +136,9 @@ local function Visibility(self, event, unit)
 			wsb[2]:Hide()
 			wsb[3]:Hide()
 			wsb[4]:Hide()
-			wsb[1]:SetWidth(wsb:GetWidth())	
+			wsb[1]:SetHeight(wsb:GetHeight())	
 			wsb[1]:SetStatusBarColor(unpack(Colors[SPEC_WARLOCK_DEMONOLOGY]))
+			if wsb.value then wsb.value:Show() end
 			if wsb[1].bg then wsb[1].bg:SetAlpha(0.15) wsb[1].bg:SetTexture(unpack(Colors[SPEC_WARLOCK_DEMONOLOGY])) end
 		end
 		
@@ -170,6 +173,7 @@ local function Enable(self)
 		-- why the fuck does PLAYER_TALENT_UPDATE doesnt trigger on initial login if we register to: self or self.PluginName
 		wsb.Visibility = CreateFrame("Frame", nil, wsb)
 		wsb.Visibility:RegisterEvent("PLAYER_TALENT_UPDATE")
+		wsb.Visibility:RegisterEvent("PLAYER_ENTERING_WORLD")
 		wsb.Visibility:SetScript("OnEvent", function(frame, event, unit) Visibility(self, event, unit) end)
 
 		for i = 1, 4 do

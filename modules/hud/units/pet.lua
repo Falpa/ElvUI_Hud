@@ -15,5 +15,5 @@ function H:UpdatePetAnchors(frame,unit)
     frame.Health.value:SetPoint("RIGHT", frame.Health, "LEFT", E:Scale(-4), 0)
     frame.PowerFrame:SetPoint("LEFT", frame.Health, "RIGHT", E:Scale(4), 0)
     frame.Power.value:SetPoint("LEFT", frame.Power, "RIGHT", E:Scale(4), 0)
-    frame.Castbar:SetPoint("BOTTOM", self.PowerFrame, "BOTTOM")
+    frame.Castbar:SetPoint("BOTTOM", frame.PowerFrame, "BOTTOM")
 end

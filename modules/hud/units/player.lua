@@ -75,6 +75,7 @@ function H:UpdatePlayerAnchors(frame,unit)
 
 		if E.myclass == "WARLOCK" then
 			frame.WarlockSpecBars:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMLEFT", E:Scale(-6), 0)
+			frame.WarlockSpecBars.value:SetPoint("BOTTOMRIGHT", frame.WarlockSpecBars, "BOTTOMLEFT", E:Scale(-4), E:Scale(15))
 		end
 
 		if E.myclass == "PALADIN" then
