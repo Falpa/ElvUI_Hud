@@ -64,7 +64,6 @@ function H:ConstructHealth(frame)
         health.colorDisconnected = true		
     end
     
-    frame.elements["health"] = { ['enabled'] = true }
     r(health)
     return health
 end
@@ -118,7 +117,6 @@ function H:ConstructPower(frame)
         power.Smooth = true
     end
 
-    frame.elements["power"] = { ['enabled'] = true }
     r(power)
     return power
 end 
@@ -229,7 +227,6 @@ function H:ConstructCastbar(frame)
         castbar.SafeZone = castbar.safezone
     end
 
-    frame.elements["castbar"] = { ['enabled'] = true }
     r(castbar)
     return castbar
 end
@@ -245,7 +242,6 @@ function H:ConstructName(frame)
     else
         frame:Tag(name, '[Elv:getnamecolor][Elv:namemedium]')
     end
-    frame.elements["name"] = { ['enabled'] = true }
     return name
 end
 
@@ -288,13 +284,12 @@ function H:ConstructEclipseBar(frame)
     eclipseBar.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
     eclipseBar.FrameBackdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
 
-    frame.elements["eclipseBar"] = { ['enabled'] = true }
     r(eclipseBar)
     return eclipseBar
 end
 
 -- Warlock spec bars
-function H:ConstructWarlockBars(frame)
+function H:ConstructWarlockSpecBars(frame)
     local wb = CreateFrame("Frame", nil. frame)
     wb:SetHeight(H.height-4)
     wb:SetWidth(H.width-8)
@@ -331,7 +326,6 @@ function H:ConstructWarlockBars(frame)
     wb.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
     wb.FrameBackdrop:SetFrameLevel(wb:GetFrameLevel() - 1)
 
-    frame.elements["warlockSpecBars"] = { ['enabled'] = true }
     return wb
 end
 
@@ -380,7 +374,6 @@ function H:ConstructHolyPower(frame)
     bars.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
     bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 
-    frame.elements["holypower"] = { ['enabled'] = true }
     return bars 
 end
 
@@ -417,7 +410,6 @@ function H:ConstructRunes(frame)
     Runes.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
     Runes.FrameBackdrop:SetFrameLevel(Runes:GetFrameLevel() - 1)
     Runes.FrameBackdrop:CreateShadow("Default")
-    frame.elements["runes"] = { ['enabled'] = true }
     return Runes
 end
 
@@ -465,7 +457,6 @@ function H:ConstructTotems(frame)
     TotemBar.FrameBackdrop:SetPoint("BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
     TotemBar.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
     TotemBar.FrameBackdrop:SetFrameLevel(TotemBar:GetFrameLevel() - 1)
-    frame.elements['totembar'] = { ['enabled'] = true }
     return TotemBar
 end
 
@@ -512,7 +503,6 @@ function H:ConstructHarmonyBar(frame)
     bars.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
     bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 
-    frame.elements["harmonybar"] = { ['enabled'] = true }
     return bars 
 end
 
@@ -559,7 +549,6 @@ function H:ConstructShadowOrbBar(frame)
     bars.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
     bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 
-    frame.elements["shadoworbs"] = { ['enabled'] = true }
     return bars 
 end
 
@@ -606,7 +595,6 @@ function H:ConstructArcaneBar(frame)
     bars.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
     bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 
-    frame.elements["arcanebar"] = { ['enabled'] = true }
     return bars 
 end
 
@@ -652,7 +640,6 @@ function H:ConstructComboPoints(frame)
     bars.FrameBackdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
     bars.FrameBackdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))   
     frame:RegisterEvent("UNIT_DISPLAYPOWER", H.ComboDisplay)
-    frame.elements['combo'] = { ['enabled'] = true }
     return bars
 end
 
@@ -690,7 +677,6 @@ function H:ConstructThreat(frame)
 
     ThreatBar.useRawThreat = false
     ThreatBar.frame = ThreatFrame
-    frame.elements['threat'] = { ['enabled'] = true }
     r(ThreatBar)
     return ThreatBar
 end

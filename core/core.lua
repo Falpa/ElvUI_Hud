@@ -208,3 +208,72 @@ function H:UpdateMouseSetting()
     end
 end
 
+function H:Initialize()
+    if E.db.hud.warningText then
+        H:CreateWarningFrame()
+    end
+
+    ElvUF:RegisterStyle('ElvUI_Hud',function(frame,unit)
+        H:Construct_Hud(frame,unit)
+    end
+
+    local width = H.width
+    local pw = E:Scale((H.width/3)*2)
+    width = width + pw + 2
+
+    if E.db.hud.showThreat then
+        width = width + pw + 2
+    end
+
+    local alpha = E.db.hud.alpha
+
+    local player_hud = ElvUF:Spawn('player', "oUF_Elv_player_Hud")
+    player_hud:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-E.db.hud.offset), 0)
+    player_hud:SetSize(width, hud_height)
+    player_hud:SetAlpha(alpha)
+
+    H:HideOOC(player_hud)
+
+    width = H.width
+    width = width + pw + 2
+
+    local target_hud = ElvUF:Spawn('target', "oUF_Elv_target_Hud")
+    target_hud:SetPoint("LEFT", UIParent, "CENTER", E:Scale(E.db.hud.offset), 0)
+    target_hud:SetSize(width, hud_height)
+    target_hud:SetAlpha(alpha)
+
+    H:HideOOC(target_hud)
+
+    if E.db.hud.petHud then
+        width = H.width
+        width = width + pw + 2
+
+        local pet_hud = ElvUF:Spawn('pet', "oUF_Elv_pet_Hud")
+        pet_hud:SetPoint("BOTTOMRIGHT", oUF_Elv_player_Hud, "BOTTOMLEFT", -E:Scale(80), 0)
+        pet_hud:SetSize(width, hud_height * .75)
+        pet_hud:SetAlpha(alpha)
+        H:HideOOC(pet_hud)
+    end
+
+    H:UpdateMouseSetting()
+    
+    H:UpdateElvUFSetting(false,true)
+
+    local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
+
+    ElvUF_Player:HookScript("OnShow", function(self,event) for _,f in pairs(elv_frames) do
+            if f and E.db.hud.hideElv then 
+                H.updateElvFunction(f)
+            end
+        end 
+    end)
+
+    ElvUF_Player:Hide()
+    ElvUF_Player:Show()
+
+    if not E.db.hud.enabled then
+        H:Enable()
+    end
+end
+
+E:RegisterModule(H:GetName())

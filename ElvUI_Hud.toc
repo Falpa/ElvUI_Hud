@@ -18,4 +18,3 @@ libs\oUF_WeakenedSoul\oUF_WeakenedSoul.lua
 core\load_core.xml
 config\load_config.xml
 modules\load_modules.xml
-ElvUI_Hud.lua

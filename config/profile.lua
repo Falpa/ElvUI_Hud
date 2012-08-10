@@ -30,3 +30,27 @@ P['hud'] = {
     ['alphaOOC'] = 0,
 }
 
+--[[P['hud']['layout'] = {
+    ['player'] = {
+        ['enabled'] = true,
+        ['elements'] = {
+            ['health'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['point'] = 'LEFT',
+                    ['xOffset'] = 0,
+                    ['yOffset'] = 0,
+                },
+            },
+            ['power'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['point'] = 'LEFT',
+                    ['relativeFrame'] = 'health',
+                    ['relativeTo'] = 'RIGHT',
+                    ['xOffset'] = 4,
+                },
+            },
+        },
+    },
+}]]
