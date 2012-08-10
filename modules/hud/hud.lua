@@ -16,7 +16,7 @@ function H:Construct_Hud(frame,unit)
 	if stringTitle:find('target') then
 		stringTitle = gsub(stringTitle, 'target', 'Target')
 	end
-	self["Construct"..stringTitle.."Hud"](self, frame, unit)
+	self["Construct"..stringTitle.."Frame"](self, frame, unit)
 	self["Update"..stringTitle.."Anchors"](self, frame, unit)
 	return frame
 end

@@ -1,5 +1,5 @@
 local _, ns = ...
-local oUF = ns.oUF or oUF
+local oUF = ElvUF
 assert(oUF, "oUF_WarlockSpecBars was unable to locate oUF install")
 
 if select(2, UnitClass("player")) ~= "WARLOCK" then return end

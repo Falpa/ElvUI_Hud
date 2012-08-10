@@ -76,7 +76,7 @@ function H:ConstructPower(frame)
     local PowerFrame = CreateFrame("Frame", nil, frame)
     PowerFrame:SetHeight(H.height)
     PowerFrame:SetWidth(width)
-    PowerFrame:SetFrameLevel(frane:GetFrameLevel() + 4)
+    PowerFrame:SetFrameLevel(frame:GetFrameLevel() + 4)
 
     PowerFrame:SetTemplate("Default")
     PowerFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))   
@@ -236,11 +236,11 @@ function H:ConstructName(frame)
     local name = frame:CreateFontString(nil, 'OVERLAY')
     name:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
     if frame.unit == 'player' then
-        frame:Tag(name, '[level] [shortclassification] [Elv:getnamecolor][Elv:namelong] [Elv:diffcolor]')
+        frame:Tag(name, '[difficultycolor][smartlevel] [shortclassification] [namecolor][name:medium]')
     elseif frame.unit == 'target' then
-        frame:Tag(name, '[Elv:getnamecolor][Elv:namelong] [Elv:diffcolor][level] [shortclassification]')
+        frame:Tag(name, '[namecolor][name:medium] [difficultycolor][smartlevel] [shortclassification]')
     else
-        frame:Tag(name, '[Elv:getnamecolor][Elv:namemedium]')
+        frame:Tag(name, '[namecolor][name:medium]')
     end
     return name
 end
@@ -290,7 +290,7 @@ end
 
 -- Warlock spec bars
 function H:ConstructWarlockSpecBars(frame)
-    local wb = CreateFrame("Frame", nil. frame)
+    local wb = CreateFrame("Frame", nil, frame)
     wb:SetHeight(H.height-4)
     wb:SetWidth(H.width-8)
     wb:SetFrameLevel(frame:GetFrameLevel() + 5)
@@ -381,7 +381,7 @@ end
 function H:ConstructRunes(frame)
     local Runes = CreateFrame("Frame", nil, frame)
     Runes:SetHeight(H.height-4)
-    Runes:SetWidth(H(.width-8)
+    Runes:SetWidth(H.width-8)
     Runes:SetFrameLevel(frame:GetFrameLevel() + 5)
     Runes:SetTemplate("Default")
     Runes:SetBackdropBorderColor(0,0,0,0)
@@ -645,23 +645,26 @@ end
 
 -- Threat bar
 function H:ConstructThreat(frame)
+    local width = E:Scale((H.width/3)*2)
+
     -- Threat Bar Border
     local ThreatFrame = CreateFrame("Frame", nil, frame)
     ThreatFrame:SetHeight(H.height * .75)
-    ThreatFrame:SetWidth()
-    ThreatFrame:SetFrameLevel(self:GetFrameLevel() + 4)
+    ThreatFrame:SetWidth(width)
+    ThreatFrame:SetFrameLevel(frame:GetFrameLevel() + 4)
     
     ThreatFrame:SetTemplate("Default")
     ThreatFrame:SetBackdropBorderColor(unpack(E["media"].bordercolor))
     ThreatFrame:CreateShadow("Default")
-    local ThreatBar = CreateFrame("StatusBar", nil, self)
+    frame.ThreatFrame = ThreatFrame
+    local ThreatBar = CreateFrame("StatusBar", nil, frame)
     
     ThreatBar:SetFrameLevel(ThreatFrame:GetFrameLevel() + 1)
     ThreatBar:SetPoint("TOPLEFT", ThreatFrame, E:Scale(2), E:Scale(-2))
     ThreatBar:SetPoint("BOTTOMRIGHT", ThreatFrame, E:Scale(-2), E:Scale(2))
 
     ThreatBar:SetOrientation("VERTICAL")
-    ThreatBar:SetStatusBarTexture(normTex)
+    ThreatBar:SetStatusBarTexture(H.normTex)
     ThreatBar:SetBackdrop(backdrop)
     ThreatBar:SetBackdropColor(0, 0, 0, 0)
 
@@ -676,7 +679,6 @@ function H:ConstructThreat(frame)
     ThreatBar.bg:SetTexture(0.1,0.1,0.1)
 
     ThreatBar.useRawThreat = false
-    ThreatBar.frame = ThreatFrame
     r(ThreatBar)
     return ThreatBar
 end

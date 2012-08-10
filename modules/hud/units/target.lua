@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 
-function H:ConstructTargetFrame(frmae,unit)
+function H:ConstructTargetFrame(frame,unit)
     frame.unit = unit
     frame.Health = self:ConstructHealth(frame)
 
@@ -28,7 +28,7 @@ function H:UpdateTargetAnchors(frame,unit)
     frame.Health:SetPoint("RIGHT")
     frame.Health.value:SetPoint("LEFT", frame.Health, "RIGHT", E:Scale(20), 0)
     frame.PowerFrame:SetPoint("RIGHT", frame.Health, "LEFT", E:Scale(-4), 0)
-    frame.Power.value:SetPoint("TOPLEFT", frame.Power, "TOPRIGHT", E:Scale(10), E:Scale())
+    frame.Power.value:SetPoint("RIGHT", frame.Power, "LEFT", E:Scale(-4), 0)
     if not E.db.hud.horizCastbar then
         frame.Castbar:SetPoint("BOTTOM", self.PowerFrame, "BOTTOM")
     else

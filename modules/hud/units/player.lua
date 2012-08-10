@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 
-function H:ConstructPlayerFrame(frmae,unit)
+function H:ConstructPlayerFrame(frame,unit)
 	frame.unit = unit
 	frame.Health = self:ConstructHealth(frame)
 
@@ -60,7 +60,7 @@ function H:UpdatePlayerAnchors(frame,unit)
 	frame.Health:SetPoint("LEFT")
 	frame.Health.value:SetPoint("TOPRIGHT", frame.Health, "TOPLEFT", E:Scale(-20), E:Scale(-15))
 	frame.PowerFrame:SetPoint("LEFT", frame.Health, "RIGHT", E:Scale(4), 0)
-	frame.Power.value:SetPoint("TOPLEFT", frame.Power, "TOPRIGHT", E:Scale(10), E:Scale())
+	frame.Power.value:SetPoint("TOPLEFT", frame.Power, "TOPRIGHT", E:Scale(10), E:Scale(-15))
 	if not E.db.hud.horizCastbar then
 		frame.Castbar:SetPoint("BOTTOM", self.PowerFrame, "BOTTOM")
 	else
@@ -103,6 +103,6 @@ function H:UpdatePlayerAnchors(frame,unit)
 	end
 
 	if E.db.hud.showThreat then
-		self.ThreatFrame:SetPoint("BOTTOMLEFT", self.PowerFrame, "BOTTOMRIGHT", E:Scale(2), 0)
+		frame.ThreatFrame:SetPoint("BOTTOMLEFT", frame.PowerFrame, "BOTTOMRIGHT", E:Scale(2), 0)
 	end
 end

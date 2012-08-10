@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 
-function H:ConstructPetFrame(frmae,unit)
+function H:ConstructPetFrame(frame,unit)
     frame.unit = unit
     frame.Health = self:ConstructHealth(frame)
 
