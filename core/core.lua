@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:NewModule('HUD','AceTimer-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
-local CT = E:GetModule('ClassTimers')
 H.frames = {}
 
 function H:updateAllElements(frame)
@@ -114,44 +113,6 @@ function H:UpdateHideSetting()
     end
 end
 
-function H:GetAnchor(option, frame)
-    if not E.db.hud.hideElv then return CT:GetAnchor(option,frame) end
-    local anchor, yOffset
-    if option == 'PLAYERANCHOR' then
-        anchor, yOffset = oUF_Elv_player_Hud, -25
-    elseif option == 'PLAYERFRAME' then
-        anchor, yOffset = oUF_Elv_player_Hud, -25
-    elseif option == 'PLAYERBUFFS' then
-        anchor, yOffset = oUF_Elv_player_Hud, -25
-    elseif option == 'PLAYERDEBUFFS' then
-        anchor, yOffset = oUF_Elv_player_Hud, -25
-    elseif option == 'TARGETANCHOR' then
-        anchor, yOffset = oUF_Elv_target_Hud, -25
-    elseif option == 'TARGETFRAME' then
-        anchor, yOffset = oUF_Elv_target_Hud, -25
-    elseif option == 'TARGETBUFFS' then
-        anchor, yOffset = oUF_Elv_target_Hud, -25
-    elseif option == 'TARGETDEBUFFS' then
-        anchor, yOffset = oUF_Elv_target_Hud, -25
-    elseif option == 'TRINKETANCHOR' then
-        anchor, yOffset = self.trinketFrame, 4
-    end
-    
-    frame:SetParent(anchor)
-    
-    if anchor:GetParent() then
-        frame.unit = anchor.unit or anchor:GetParent().unit or anchor:GetParent():GetParent().unit
-    end
-    
-    return anchor, yOffset
-end
-
-function H:UpdateCTAnchors()
-    if not E.private.classtimer.enable or not ElvUF_Player or not ElvUF_Target then return end
-    hooksecurefunc(CT,'GetAnchor',H.GetAnchor)
-    CT:PositionTimers()
-end
-
 function H:DisableFrame(f)
     f:Hide()
     f:EnableMouse(false)
@@ -169,7 +130,6 @@ end
 H.updateElvFunction = nil
 
 function H:UpdateElvUFSetting(enableChanged,init)
-    H:UpdateCTAnchors()
     if enableChanged then
         local e = E.db.hud.enabled
         if not e or not E.db.hud.hideElv then
