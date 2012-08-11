@@ -62,7 +62,7 @@ function H:UpdatePlayerAnchors(frame,unit)
 	frame.PowerFrame:SetPoint("LEFT", frame.Health, "RIGHT", E:Scale(4), 0)
 	frame.Power.value:SetPoint("TOPLEFT", frame.Power, "TOPRIGHT", E:Scale(10), E:Scale(-15))
 	if not E.db.hud.horizCastbar then
-		frame.Castbar:SetPoint("BOTTOM", self.PowerFrame, "BOTTOM")
+		frame.Castbar:SetPoint("BOTTOM", frame.PowerFrame, "BOTTOM")
 	else
 		frame.Castbar:SetPoint("CENTER", UIParent, "CENTER", 0, E:Scale(-75))
 	end

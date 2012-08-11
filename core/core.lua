@@ -230,7 +230,7 @@ function H:Initialize()
 
     ElvUF:SetActiveStyle('ElvUI_Hud')
 
-    local player_hud = ElvUF:Spawn('player', "oUF_Elv_player_Hud")
+    local player_hud = ElvUF:Spawn('player', "ElvUF_PlayerHud")
     player_hud:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-E.db.hud.offset), 0)
     player_hud:SetSize(width, H.height)
     player_hud:SetAlpha(alpha)
@@ -240,7 +240,7 @@ function H:Initialize()
     width = H.width
     width = width + pw + 2
 
-    local target_hud = ElvUF:Spawn('target', "oUF_Elv_target_Hud")
+    local target_hud = ElvUF:Spawn('target', "ElvUF_TargetHud")
     target_hud:SetPoint("LEFT", UIParent, "CENTER", E:Scale(E.db.hud.offset), 0)
     target_hud:SetSize(width, H.height)
     target_hud:SetAlpha(alpha)
@@ -251,9 +251,9 @@ function H:Initialize()
         width = H.width
         width = width + pw + 2
 
-        local pet_hud = ElvUF:Spawn('pet', "oUF_Elv_pet_Hud")
+        local pet_hud = ElvUF:Spawn('pet', "ElvUF_PetHud")
         pet_hud:SetSize(width, (H.height * .75))
-        pet_hud:SetPoint("BOTTOMRIGHT", oUF_Elv_player_Hud, "BOTTOMLEFT", -E:Scale(80), 0)
+        pet_hud:SetPoint("BOTTOMRIGHT", ElvUF_PlayerHud, "BOTTOMLEFT", -E:Scale(80), 0)
         pet_hud:SetAlpha(alpha)
         H:HideOOC(pet_hud)
     end

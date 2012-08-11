@@ -88,14 +88,14 @@ E.Options.args.hud = {
                     set = function(info, value)
                         E.db.hud[ info[#info] ] = value;
                         if value then
-                            if oUF_Elv_player_Hud then
-                                oUF_Elv_player_Hud.Name:Show()
-                                oUF_Elv_target_Hud.Name:Show()
+                            if ElvUF_PlayerHud then
+                                ElvUF_PlayerHud.Name:Show()
+                                ElvUF_TargetHud.Name:Show()
                             end
                         else
-                            if oUF_Elv_player_Hud then
-                                oUF_Elv_player_Hud.Name:Hide()
-                                oUF_Elv_target_Hud.Name:Hide()
+                            if ElvUF_PlayerHud then
+                                ElvUF_PlayerHud.Name:Hide()
+                                ElvUF_TargetHud.Name:Hide()
                             end
                         end
                     end,

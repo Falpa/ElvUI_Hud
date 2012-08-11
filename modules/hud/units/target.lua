@@ -35,9 +35,9 @@ function H:UpdateTargetAnchors(frame,unit)
     frame.PowerFrame:SetPoint("RIGHT", frame.Health, "LEFT", E:Scale(-4), 0)
     frame.Power.value:SetPoint("RIGHT", frame.Power, "LEFT", E:Scale(-4), 0)
     if not E.db.hud.horizCastbar then
-        frame.Castbar:SetPoint("BOTTOM", self.PowerFrame, "BOTTOM")
+        frame.Castbar:SetPoint("BOTTOM", frame.PowerFrame, "BOTTOM")
     else
-        frame.Castbar:SetPoint("TOP", oUF_Elv_player_Hud.Castbar, "BOTTOM", 0, E:Scale(-4))
+        frame.Castbar:SetPoint("TOP", ElvUF_PlayerHud.Castbar, "BOTTOM", 0, E:Scale(-4))
     end
     frame.Name:SetPoint("BOTTOM", frame.Health, "TOP", 0, E:Scale(15))
 
