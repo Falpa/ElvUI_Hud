@@ -298,3 +298,62 @@ function H:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duratio
 	
 	button:SetScript('OnUpdate', UF.UpdateAuraTimer)
 end
+
+local function CheckFilter(type, isFriend)
+	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
+		return true
+	end
+	
+	return false
+end
+
+function H:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
+	local db = ElvUF_Player.db.aurabar
+	if not db then return; end
+		
+	local isPlayer, isFriend
+
+	if unitCaster == 'player' or unitCaster == 'vehicle' then isPlayer = true end
+	if UnitIsFriend('player', unit) then isFriend = true end
+
+	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db.useBlacklist, isFriend) then
+		return false
+	end	
+	
+	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db.useWhitelist, isFriend) then
+		return true
+	end
+
+	if (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
+		return false
+	end	
+
+	if shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
+		return false
+	end	
+
+	if not isPlayer and CheckFilter(db.playerOnly, isFriend) then
+		return false
+	end
+	
+	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
+		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
+		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
+
+		if type == 'Whitelist' then
+			if spellList[name] and spellList[name].enable then
+				return true
+			else
+				return false
+			end		
+		elseif type == 'Blacklist' then
+			if spellList[name] and spellList[name].enable then
+				return false
+			else
+				return true
+			end				
+		end
+	end	
+	
+	return true
+end

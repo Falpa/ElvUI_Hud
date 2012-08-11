@@ -11,7 +11,9 @@ function H:ConstructTargetFrame(frame,unit)
     frame.Castbar = self:ConstructCastbar(frame)
 
     frame.Name = self:ConstructName(frame)
-        
+    
+    frame.AuraBars = self:ConstructAuraBarHeader(frame)
+
     if E.db.hud.names then
         frame.Name:Show()
     else
@@ -50,4 +52,6 @@ function H:UpdateTargetAnchors(frame,unit)
             frame.CPoints:SetPoint("BOTTOMLEFT", frame.Health, "BOTTOMRIGHT", E:Scale(6), 0)
         end
     end
+
+    frame.AuraBars:SetPoint('TOP', frame.Health, 'BOTTOM', 0, E:Scale(-60))
 end

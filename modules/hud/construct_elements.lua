@@ -719,7 +719,7 @@ function H:ConstructBuffs(frame)
     buffs.PostUpdateIcon = self.PostUpdateAura
     buffs.type = 'buffs'
     
-    buffs.forceShow = false
+    buffs.forceShow = true
     buffs.num = 12
     buffs.numRow = 6
     buffs.size = ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
@@ -743,7 +743,7 @@ function H:ConstructDebuffs(frame)
     
     local rows = 2
     
-    debuffs.forceShow = false
+    debuffs.forceShow = true
     debuffs.num = 12
     debuffs.numRow = 6
     debuffs.size = ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
@@ -755,4 +755,83 @@ function H:ConstructDebuffs(frame)
     debuffs.initialAnchor = 'BOTTOMLEFT'
 
     return debuffs
+end
+
+function H:ConstructAuraBars()
+    local bar = self.statusBar
+    
+    self:SetTemplate('Default')
+
+    bar:Width(H.height*1.5)
+    bar:Height(H.width*2)
+    bar:SetStatusBarTexture(H.normTex)
+    
+    bar.spelltime:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+    bar.spellname:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+    
+    bar.spellname:ClearAllPoints()
+    bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
+    
+    bar.iconHolder:SetTemplate('Default')
+    bar.icon:SetInside(bar.iconHolder)
+    bar.icon:SetDrawLayer('OVERLAY')
+    
+    
+    bar.iconHolder:HookScript('OnEnter', function(self)
+        GameTooltip.auraBarLine = true;
+    end)    
+    
+    bar.iconHolder:HookScript('OnLeave', function(self)
+        GameTooltip.auraBarLine = nil;
+        GameTooltip.numLines = nil
+    end)
+
+    bar.iconHolder:RegisterForClicks('RightButtonUp')
+    bar.iconHolder:SetScript('OnClick', function(self)
+        if not IsShiftKeyDown() then return; end
+        local auraName = self:GetParent().aura.name
+        
+        if auraName then
+            E:Print(string.format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
+            E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
+                ['enable'] = true,
+                ['priority'] = 0,           
+            }
+            UF:Update_AllFrames()
+        end
+    end)
+end
+
+function H:ConstructAuraBarHeader(frame)
+    local auraBar = CreateFrame('Frame', nil, frame)
+    auraBar.PostCreateBar = H.ConstructAuraBars
+    auraBar.gap = 1
+    auraBar.spacing = 1
+    auraBar.spark = true
+    auraBar.sort = true
+    auraBar.debuffColor = {0.8, 0.1, 0.1}
+    auraBar.filter = H.AuraBarFilter
+
+    hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)
+        if self.auraBarLine and self.numLines ~= self:NumLines() then
+            self:AddLine(L['Hold shift + right click to blacklist this aura.'])
+            if not self.numLines then
+                self.numLines = self:NumLines()
+            end
+        end
+    end)
+
+    auraBar:Show()
+    
+    local healthColor = UF.db.colors.health
+    
+    auraBar:SetWidth(H.height*1.5)
+    auraBar:SetHeight(H.width*8)
+
+    auraBar.friendlyAuraType = 'HELPFUL'
+    auraBar.enemyAuraType = 'HARMFUL'
+    auraBar.buffColor = {healthColor.r, healthColor.b, healthColor.g}
+    auraBar.down = true
+
+    return auraBar
 end

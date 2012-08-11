@@ -11,6 +11,7 @@ function H:ConstructPlayerFrame(frame,unit)
 
 	frame.Name = self:ConstructName(frame)
 		
+	frame.AuraBars = self:ConstructAuraBarHeader(frame)
 	if E.db.hud.names then
 		frame.Name:Show()
 	else
@@ -106,4 +107,6 @@ function H:UpdatePlayerAnchors(frame,unit)
 	if E.db.hud.showThreat then
 		frame.ThreatFrame:SetPoint("BOTTOMLEFT", frame.PowerFrame, "BOTTOMRIGHT", E:Scale(2), 0)
 	end
+
+	frame.AuraBars:SetPoint('TOP', frame.Health, 'BOTTOM', 0, E:Scale(-60))
 end
