@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
+local UF = E:GetModule('UnitFrames');
 
 function H:ConstructTargetFrame(frame,unit)
     frame.unit = unit
@@ -17,6 +18,10 @@ function H:ConstructTargetFrame(frame,unit)
         frame.Name:Hide()
     end
 
+    -- if E.db.hud.targetauras then
+        frame.Buffs = self:ConstructBuffs(frame)
+        frame.Debuffs = self:ConstructDebuffs(frame)
+    -- end
     if E.db.hud.classBars then
         if E.myclass == "DRUID" or E.myclass == "ROGUE" then
             frame.CPoints = self:ConstructComboPoints(frame)
@@ -36,6 +41,10 @@ function H:UpdateTargetAnchors(frame,unit)
     end
     frame.Name:SetPoint("BOTTOM", frame.Health, "TOP", 0, E:Scale(15))
 
+    -- if E.db.hud.targetauras then
+        frame.Buffs:SetPoint("LEFT", frame.PowerFrame, "RIGHT", E:Scale(6), E:Scale(15))
+        frame.Debuffs:SetPoint("BOTTOMLEFT", frame.Buffs, "TOPLEFT", -2, 2)
+    -- end
     if E.db.hud.classBars then
         if E.myclass == "DRUID" or E.myclass == "ROGUE" then
             frame.CPoints:SetPoint("BOTTOMLEFT", frame.Health, "BOTTOMRIGHT", E:Scale(6), 0)

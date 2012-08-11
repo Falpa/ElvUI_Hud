@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
+local UF = E:GetModule('UnitFrames');
 
 local warningTextShown = false;
 
@@ -253,4 +254,47 @@ function H:UpdateShards(event, unit, powerType)
 			self.SoulShards[i]:SetAlpha(.2)
 		end
 	end
+end
+
+function H:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
+	local name, _, _, _, dtype, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unit, index, button.filter)
+
+	
+	button.text:Show()
+	
+	if button.isDebuff then
+		if(not UnitIsFriend("player", unit) and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
+			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			if unit and not unit:find('arena%d') then
+				button.icon:SetDesaturated(true)
+			else
+				button.icon:SetDesaturated(false)
+			end
+		else
+			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
+			if (name == "Unstable Affliction" or name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
+				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
+			else
+				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
+			end
+			button.icon:SetDesaturated(false)
+		end
+	else
+		if (button.isStealable or ((E.myclass == "PRIEST" or E.myclass == "SHAMAN" or E.myclass == "MAGE") and dtype == "Magic")) and not UnitIsFriend("player", unit) then
+			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
+		else
+			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))		
+		end	
+	end
+	
+	button.duration = duration
+	button.timeLeft = expirationTime
+	button.first = true	
+	
+	local size = button:GetParent().size
+	if size then
+		button:Size(size)
+	end
+	
+	button:SetScript('OnUpdate', UF.UpdateAuraTimer)
 end

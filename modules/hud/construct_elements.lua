@@ -676,4 +676,83 @@ function H:ConstructThreat(frame)
     return ThreatBar
 end
 
--- TODO: PVP Icon, Combat Icon on player, target markings on all units
+function H:ConstructAuraIcon(button)
+    button.text = button.cd:CreateFontString(nil, 'OVERLAY')
+    button.text:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+    button.text:Point('CENTER', 1, 1)
+    button.text:SetJustifyH('CENTER')
+    
+    button:SetTemplate('Default')
+
+    button.cd.noOCC = true
+    button.cd.noCooldownCount = true
+    button.cd:SetReverse()
+    button.cd:SetInside()
+    
+    button.icon:SetInside()
+    button.icon:SetTexCoord(unpack(E.TexCoords))
+    button.icon:SetDrawLayer('ARTWORK')
+    
+    button.count:ClearAllPoints()
+    button.count:Point('BOTTOMRIGHT', 1, 1)
+    button.count:SetJustifyH('RIGHT')
+
+    button.overlay:SetTexture(nil)
+    button.stealable:SetTexture(nil)
+
+    button:HookScript('OnEnter', function(self)
+        GameTooltip.auraBarLine = true;
+    end)    
+    
+    button:HookScript('OnLeave', function(self)
+        GameTooltip.auraBarLine = nil;
+        GameTooltip.numLines = nil
+    end)        
+end
+    
+-- Buffs
+function H:ConstructBuffs(frame)
+    local rows = 2
+    local buffs = CreateFrame('Frame', nil, frame)
+    buffs.spacing = E:Scale(1)
+    buffs.PostCreateIcon = self.ConstructAuraIcon
+    buffs.PostUpdateIcon = self.PostUpdateAura
+    buffs.type = 'buffs'
+    
+    buffs.forceShow = false
+    buffs.num = 12
+    buffs.numRow = 6
+    buffs.size = ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
+    
+    buffs:Width(buffs.size * 6)
+    buffs:Height(buffs.size * rows)
+    buffs["growth-y"] = 'DOWN'
+    buffs["growth-x"] = 'RIGHT'
+    buffs.initialAnchor = 'TOPLEFT'
+
+    return buffs
+end
+
+-- Debuffs
+function H:ConstructDebuffs(frame)
+    local debuffs = CreateFrame('Frame', nil, frame)
+    debuffs.spacing = E:Scale(1)
+    debuffs.PostCreateIcon = self.ConstructAuraIcon
+    debuffs.PostUpdateIcon = self.PostUpdateAura
+    debuffs.type = 'debuffs'
+    
+    local rows = 2
+    
+    debuffs.forceShow = false
+    debuffs.num = 12
+    debuffs.numRow = 6
+    debuffs.size = ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
+    
+    debuffs:Width(debuffs.size * 6)
+    debuffs:Height(debuffs.size * rows)
+    debuffs["growth-y"] = 'UP'
+    debuffs["growth-x"] = 'RIGHT'
+    debuffs.initialAnchor = 'BOTTOMLEFT'
+
+    return debuffs
+end
