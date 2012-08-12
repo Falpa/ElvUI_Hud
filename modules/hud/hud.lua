@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
+local UF = E:GetModule('UnitFrames');
 
 function H:GetUnitFrame(unit)
 	local stringTitle = E:StringTitle(unit)
@@ -67,7 +68,6 @@ function H:GetAnchor(frame,anchor)
 	elseif anchor == 'ui' then
 		return UIParent
 	elseif string.find(anchor,':') then
-		print('anchor: ',anchor)
 		local f,e = string.split(':',anchor)
 		f = H:GetUnitFrame(f)
 		if e == 'power' then 
@@ -75,10 +75,8 @@ function H:GetAnchor(frame,anchor)
 		elseif e == 'threat' then 
 			e = 'ThreatFrame'
 		else
-			print('e: ',e)
 			e = H:GetElement(e)
 		end
-		print('f: ',f,'e: ',e)
 		return _G[f][e]
 	else
 		local e = anchor
@@ -154,7 +152,6 @@ function H:UpdateAndPositionElement(frame,element,config)
 		end
 		frame[e]:Show()
 	else
-		if not frame[e] then print ('No element for ',e,'!') end
 		frame:DisableElement(e)
 		if config['value'] then
 			frame[e].value:Hide()
@@ -171,9 +168,7 @@ function H:ConstructHudFrame(frame,unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
 	
-	frame.menu = self.SpawnMenu
-	
-	frame:SetFrameLevel(5)
+	frame.menu = UF.SpawnMenu
 	
 	local stringTitle = E:StringTitle(unit)
 	if stringTitle:find('target') then
@@ -186,6 +181,8 @@ end
 
 function H:UpdateFrames()
 	for _,frame in pairs(H.hud_frames) do
+		frame:Size(P.hud.layout[frame.unit].width,P.hud.layout[frame.unit].height)
+		_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 		local elements = frame.elements
 		
 		for _,e in pairs(elements) do

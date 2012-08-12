@@ -248,6 +248,9 @@ function H:Initialize()
     if not E.db.hud.enabled then
         H:Enable()
     end
+
+    self.version = '3.0beta'
+    print(L["ElvUI Hud "]..format("v|cff33ffff%s|r",self.version)..L[" is loaded. Thank you for using it and note that I will always support you."])
 end
 
 E:RegisterModule(H:GetName())

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
+local UF = E:GetModule('UnitFrames');
 
 function H:ConstructPlayerFrame(frame,unit)
 	frame.unit = unit
@@ -59,9 +60,9 @@ function H:ConstructPlayerFrame(frame,unit)
 	frame.elements = { 'health', 'power', 'castbar', 'name', 'classbars', 'threat', 'aurabars' }
 
 	frame:SetAlpha(E.db.hud.alpha)
-	frame:Size(P.hud.layout[frame.unit].width,P.hud.layout[frame.unit].height)
+
     H:HideOOC(frame)
-    frame:Point("RIGHT", UIParent, "CENTER", -275, 0) --Set to default position 
+    frame:Point("RIGHT", E.UIParent, "CENTER", -275, 0) --Set to default position 
     E:CreateMover(frame, frame:GetName()..'Mover', 'Player Hud Frame', nil, nil, nil, 'ALL,SOLO')
 end
 

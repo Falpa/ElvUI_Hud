@@ -14,9 +14,8 @@ function H:ConstructPetFrame(frame,unit)
     frame.elements = { 'health', 'power', 'castbar', 'name' }
 
     frame:SetAlpha(E.db.hud.alpha)
-    frame:Size(P.hud.layout[frame.unit].width,P.hud.layout[frame.unit].height)
     H:HideOOC(frame)
-    frame:Point("RIGHT", UIParent, "CENTER", -360, 0) --Set to default position 
-    E:CreateMover(frame, frame:GetName()..'Mover', 'Target Hud Frame', nil, nil, nil, 'ALL,SOLO')
+    frame:Point("RIGHT", E.UIParent, "CENTER", -460, 0) --Set to default position
+    E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Hud Frame', nil, nil, nil, 'ALL,SOLO')
 end
 

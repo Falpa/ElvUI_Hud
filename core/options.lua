@@ -200,34 +200,6 @@ E.Options.args.hud = {
             get = function(info) return E.db.hud[info[#info]] end,
             set = function(info,value) E.db.hud[info[#info]] = value; end,
             args = {
-                offset = {
-                    type = "range",
-                    order = 1,
-                    name = L["Horizontal Offset"],
-                    desc = L["Set the Horizontal offset of the hud from the Centre of the screen"],
-                    min = 50, max = 500, step = 1,  
-                },
-                yoffset = {
-                    type = "range",
-                    order = 2,
-                    name = L["Vertical Offset"],
-                    desc = L["Raise or Lower the Hud Position"],
-                    min = -500, max = 500, step = 1,    
-                },
-                height = {
-                    type = "range",
-                    order = 3,
-                    name = L["Hud Height"],
-                    desc = L["Set the Height of the Hud Bars"],
-                    min = 100, max = 600, step = 1, 
-                },
-                width = {
-                    type = "range",
-                    order = 4,
-                    name = L["Hud Width"],
-                    desc = L["Set the Width of the Hud Bars"],
-                    min = 10, max = 30, step = 1,   
-                },
                 fontsize = {
                     type = "range",
                     order = 5,
