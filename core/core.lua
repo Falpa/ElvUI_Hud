@@ -215,7 +215,7 @@ function H:Initialize()
     end
 
     ElvUF:RegisterStyle('ElvUI_Hud',function(frame,unit)
-        H:Construct_Hud(frame,unit)
+        H:ConstructHudFrame(frame,unit)
     end)
 
     local width = H.width
@@ -258,6 +258,7 @@ function H:Initialize()
         H:HideOOC(pet_hud)
     end
 
+    H:UpdateFrames()
     H:UpdateMouseSetting()
     
     H:UpdateElvUFSetting(false,true)

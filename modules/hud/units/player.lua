@@ -55,58 +55,7 @@ function H:ConstructPlayerFrame(frame,unit)
 	if E.db.hud.showThreat then
 		frame.Threat = self:ConstructThreat(frame)
 	end
+
+	frame.elements = { 'health', 'power', 'castbar', 'name', 'classbars', 'threat', 'aurabars' }
 end
 
-function H:UpdatePlayerAnchors(frame,unit)
-	frame.Health:SetPoint("LEFT")
-	frame.Health.value:SetPoint("TOPRIGHT", frame.Health, "TOPLEFT", E:Scale(-20), E:Scale(-15))
-	frame.PowerFrame:SetPoint("LEFT", frame.Health, "RIGHT", E:Scale(4), 0)
-	frame.Power.value:SetPoint("TOPLEFT", frame.Power, "TOPRIGHT", E:Scale(10), E:Scale(-15))
-	if not E.db.hud.horizCastbar then
-		frame.Castbar:SetPoint("BOTTOM", frame.PowerFrame, "BOTTOM")
-	else
-		frame.Castbar:SetPoint("CENTER", UIParent, "CENTER", 0, E:Scale(-75))
-	end
-	frame.Name:SetPoint("BOTTOM", frame.Health, "TOP", 0, E:Scale(15))
-
-	if E.db.hud.classBars then
-		if E.myclass == "DRUID" then
-			frame.EclipseBar:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMLEFT", E:Scale(-6), 0)
-		end
-
-		if E.myclass == "WARLOCK" then
-			frame.WarlockSpecBars:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMLEFT", E:Scale(-6), 0)
-			frame.WarlockSpecBars.value:SetPoint("BOTTOMRIGHT", frame.WarlockSpecBars, "BOTTOMLEFT", E:Scale(-4), E:Scale(15))
-		end
-
-		if E.myclass == "PALADIN" then
-			frame.HolyPower:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMLEFT", E:Scale(-6), 0)
-		end
-
-		if E.myclass == "DEATHKNIGHT" then
-			frame.Runes:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMLEFT", E:Scale(-6), 0)
-		end
-
-		if E.myclass == "SHAMAN" then
-			frame.Totems:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMLEFT", E:Scale(-6), 0)
-		end
-
-		if E.myclass == "MONK" then
-			frame.HarmonyBar:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMLEFT", E:Scale(-6), 0)
-		end
-
-		if E.myclass == "PRIEST" then
-			frame.ShadowOrbsBar:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMLEFT", E:Scale(-6), 0)
-		end
-
-		if E.myclass == "MAGE" then
-			frame.ArcaneChargeBar:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMLEFT", E:Scale(-6), 0)
-		end
-	end
-
-	if E.db.hud.showThreat then
-		frame.ThreatFrame:SetPoint("BOTTOMLEFT", frame.PowerFrame, "BOTTOMRIGHT", E:Scale(2), 0)
-	end
-
-	frame.AuraBars:SetPoint('TOP', frame.Health, 'BOTTOM', 0, E:Scale(-60))
-end

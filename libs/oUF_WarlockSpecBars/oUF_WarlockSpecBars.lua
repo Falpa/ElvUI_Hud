@@ -68,6 +68,7 @@ end
 
 local function Visibility(self, event, unit)
 	local wsb = self.WarlockSpecBars
+	if not wsb.enabled then return end
 	local spacing = select(4, wsb[4]:GetPoint())
 	local w = wsb:GetHeight()
 	local s = 0
@@ -189,7 +190,7 @@ local function Enable(self)
 				Point.bg:SetAllPoints()
 			end	
 		end
-		
+		wsb.enabled = true
 		wsb:Hide()
 
 		return true
@@ -202,6 +203,7 @@ local function Disable(self)
 		self:UnregisterEvent("UNIT_POWER", Path)
 		self:UnregisterEvent("UNIT_DISPLAYPOWER", Path)
 		wsb.Visibility:UnregisterEvent("PLAYER_TALENT_UPDATE")
+		wsb.enabled = false
 	end
 end
 
