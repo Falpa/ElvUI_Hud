@@ -9,6 +9,7 @@ function H:ConstructPlayerFrame(frame,unit)
 	frame.Power = self:ConstructPower(frame)
 
 	frame.Castbar = self:ConstructCastbar(frame)
+	frame.Castbar.LatencyTexture:Show()
 
 	frame.Name = self:ConstructName(frame)
 		
@@ -56,8 +57,6 @@ function H:ConstructPlayerFrame(frame,unit)
 	if E.db.hud.showThreat then
 		frame.Threat = self:ConstructThreat(frame)
 	end
-
-	frame.elements = { 'health', 'power', 'castbar', 'name', 'classbars', 'threat', 'aurabars' }
 
 	frame:SetAlpha(E.db.hud.alpha)
 

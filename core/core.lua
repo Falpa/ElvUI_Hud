@@ -9,12 +9,6 @@ function H:updateAllElements(frame)
     end
 end
 
-function H:SetUpParameters()
-    H.width = E:Scale(E.db.hud.width)
-    H.height = E:Scale(E.db.hud.height)
-    H.normTex = LSM:Fetch("statusbar",E.db.hud.texture)
-end
-
 function H:SetUpAnimGroup()
 -- The following functions are thanks to Hydra from the ElvUI forums
     self.anim = self:CreateAnimationGroup("Flash")
@@ -74,6 +68,7 @@ end
 local frames = { }
 
 function H:HideOOC(frame)
+    print('In HideOOC')
 	if E.db.hud.hideOOC == true then
 		local hud_hider = CreateFrame("Frame", nil, UIParent)
 		hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -85,6 +80,7 @@ function H:HideOOC(frame)
         frame:HookScript("OnLeave",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_ENABLED") end end)
         frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_ENABLED") end end)
 	end
+    print('Leaving HideOOC')
     tinsert(frames,frame)
 end
 
@@ -208,8 +204,6 @@ function H:UpdateMouseSetting()
 end
 
 function H:Initialize()
-    H:SetUpParameters()
-    
     if E.db.hud.warningText then
         H:CreateWarningFrame()
     end
@@ -228,7 +222,7 @@ function H:Initialize()
         ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
     end
 
-    H:UpdateFrames()
+    H:UpdateAllFrames()
     H:UpdateMouseSetting()
     
     H:UpdateElvUFSetting(false,true)

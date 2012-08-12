@@ -9,7 +9,7 @@ function H:ConstructTargetFrame(frame,unit)
     frame.Power = self:ConstructPower(frame)
 
     frame.Castbar = self:ConstructCastbar(frame)
-
+    frame.Castbar.LatencyTexture:Hide()
     frame.Name = self:ConstructName(frame)
     
     frame.AuraBars = self:ConstructAuraBarHeader(frame)
@@ -20,17 +20,11 @@ function H:ConstructTargetFrame(frame,unit)
         frame.Name:Hide()
     end
 
-    -- if E.db.hud.targetauras then
-        frame.Buffs = self:ConstructBuffs(frame)
-        frame.Debuffs = self:ConstructDebuffs(frame)
-    -- end
     if E.db.hud.classBars then
         if E.myclass == "DRUID" or E.myclass == "ROGUE" then
             frame.CPoints = self:ConstructComboPoints(frame)
         end
     end
-
-    frame.elements = { 'health', 'power', 'castbar', 'name', 'cpoints', 'aurabars' }
 
     frame:SetAlpha(E.db.hud.alpha)
     H:HideOOC(frame)

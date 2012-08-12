@@ -32,11 +32,12 @@ end
 -- used to check if a spell is interruptable
 function H:CheckInterrupt(unit)
 	if unit == "vehicle" then unit = "player" end
-
+	local config = P.hud.layout[unit].elements['castbar']
+	local media = config.media
 	if self.interrupt and UnitCanAttack("player", unit) then
-		self:SetStatusBarColor(E.db.unitframe.units.player.castbar.interruptcolor)	
+		self:SetStatusBarColor(media.interruptcolor)	
 	else
-		self:SetStatusBarColor(E.db.unitframe.units.player.castbar.color)	
+		self:SetStatusBarColor(media.color)	
 	end
 end
 

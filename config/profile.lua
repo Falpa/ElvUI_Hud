@@ -21,8 +21,8 @@ P['hud'] = {
     ['hideOOC'] = true,
     ['height'] = 150,
     ['width'] = 15,
-    ['font'] = P["general"].font,
-    ['texture'] = P["unitframe"].statusbar,
+    ['font'] = "ElvUI Font",
+    ['statusbar'] = "Minimalist",
     ['fontsize'] = 12,
     ['alpha'] = 1,
     ['alphaOOC'] = 0,
@@ -43,6 +43,22 @@ P['hud']['layout'] = {
                     ['xOffset'] = 0,
                     ['yOffset'] = 0,
                 },
+                ['size'] = {
+                    ['height'] = 150,
+                    ['width'] = 15,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                    ['color'] = unpack({ 0.05, 0.05, 0.05 })
+                },
                 ['value'] = {
                     ['enabled'] = true,
                     ['anchor'] = {
@@ -60,8 +76,23 @@ P['hud']['layout'] = {
                     ['pointFrom'] = 'LEFT',
                     ['attachTo'] = 'health',
                     ['pointTo'] = 'RIGHT',
-                    ['xOffset'] = 4,
+                    ['xOffset'] = 0,
                     ['yOffset'] = 0,
+                },
+                ['size'] = {
+                    ['height'] = 150,
+                    ['width'] = 10,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
                 },
                 ['value'] = {
                     ['enabled'] = true,
@@ -76,6 +107,29 @@ P['hud']['layout'] = {
             },
             ['castbar'] = {
                 ['enabled'] = true,
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                    ['color'] = { r = 0.78, g = 0.25, b = 0.25 },
+                    ["interruptcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
+                },
+                ['size'] = {
+                    ['horizontal'] = {
+                        ['height'] = 26,
+                        ['width'] = 300,
+                    },
+                    ['vertical'] = {
+                        ['height'] = 150,
+                        ['width'] = 10,
+                    },
+                },
                 ['anchor'] = {
                     ['horizontal'] = {
                         ['pointFrom'] = 'CENTER',
@@ -102,6 +156,13 @@ P['hud']['layout'] = {
                     ['xOffset'] = 0,
                     ['yOffset'] = 15,
                 },
+                ['media'] = {
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                }
             },
             ['classbars'] = {
                 ['enabled'] = true,
@@ -109,8 +170,23 @@ P['hud']['layout'] = {
                     ['pointFrom'] = 'BOTTOMRIGHT',
                     ['attachTo'] = 'health',
                     ['pointTo'] = 'BOTTOMLEFT',
-                    ['xOffset'] = -6,
+                    ['xOffset'] = 0,
                     ['yOffset'] = 0,
+                },
+                ['size'] = {
+                    ['height'] = 146,
+                    ['width'] = 7,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
                 },
                 -- value for warlock demonology spec
                 ['value'] = {
@@ -133,6 +209,21 @@ P['hud']['layout'] = {
                     ['xOffset'] = 0,
                     ['yOffset'] = 0,
                 },
+                ['size'] = {
+                    ['height'] = 112,
+                    ['width'] = 7,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                }
             },
             ['aurabars'] = {
                 ['enabled'] = true,
@@ -143,6 +234,21 @@ P['hud']['layout'] = {
                     ['xOffset'] = 9,
                     ['yOffset'] = -60,
                 },
+                ['size'] = {
+                    ['height'] = 30,
+                    ['width'] = 225,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                }
             },
         },
     },
@@ -159,6 +265,22 @@ P['hud']['layout'] = {
                     ['pointTo'] = 'RIGHT',
                     ['xOffset'] = 0,
                     ['yOffset'] = 0,
+                },
+                ['size'] = {
+                    ['height'] = 150,
+                    ['width'] = 15,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                    ['color'] = unpack({ 0.05, 0.05, 0.05 })
                 },
                 ['value'] = {
                     ['enabled'] = true,
@@ -177,8 +299,23 @@ P['hud']['layout'] = {
                     ['pointFrom'] = 'RIGHT',
                     ['attachTo'] = 'health',
                     ['pointTo'] = 'LEFT',
-                    ['xOffset'] = -4,
+                    ['xOffset'] = 0,
                     ['yOffset'] = 0,
+                },
+                ['size'] = {
+                    ['height'] = 150,
+                    ['width'] = 10,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
                 },
                 ['value'] = {
                     ['enabled'] = true,
@@ -209,6 +346,29 @@ P['hud']['layout'] = {
                         ['yOffset'] = 0,
                     },
                 },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                    ['color'] = { r = 0.78, g = 0.25, b = 0.25 },
+                    ["interruptcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
+                },
+                ['size'] = {
+                    ['horizontal'] = {
+                        ['height'] = 26,
+                        ['width'] = 300,
+                    },
+                    ['vertical'] = {
+                        ['height'] = 150,
+                        ['width'] = 10,
+                    },
+                },
             },
             ['name'] = {
                 ['enabled'] = true,
@@ -219,6 +379,13 @@ P['hud']['layout'] = {
                     ['xOffset'] = 0,
                     ['yOffset'] = 15,
                 },
+                ['media'] = {
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                }
             },
             ['cpoints'] = {
                 ['enabled'] = true,
@@ -226,8 +393,23 @@ P['hud']['layout'] = {
                     ['pointFrom'] = 'BOTTOMLEFT',
                     ['attachTo'] = 'health',
                     ['pointTo'] = 'BOTTOMRIGHT',
-                    ['xOffset'] = 6,
+                    ['xOffset'] = 0,
                     ['yOffset'] = 0,
+                },
+                ['size'] = {
+                    ['height'] = 146,
+                    ['width'] = 7,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
                 },
             },
             ['aurabars'] = {
@@ -239,6 +421,21 @@ P['hud']['layout'] = {
                     ['xOffset'] = 9,
                     ['yOffset'] = -60,
                 },
+                ['size'] = {
+                    ['height'] = 30,
+                    ['width'] = 225,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                }
             },
         },
     },
@@ -255,6 +452,22 @@ P['hud']['layout'] = {
                     ['pointTo'] = 'LEFT',
                     ['xOffset'] = 0,
                     ['yOffset'] = 0,
+                },
+                ['size'] = {
+                    ['height'] = 112,
+                    ['width'] = 15,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                    ['color'] = unpack({ 0.05, 0.05, 0.05 })
                 },
                 ['value'] = {
                     ['enabled'] = true,
@@ -273,8 +486,23 @@ P['hud']['layout'] = {
                     ['pointFrom'] = 'LEFT',
                     ['attachTo'] = 'health',
                     ['pointTo'] = 'RIGHT',
-                    ['xOffset'] = 4,
+                    ['xOffset'] = 0,
                     ['yOffset'] = 0,
+                },
+                ['size'] = {
+                    ['height'] = 112,
+                    ['width'] = 10,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
                 },
                 ['value'] = {
                     ['enabled'] = true,
@@ -296,6 +524,21 @@ P['hud']['layout'] = {
                     ['xOffset'] = 0,
                     ['yOffset'] = 0,
                 },
+                ['size'] = {
+                    ['height'] = 112,
+                    ['width'] = 10,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                },
             },
             ['name'] = {
                 ['enabled'] = true,
@@ -306,6 +549,13 @@ P['hud']['layout'] = {
                     ['xOffset'] = 0,
                     ['yOffset'] = 15,
                 },
+                ['media'] = {
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                }
             },
         },
     },

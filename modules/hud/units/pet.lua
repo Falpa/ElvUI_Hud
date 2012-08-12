@@ -11,11 +11,9 @@ function H:ConstructPetFrame(frame,unit)
 
     frame.Castbar = self:ConstructCastbar(frame)
 
-    frame.elements = { 'health', 'power', 'castbar', 'name' }
-
     frame:SetAlpha(E.db.hud.alpha)
     H:HideOOC(frame)
-    frame:Point("RIGHT", E.UIParent, "CENTER", -460, 0) --Set to default position
+    frame:Point("BOTTOMRIGHT", ElvUF_PlayerHud, "BOTTOMLEFT", -80, 0)
     E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Hud Frame', nil, nil, nil, 'ALL,SOLO')
 end
 
