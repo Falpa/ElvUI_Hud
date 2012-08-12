@@ -116,8 +116,16 @@ function H:UpdateAndPositionElement(frame,element,config)
 		local re = string.format('%sFrame',e)
 		frame[re]:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
 	else
-		print('element: ',element,' e: ',e,' pointFrom: ',pointFrom,' attachTo: ',attachTo,' pointTo: ',pointTo,' xOffset: ',xOffset,' yOffset: ',yOffset)
-		frame[e]:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
+		if element == 'health' and anchor['attachTo'] ~= 'self' then
+			frame:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
+			if frame.unit == 'target' then
+				frame[e]:SetPoint("RIGHT", frame, "RIGHT", 0, 0)
+			else
+				frame[e]:SetPoint("LEFT", frame, "LEFT", 0, 0)
+			end
+		else
+			frame[e]:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
+		end
 	end
 	if config['value'] then
 		if element ~= "classbars" or (element == "classbars" and E.myclass == "WARLOCK") then

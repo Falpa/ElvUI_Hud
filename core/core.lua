@@ -218,44 +218,14 @@ function H:Initialize()
         H:ConstructHudFrame(frame,unit)
     end)
 
-    local width = H.width
-    local pw = E:Scale((H.width/3)*2)
-    width = width + pw + 2
-
-    if E.db.hud.showThreat then
-        width = width + pw + 2
-    end
-
-    local alpha = E.db.hud.alpha
-
     ElvUF:SetActiveStyle('ElvUI_Hud')
-
-    local player_hud = ElvUF:Spawn('player', "ElvUF_PlayerHud")
-    player_hud:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-E.db.hud.offset), 0)
-    player_hud:SetSize(width, H.height)
-    player_hud:SetAlpha(alpha)
-
-    H:HideOOC(player_hud)
-
-    width = H.width
-    width = width + pw + 2
-
-    local target_hud = ElvUF:Spawn('target', "ElvUF_TargetHud")
-    target_hud:SetPoint("LEFT", UIParent, "CENTER", E:Scale(E.db.hud.offset), 0)
-    target_hud:SetSize(width, H.height)
-    target_hud:SetAlpha(alpha)
-
-    H:HideOOC(target_hud)
-
-    if E.db.hud.petHud then
-        width = H.width
-        width = width + pw + 2
-
-        local pet_hud = ElvUF:Spawn('pet', "ElvUF_PetHud")
-        pet_hud:SetSize(width, (H.height * .75))
-        pet_hud:SetPoint("BOTTOMRIGHT", ElvUF_PlayerHud, "BOTTOMLEFT", -E:Scale(80), 0)
-        pet_hud:SetAlpha(alpha)
-        H:HideOOC(pet_hud)
+    local units = { 'player', 'target', 'pet' }
+    for _,unit in pairs(units) do
+        local stringTitle = E:StringTitle(unit)
+        if stringTitle:find('target') then
+            stringTitle = gsub(stringTitle, 'target', 'Target')
+        end
+        ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
     end
 
     H:UpdateFrames()
