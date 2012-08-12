@@ -15,6 +15,7 @@ function H:ConstructHealth(frame)
 	health.PostUpdate = H.PostUpdateHealth
     health.frequentUpdates = true
 
+    health.colorSmooth = false
     health.colorDisconnected = false
     health.colorTapping = true	
 

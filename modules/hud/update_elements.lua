@@ -136,7 +136,7 @@ local updateSafeZone = function(self,c)
 		-- MADNESS!
 		local safeZonePercent = (height / self.max) * (ms / 1e5)
 		if(safeZonePercent > 1) then safeZonePercent = 1 end
-		sz:SetWidth(height * safeZonePercent)
+		sz:SetHeight(height * safeZonePercent)
 		sz:Show()
 	else
 		sz:Hide()
@@ -144,6 +144,7 @@ local updateSafeZone = function(self,c)
 end
 
 function H:PostCastStart(unit, name, rank, castid)
+	H.CheckInterrupt(self,unit)
 	local sz = self.SafeZone
 	if sz then
 		updateSafeZone(self,true)
@@ -151,6 +152,7 @@ function H:PostCastStart(unit, name, rank, castid)
 end
 
 function H:PostChannelStart(unit, name, rank, castid)
+	H.CheckInterrupt(self,unit)
 	local sz = self.SafeZone
 	if sz then
 		updateSafeZone(self,false)

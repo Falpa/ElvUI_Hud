@@ -49,28 +49,6 @@ E.Options.args.hud = {
             get = function(info) return E.db.hud[info[#info]] end,
             set = function(info,value) E.db.hud[info[#info]] = value; end, 
             args = {
-                simpleLayout = {
-                    type = "toggle",
-                    order = 4,
-                    name = L["Simple Layout"],
-                    desc = L["A simple layout inspired by Hydra, player health on left, power on right, no target/pet hud /n(Overwrites all other settings except Offsets)"],
-                    get = function(info) return E.db.hud[info[#info]] end,
-                    set = function(info,value) E.db.hud[info[#info]] = value; StaticPopup_Show("CONFIG_RL"); end, 
-                },
-                simpleTarget = {
-                    type = "toggle",
-                    order = 5,
-                    name = L["Simple Layout Target"],
-                    desc = L["Show target health/power in the simple layout"],
-                    get = function(info) return E.db.hud[info[#info]] end,
-                    set = function(info,value) E.db.hud[info[#info]] = value; StaticPopup_Show("CONFIG_RL"); end,
-                },
-                petHud = {
-                    type = "toggle",
-                    order = 7,
-                    name = L["Pet Hud"],
-                    desc = L["Show the Pet Hud in the hud"],
-                },
                 hideElv = {
                     type = "toggle",
                     order = 8,
@@ -78,57 +56,6 @@ E.Options.args.hud = {
                     desc = L["Hide the ElvUI Unitframes when the Hud is enabled"],
                     get = function(info) return E.db.hud[ info[#info] ] end,   
                     set = function(info, value) E.db.hud[ info[#info] ] = value; H:UpdateElvUFSetting(false) end,
-                },
-                names = {
-                    type = "toggle",
-                    order = 9,
-                    name = L["Show Names"],
-                    desc = L["Show names of units on Hud"],
-                    get = function(info) return E.db.hud[ info[#info] ] end,
-                    set = function(info, value)
-                        E.db.hud[ info[#info] ] = value;
-                        if value then
-                            if ElvUF_PlayerHud then
-                                ElvUF_PlayerHud.Name:Show()
-                                ElvUF_TargetHud.Name:Show()
-                            end
-                        else
-                            if ElvUF_PlayerHud then
-                                ElvUF_PlayerHud.Name:Hide()
-                                ElvUF_TargetHud.Name:Hide()
-                            end
-                        end
-                    end,
-                },
-                showThreat = {
-                    type = "toggle",
-                    order = 10,
-                    name = L["Threat"],
-                    desc = L["Show a Threatbar next to the Player Hud"],
-                },
-                classBars = {
-                    type = "toggle",
-                    order = 11,
-                    name = L["Class Bar"],
-                    desc = L["Show a Class Bar (rune bar, totem bar, eclipse bar, etc.)"],
-                },
-                showValues = {
-                    type = "toggle",
-                    order = 12,
-                    name = L["Text Values"],
-                    desc = L["Show Text Values (Health/Mana) in the Hud"],
-                },
-                unicolor = {
-                    type = "toggle",
-                    order = 13,
-                    name = L["Unicolor"],
-                    desc = L["Use a unicolor theme"],
-                },
-                smooth = {
-                    type = "toggle",
-                    order = 14,
-                    name = L["Smooth Bars"],
-                    desc = L["Show smooth bars"],
                 },
                 flash = {
                     type = "toggle",
@@ -170,7 +97,7 @@ E.Options.args.hud = {
                     name = L["Horizontal Castbar"],
                     desc = L["Use a horizontal castbar"],
                     get = function(info) return E.db.hud[info[#info]] end,
-                    set = function(info,value) E.db.hud[info[#info]] = value; StaticPopup_Show("CONFIG_RL"); end,
+                    set = function(info,value) E.db.hud[info[#info]] = value; E:StaticPopup_Show("CONFIG_RL"); end,
                 },
                 font = {
                     type = "select", dialogControl = 'LSM30_Font',

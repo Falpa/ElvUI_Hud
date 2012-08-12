@@ -148,13 +148,11 @@ function H:UpdateClassBar(frame,element)
 end
 
 function H:UpdateElement(frame,element)
-	print('Updating ',element,' for ',frame.unit)
 	local config = P.hud.layout[frame.unit].elements[element]
 	local size = config['size']
 	local media = config['media']
 	local e = self.units[frame.unit].elements[element]
 	if size then
-		print('Setting size')
 		if e.frame then
 			if element == 'aurabars' then
 				e.frame:Size(size.width,size.height*4)
@@ -178,10 +176,8 @@ function H:UpdateElement(frame,element)
 				statusbar:Size(size.width,size.height)
 			end			
 		end
-		print('Done setting size')
 	end
 	if media then
-		print('Setting media')
 		if e.statusbars then
 			for _,statusbar in pairs(e.statusbars) do
 				if media.texture.override then
@@ -212,12 +208,10 @@ function H:UpdateElement(frame,element)
 				end
 			end
 		end
-		print('Done setting media')
 	end
 end
 
 function H:UpdateElementAnchor(frame,element)
-	print('Updating element anchor for ',element,' on unit ',frame.unit)
 	local config = P.hud.layout[frame.unit].elements[element]
 	local enabled = config['enabled']
 	local anchor = config['anchor']
@@ -255,7 +249,6 @@ function H:UpdateElementAnchor(frame,element)
 	end
 
 	if enabled then
-		print('Showing ',element,' on unit ',frame.unit)
 		frame:EnableElement(e)
 		if config['value'] then
 			if config['value']['enable'] then
@@ -264,7 +257,6 @@ function H:UpdateElementAnchor(frame,element)
 		end
 		frame[e]:Show()
 	else
-		print('Hiding ',element,' on unit ',frame.unit)
 		frame:DisableElement(e)
 		if config['value'] then
 			frame[e].value:Hide()
@@ -319,7 +311,6 @@ function H:UpdateAllElementAnchors(frame)
 end
 
 function H:AddElement(frame,element)
-	print('Attempting to add ',element,' to unit ',frame.unit)
 	if not self.units[frame.unit].elements[element] then
 		self.units[frame.unit].elements[element] = { }
 	end

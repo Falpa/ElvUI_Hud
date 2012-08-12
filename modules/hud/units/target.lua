@@ -9,21 +9,13 @@ function H:ConstructTargetFrame(frame,unit)
     frame.Power = self:ConstructPower(frame)
 
     frame.Castbar = self:ConstructCastbar(frame)
-    frame.Castbar.LatencyTexture:Hide()
+    frame.Castbar.SafeZone = nil
     frame.Name = self:ConstructName(frame)
     
     frame.AuraBars = self:ConstructAuraBarHeader(frame)
 
-    if E.db.hud.names then
-        frame.Name:Show()
-    else
-        frame.Name:Hide()
-    end
-
-    if E.db.hud.classBars then
-        if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-            frame.CPoints = self:ConstructComboPoints(frame)
-        end
+    if E.myclass == "DRUID" or E.myclass == "ROGUE" then
+        frame.CPoints = self:ConstructComboPoints(frame)
     end
 
     frame:SetAlpha(E.db.hud.alpha)

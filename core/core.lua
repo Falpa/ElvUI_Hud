@@ -68,7 +68,6 @@ end
 local frames = { }
 
 function H:HideOOC(frame)
-    print('In HideOOC')
 	if E.db.hud.hideOOC == true then
 		local hud_hider = CreateFrame("Frame", nil, UIParent)
 		hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -80,7 +79,6 @@ function H:HideOOC(frame)
         frame:HookScript("OnLeave",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_ENABLED") end end)
         frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_ENABLED") end end)
 	end
-    print('Leaving HideOOC')
     tinsert(frames,frame)
 end
 
