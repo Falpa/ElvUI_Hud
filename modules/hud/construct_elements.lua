@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 local UF = E:GetModule('UnitFrames');
+local LSM = LibStub("LibSharedMedia-3.0");
 
 -- Health for all units
 function H:ConstructHealth(frame)
@@ -16,8 +17,8 @@ function H:ConstructHealth(frame)
     health.frequentUpdates = true
 
     health.colorSmooth = false
-    health.colorDisconnected = false
-    health.colorTapping = true	
+    --health.colorDisconnected = false
+    --health.colorTapping = true	
 
     return health
 end
@@ -511,4 +512,71 @@ function H:ConstructAuraBarHeader(frame)
     auraBar.down = true
 
     return auraBar
+end
+
+function H:ConstructRaidIcon(frame)
+    self:AddElement(frame,'raidicon')
+    local f = CreateFrame('Frame', nil, frame)
+    f:SetFrameLevel(20)
+    
+    local tex = f:CreateTexture(nil, "OVERLAY")
+    tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp")
+    tex:Size(12)
+
+    return tex
+end
+
+function H:ConstructRestingIndicator(frame)
+    self:AddElement(frame,'resting')
+    local resting = frame:CreateTexture(nil, "OVERLAY")
+    resting:Size(16)
+    
+    return resting
+end
+
+function H:ConstructCombatIndicator(frame)
+    self:AddElement(frame,'combat')
+    local combat = frame:CreateTexture(nil, "OVERLAY")
+    combat:Size(13)
+    combat:SetVertexColor(0.69, 0.31, 0.31)
+    
+    return combat
+end
+
+function H:ConstructPvPIndicator(frame)
+    self:AddElement(frame,'pvp')
+    local pvp = self:ConfigureFontString(frame,'pvp')
+    pvp:SetTextColor(0.69, 0.31, 0.31)
+    
+    self:ScheduleRepeatingTimer("UpdatePvPText", 0.1, frame)
+    
+    return pvp
+end
+
+function H:ConstructHealComm(frame)
+    self:AddElement(frame,'healcomm')
+    local mhpb = self:ConfigureStatusBar(frame,'healcomm',frame,'mybar')
+    mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
+    mhpb:SetFrameLevel(frame.Health:GetFrameLevel() - 2)
+    mhpb:Hide()
+    
+    local ohpb = self:ConfigureStatusBar(frame,'healcomm',frame,'otherbar')
+    ohpb:SetStatusBarColor(0, 1, 0, 0.25)
+    mhpb:SetFrameLevel(mhpb:GetFrameLevel())    
+    ohpb:Hide()
+    
+    if frame.Health then
+        ohpb:SetParent(frame.Health)
+        mhpb:SetParent(frame.Health)
+    end
+    
+    return {
+        myBar = mhpb,
+        otherBar = ohpb,
+        maxOverflow = 1,
+        PostUpdate = function(self)
+            if self.myBar:GetValue() == 0 then self.myBar:SetAlpha(0) else self.myBar:SetAlpha(1) end
+            if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
+        end
+    }
 end

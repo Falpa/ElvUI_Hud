@@ -240,6 +240,62 @@ P['hud']['layout'] = {
                     },
                 }
             },
+            ['raidicon'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['pointFrom'] = 'CENTER',
+                    ['attachTo'] = 'health',
+                    ['pointTo'] = 'CENTER',
+                    ['xOffset'] = 0,
+                    ['yOffset'] = 0
+                }
+            },
+            ['resting'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['pointFrom'] = 'CENTER',
+                    ['attachTo'] = 'health',
+                    ['pointTo'] = 'TOPLEFT',
+                    ['xOffset'] = -6,
+                    ['yOffset'] = 10
+                }
+            },
+            ['combat'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['pointFrom'] = 'CENTER',
+                    ['attachTo'] = 'health',
+                    ['pointTo'] = 'TOPRIGHT',
+                    ['xOffset'] = 6,
+                    ['yOffset'] = 10
+                }
+            },
+            ['pvp'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['pointFrom'] = 'TOP',
+                    ['attachTo'] = 'health',
+                    ['pointTo'] = 'BOTTOM',
+                    ['xOffset'] = 0,
+                    ['yOffset'] = -6
+                },
+                ['media'] = {
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                }
+            },
+            ['healcomm'] = {
+                ['enabled'] = true,
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                }
+            }
         },
     },
     ['target'] = {
@@ -427,6 +483,16 @@ P['hud']['layout'] = {
                     },
                 }
             },
+            ['raidicon'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['pointFrom'] = 'CENTER',
+                    ['attachTo'] = 'health',
+                    ['pointTo'] = 'CENTER',
+                    ['xOffset'] = 0,
+                    ['yOffset'] = 0
+                }
+            },
         },
     },
     ['pet'] = {
@@ -545,6 +611,16 @@ P['hud']['layout'] = {
                         ['font'] = "ElvUI Font",
                         ['fontsize'] = 12,
                     },
+                }
+            },
+            ['raidicon'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['pointFrom'] = 'CENTER',
+                    ['attachTo'] = 'health',
+                    ['pointTo'] = 'CENTER',
+                    ['xOffset'] = 0,
+                    ['yOffset'] = 0
                 }
             },
         },

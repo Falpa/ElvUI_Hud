@@ -12,9 +12,7 @@ function H.PostUpdateHealth(health, unit, min, max)
 
 		health:SetStatusBarColor(newr, newg, newb)
 	end
-	if E.db.hud.showValues then
-		health.value:SetText(format("%.f", min / max * 100).." %")
-	end
+	health.value:SetText(format("%.f", min / max * 100).." %")
 	
     -- Flash health below threshold %
 	if (min / max * 100) < (E.db.hud.lowThreshold) then
@@ -70,7 +68,7 @@ function H.PostUpdatePowerHud(power, unit, min, max)
     local pType, pToken = UnitPowerType(unit)
     local color = ElvUF["colors"].power[pToken]
 
-    if color and E.db.hud.showValues then
+    if color then
         power.value:SetTextColor(color[1], color[2], color[3])
 		power.value:SetText(format("%.f",min / max * 100).." %")
     end
@@ -359,4 +357,32 @@ function H:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, ex
 	end	
 	
 	return true
+end
+
+function H:UpdatePvPText(frame)
+	local unit = frame.unit
+	local PvPText = frame.PvPText
+	
+	if PvPText then
+		PvPText:Show()
+		local time = GetPVPTimer()
+		local min = format("%01.f", floor((time / 1000) / 60))
+		local sec = format("%02.f", floor((time / 1000) - min * 60)) 
+		
+		if(UnitIsPVPFreeForAll(unit)) then
+			if time ~= 301000 and time ~= -1 then
+				PvPText:SetText(PVP.." ".."("..min..":"..sec..")")
+			else
+				PvPText:SetText(PVP)
+			end
+		elseif UnitIsPVP(unit) then
+			if time ~= 301000 and time ~= -1 then
+				PvPText:SetText(PVP.." ".."("..min..":"..sec..")")
+			else
+				PvPText:SetText(PVP)
+			end
+		else
+			PvPText:SetText("")
+		end
+	end
 end

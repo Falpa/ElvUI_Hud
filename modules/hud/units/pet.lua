@@ -10,7 +10,9 @@ function H:ConstructPetFrame(frame,unit)
     frame.Power = self:ConstructPower(frame)
 
     frame.Castbar = self:ConstructCastbar(frame)
-
+    frame.Castbar.SafeZone = nil
+    frame.RaidIcon = self:ConstructRaidIcon(frame)
+    
     frame:SetAlpha(E.db.hud.alpha)
     H:HideOOC(frame)
     frame:Point("BOTTOMRIGHT", ElvUF_PlayerHud, "BOTTOMLEFT", -80, 0)

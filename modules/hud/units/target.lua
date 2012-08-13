@@ -18,6 +18,8 @@ function H:ConstructTargetFrame(frame,unit)
         frame.CPoints = self:ConstructComboPoints(frame)
     end
 
+    frame.RaidIcon = self:ConstructRaidIcon(frame)
+    
     frame:SetAlpha(E.db.hud.alpha)
     H:HideOOC(frame)
     frame:Point("RIGHT", E.UIParent, "CENTER", 275, 0) --Set to default position 

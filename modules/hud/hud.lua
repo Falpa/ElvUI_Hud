@@ -58,6 +58,11 @@ local elements = {
 	['threat'] = 'Threat',
 	['aurabars'] = 'AuraBars',
 	['cpoints'] = 'CPoints',
+	['raidicon'] = 'RaidIcon',
+	['resting'] = 'Resting',
+	['combat'] = 'Combat',
+	['pvp'] = 'PvPText',
+	['healcomm'] = 'HealPrediction',
 }
 
 function H:GetElement(element)
@@ -212,6 +217,7 @@ function H:UpdateElement(frame,element)
 end
 
 function H:UpdateElementAnchor(frame,element)
+	if element == 'healcomm' then return end
 	local config = P.hud.layout[frame.unit].elements[element]
 	local enabled = config['enabled']
 	local anchor = config['anchor']

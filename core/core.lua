@@ -174,23 +174,6 @@ function H:Enable()
     end
 end
 
-local media_frames = {}
-
-function H:RegisterFrame(frame)
-    tinsert(media_frames,frame)
-end
-
-function H:UpdateMedia()
-    for _,f in pairs(media_frames) do
-        f:SetStatusBarTexture(LSM:Fetch("statusbar", E.db.hud.texture))
-        if E.db.hud.showValues then
-            if f.value ~= nil then
-                f.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
-            end
-        end
-    end
-end
-
 function H:UpdateMouseSetting()
     for _,f in pairs(frames) do
         if E.db.hud.enableMouse or E.db.hud.hideElv then

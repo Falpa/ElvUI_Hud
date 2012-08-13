@@ -48,7 +48,11 @@ function H:ConstructPlayerFrame(frame,unit)
 	end
 
 	frame.Threat = self:ConstructThreat(frame)
-
+	frame.RaidIcon = self:ConstructRaidIcon(frame)
+	frame.Resting = self:ConstructRestingIndicator(frame)
+	frame.Combat = self:ConstructCombatIndicator(frame)
+	frame.PvPText = self:ConstructPvPIndicator(frame)
+	frame.HealPrediction = self:ConstructHealComm(frame)
 	frame:SetAlpha(E.db.hud.alpha)
 
     H:HideOOC(frame)
