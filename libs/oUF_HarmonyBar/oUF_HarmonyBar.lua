@@ -73,7 +73,6 @@ local function Enable(self, unit)
 	if hb and unit == "player" then
 		hb.__owner = self
 		hb.ForceUpdate = ForceUpdate
-		
 		self:RegisterEvent("UNIT_POWER", Path)
 		self:RegisterEvent("UNIT_DISPLAYPOWER", Path)
 		
@@ -88,7 +87,7 @@ local function Enable(self, unit)
 			Point:GetStatusBarTexture():SetHorizTile(false)
 		end
 		
-		hb.maxChi = 5
+		hb.maxChi = 3
 		
 		return true
 	end

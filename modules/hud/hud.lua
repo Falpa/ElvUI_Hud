@@ -307,7 +307,7 @@ function H:UpdateAllFrames()
 			else
 				event = "PLAYER_REGEN_ENABLED"
 			end
-			if E.db.hud.hideOOC then __Hide(frame, event) end
+			if E.db.hud.hideOOC then H:Hide(frame, event) end
 			self:UpdateAllElements(frame)
 			self:UpdateAllElementAnchors(frame)
 		else
