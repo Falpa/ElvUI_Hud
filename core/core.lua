@@ -194,7 +194,7 @@ function H:Initialize()
     end)
 
     ElvUF:SetActiveStyle('ElvUI_Hud')
-    local units = { 'player', 'target', 'pet' }
+    local units = { 'player', 'target', 'pet', 'targettarget', 'pettarget' }
     for _,unit in pairs(units) do
         local stringTitle = E:StringTitle(unit)
         if stringTitle:find('target') then

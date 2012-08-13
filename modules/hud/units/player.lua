@@ -47,7 +47,6 @@ function H:ConstructPlayerFrame(frame,unit)
 		frame.ArcaneChargeBar = self:ConstructArcaneBar(frame)
 	end
 
-	frame.Threat = self:ConstructThreat(frame)
 	frame.RaidIcon = self:ConstructRaidIcon(frame)
 	frame.Resting = self:ConstructRestingIndicator(frame)
 	frame.Combat = self:ConstructCombatIndicator(frame)

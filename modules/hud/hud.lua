@@ -55,7 +55,6 @@ local elements = {
 	['power'] = 'Power',
 	['castbar'] = 'Castbar',
 	['name'] = 'Name',
-	['threat'] = 'Threat',
 	['aurabars'] = 'AuraBars',
 	['cpoints'] = 'CPoints',
 	['raidicon'] = 'RaidIcon',
@@ -95,7 +94,7 @@ end
 -- This function is only responsible for updating bar sizes for class bar children
 -- textures work normally as does parent size
 function H:UpdateClassBar(frame,element)
-	local config = P.hud.layout[frame.unit].elements[element]
+	local config = P.hud.units[frame.unit].elements[element]
 	local size = config['size']
 	
 	if element == "cpoints" then
@@ -153,19 +152,15 @@ function H:UpdateClassBar(frame,element)
 end
 
 function H:UpdateElement(frame,element)
-	local config = P.hud.layout[frame.unit].elements[element]
+	local config = P.hud.units[frame.unit].elements[element]
 	local size = config['size']
 	local media = config['media']
 	local e = self.units[frame.unit].elements[element]
 	if size then
 		if e.frame then
-			if element == 'aurabars' then
-				e.frame:Size(size.width,size.height*4)
-			else
-				e.frame:Size(size.width,size.height)
-				if element == 'classbars' or element == 'cpoints' then
-					self:UpdateClassBar(frame,element)
-				end
+			e.frame:Size(size.width,size.height)
+			if element == 'classbars' or element == 'cpoints' then
+				self:UpdateClassBar(frame,element)
 			end
 		end
 		if e.statusbars then
@@ -191,6 +186,7 @@ function H:UpdateElement(frame,element)
 					statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", E.db.hud.statusbar))
 				end
 				if media.color and element ~= "castbar" then
+					statusbar.defaultColor = media.color
 					statusbar:SetStatusBarColor(media.color)
 				end
 			end
@@ -218,9 +214,10 @@ end
 
 function H:UpdateElementAnchor(frame,element)
 	if element == 'healcomm' then return end
-	local config = P.hud.layout[frame.unit].elements[element]
+	local config = P.hud.units[frame.unit].elements[element]
 	local enabled = config['enabled']
 	local anchor = config['anchor']
+	local e = H:GetElement(element)
 	if element == 'cpoints' and not (E.myclass == "ROGUE" or E.myclass == "DRUID") then return end;
 	if element == 'castbar' and anchor['vertical'] ~= nil then
 		if not E.db.hud.horizCastbar then
@@ -234,7 +231,6 @@ function H:UpdateElementAnchor(frame,element)
 	local pointTo = anchor['pointTo']
 	local xOffset = anchor['xOffset']
 	local yOffset = anchor['yOffset']
-	local e = H:GetElement(element)
 	frame[e]:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
 	if config['tag'] then
 		frame:Tag(frame[e], config['tag'])
@@ -298,11 +294,27 @@ end
 
 function H:UpdateAllFrames()
 	for _,frame in pairs(self.units) do
-		frame:Size(P.hud.layout[frame.unit].width,P.hud.layout[frame.unit].height)
+		frame:Size(P.hud.units[frame.unit].width,P.hud.units[frame.unit].height)
 		_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
-		self:UpdateAllElements(frame)
-		self:UpdateAllElementAnchors(frame)
+		if P.hud.units[frame.unit].enabled then
+			frame:EnableMouse(E.db.hud.enableMouse)
+			frame:SetAlpha(E.db.hud.alpha)
+			frame:Show()
+			local event
+			if InCombatLockdown() then
+				event = "PLAYER_REGEN_DISABLED"
+			else
+				event = "PLAYER_REGEN_ENABLED"
+			end
+			if E.db.hud.hideOOC then __Hide(frame, event) end
+			self:UpdateAllElements(frame)
+			self:UpdateAllElementAnchors(frame)
+		else
+			frame:EnableMouse(false)
+			frame:SetAlpha(0)
+			frame:Hide()
+		end
 	end
 end
 
@@ -340,7 +352,8 @@ function H:ConfigureStatusBar(frame,element,parent,name)
 
 	-- Dummy texture so we can set colors
 	sb:SetStatusBarTexture(LSM:Fetch("statusbar","Minimalist"))
-
+	sb:SetBackdrop(backdrop)
+    sb:SetBackdropColor(0, 0, 0, 0)
 	-- Create the status bar background
 	-- Health Bar Background
     local bg = sb:CreateTexture(nil, 'BORDER')

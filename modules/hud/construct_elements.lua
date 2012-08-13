@@ -12,7 +12,6 @@ function H:ConstructHealth(frame)
     health:SetFrameLevel(frame:GetFrameLevel() + 5)
     
 	health.value = self:ConfigureFontString(frame,'health',health)		
-    
 	health.PostUpdate = H.PostUpdateHealth
     health.frequentUpdates = true
 
@@ -142,21 +141,14 @@ end
 function H:ConstructName(frame)
     self:AddElement(frame,'name')
     local name = self:ConfigureFontString(frame,'name')
-    if frame.unit == 'player' then
-        frame:Tag(name, '[difficultycolor][smartlevel] [shortclassification] [namecolor][name:medium]')
-    elseif frame.unit == 'target' then
-        frame:Tag(name, '[namecolor][name:medium] [difficultycolor][smartlevel] [shortclassification]')
-    else
-        frame:Tag(name, '[namecolor][name:medium]')
-    end
     return name
 end
 
 -- Eclipse Bar for druids
 function H:ConstructEclipseBar(frame)
-    self:AddElement(frame,'classbars', true)
+    self:AddElement(frame,'classbars')
 
-    local eclipseBar = self:ConfigureFrame(frame,'classbars')
+    local eclipseBar = self:ConfigureFrame(frame,'classbars', true)
     eclipseBar:SetFrameStrata("MEDIUM")
     eclipseBar:SetTemplate('Transparent')
     eclipseBar:SetFrameLevel(8)
@@ -186,8 +178,8 @@ end
 
 -- Warlock spec bars
 function H:ConstructWarlockSpecBars(frame)
-    self:AddElement(frame,'classbars', true)
-    local wb = self:ConfigureFrame(frame,'classbars')
+    self:AddElement(frame,'classbars')
+    local wb = self:ConfigureFrame(frame,'classbars', true)
     wb:SetTemplate('Transparent')
     wb:SetFrameLevel(frame:GetFrameLevel() + 5)
     wb:SetTemplate("Default")
@@ -213,8 +205,8 @@ end
 
 -- Construct holy power for paladins
 function H:ConstructHolyPower(frame)
-    self:AddEelment(frame,'classbars', true)
-    local bars = self:ConfigureFrame(frame,'classbars')
+    self:AddElement(frame,'classbars')
+    local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
     bars:SetTemplate("Transparent")
     bars:SetBackdropBorderColor(0,0,0,0)
@@ -244,8 +236,8 @@ end
 
 -- Runes for death knights
 function H:ConstructRunes(frame)
-    self:AddEelment(frame,'classbars', true)
-    local Runes = self:ConfigureFrame(frame,'classbars')
+    self:AddElement(frame,'classbars')
+    local Runes = self:ConfigureFrame(frame,'classbars', true)
     Runes:SetFrameLevel(frame:GetFrameLevel() + 5)
     Runes:SetTemplate("Default")
     Runes:SetBackdropBorderColor(0,0,0,0)
@@ -267,8 +259,8 @@ end
 
 -- Totems for shamans
 function H:ConstructTotems(frame)
-    self:AddEelment(frame,'classbars', true)
-    local TotemBar = self:ConfigureFrame(frame,'classbars')
+    self:AddElement(frame,'classbars')
+    local TotemBar = self:ConfigureFrame(frame,'classbars', true)
     TotemBar.Destroy = true
     TotemBar:SetFrameLevel(frame:GetFrameLevel() + 5)
 
@@ -290,8 +282,8 @@ end
 
 -- Construct harmony bar for monks
 function H:ConstructHarmonyBar(frame)
-    self:AddEelment(frame,'classbars', true)
-    local bars = self:ConfigureFrame(frame,'classbars')
+    self:AddElement(frame,'classbars')
+    local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
     bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
@@ -318,7 +310,7 @@ end
  
 -- Construct shadow orb bar for priests
 function H:ConstructShadowOrbBar(frame)
-    self:AddEelment(frame,'classbars')
+    self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
     bars:SetTemplate("Default")
@@ -346,7 +338,7 @@ end
 
 -- Construct arcane bar for mages
 function H:ConstructArcaneBar(frame)
-    self:AddEelment(frame,'classbars')
+    self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
     bars:SetTemplate("Default")
@@ -374,7 +366,7 @@ end
 
 -- Combo points for rogues and druids
 function H:ConstructComboPoints(frame)
-    self:AddEelment(frame,'cpoints')
+    self:AddElement(frame,'cpoints')
     local bars = self:ConfigureFrame(frame,'cpoints', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
     bars:SetTemplate("Default")
@@ -409,25 +401,8 @@ function H:ConstructComboPoints(frame)
     return bars
 end
 
--- Threat bar
-function H:ConstructThreat(frame)
-    self:AddElement(frame,'threat')
-    local ThreatBar = self:ConfigureStatusBar(frame,'threat')
-    
-    ThreatBar:SetFrameLevel(frame:GetFrameLevel() + 1)
-    
-    ThreatBar:SetOrientation("VERTICAL")
-    
-    ThreatBar.Text = self:ConfigureFontString(frame,'threat',ThreatBar,'text')         
-    ThreatBar.Text:SetPoint("LEFT", ThreatBar, "RIGHT", E:Scale(10), 0)
-    
-    ThreatBar.useRawThreat = false
-
-    return ThreatBar
-end
-
 function H:ConstructAuraBars()
-    local config = P.hud.layout.player.elements['aurabars']
+    local config = P.hud.units.player.elements['aurabars']
     local media = config.media
     local size = config.size
     local bar = self.statusBar
@@ -511,6 +486,22 @@ function H:ConstructAuraBarHeader(frame)
     auraBar.buffColor = {healthColor.r, healthColor.b, healthColor.g}
     auraBar.down = true
 
+    local stringTitle = E:StringTitle(frame.unit)
+    if stringTitle:find('target') then
+        stringTitle = gsub(stringTitle, 'target', ' Target')
+    end
+    local xoffset
+    if frame.unit == 'player' then
+        xoffset = -275
+    else
+        xoffset = 275
+    end
+    local holder = CreateFrame('Frame', nil, auraBar)
+    holder:Point("TOP", E.UIParent, "CENTER", xoffset, -60)
+    auraBar:SetPoint("BOTTOM", holder, "TOP", 0, 0)
+    auraBar.Holder = holder
+
+    E:CreateMover(auraBar.Holder, frame:GetName()..'AuraBarMover', stringTitle..' Aura Bar Mover', nil, nil, nil, 'ALL, SOLO')
     return auraBar
 end
 

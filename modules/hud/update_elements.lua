@@ -7,13 +7,15 @@ local warningTextShown = false;
 
 function H.PostUpdateHealth(health, unit, min, max)
     if E.db.hud.colorHealthByValue then
-		local r, g, b = health:GetStatusBarColor()
+		local dc = health.defaultColor
+		local r = dc.r
+		local g = dc.g
+		local b = dc.b
 		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
 		health:SetStatusBarColor(newr, newg, newb)
 	end
-	health.value:SetText(format("%.f", min / max * 100).." %")
-	
+
     -- Flash health below threshold %
 	if (min / max * 100) < (E.db.hud.lowThreshold) then
 		H.Flash(health, 0.6)
@@ -30,7 +32,7 @@ end
 -- used to check if a spell is interruptable
 function H:CheckInterrupt(unit)
 	if unit == "vehicle" then unit = "player" end
-	local config = P.hud.layout[unit].elements['castbar']
+	local config = P.hud.units[unit].elements['castbar']
 	local media = config.media
 	if self.interrupt and UnitCanAttack("player", unit) then
 		self:SetStatusBarColor(media.interruptcolor)	
@@ -65,14 +67,7 @@ end
 
 function H.PostUpdatePowerHud(power, unit, min, max)
     local self = power:GetParent()
-    local pType, pToken = UnitPowerType(unit)
-    local color = ElvUF["colors"].power[pToken]
 
-    if color then
-        power.value:SetTextColor(color[1], color[2], color[3])
-		power.value:SetText(format("%.f",min / max * 100).." %")
-    end
-	
 	-- Flash mana below threshold %
 	local powerMana, _ = UnitPowerType(unit)
 	if (min / max * 100) < (E.db.hud.lowThreshold) and (powerMana == SPELL_POWER_MANA) and E.db.hud.flash then
