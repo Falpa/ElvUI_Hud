@@ -58,6 +58,7 @@ P['hud']['layout'] = {
                         ['xOffset'] = -20,
                         ['yOffset'] = -15,
                     },
+                    ['tag'] = '[healthcolor][health:current-percent]'
                 },
             },
             ['power'] = {
@@ -93,6 +94,7 @@ P['hud']['layout'] = {
                         ['xOffset'] = 10,
                         ['yOffset'] = -15,
                     },
+                    ['tag'] = '[powercolor][power:current-percent]'
                 },
             },
             ['castbar'] = {
@@ -139,6 +141,7 @@ P['hud']['layout'] = {
             },
             ['name'] = {
                 ['enabled'] = true,
+                ['tag'] = '[difficultycolor][smartlevel] [shortclassification] [namecolor][name:medium]',
                 ['anchor'] = {
                     ['pointFrom'] = 'BOTTOM',
                     ['attachTo'] = 'health',
@@ -337,6 +340,7 @@ P['hud']['layout'] = {
                         ['xOffset'] = 20,
                         ['yOffset'] = 0,
                     },
+                    ['tag'] = '[healthcolor][health:current-percent]'
                 },
             },
             ['power'] = {
@@ -372,6 +376,7 @@ P['hud']['layout'] = {
                         ['xOffset'] = -4,
                         ['yOffset'] = 0,
                     },
+                    ['tag'] = '[powercolor][power:current-percent]'
                 },
             },
             ['castbar'] = {
@@ -418,6 +423,7 @@ P['hud']['layout'] = {
             },
             ['name'] = {
                 ['enabled'] = true,
+                ['tag'] = '[namecolor][name:medium] [difficultycolor][smartlevel] [shortclassification]',
                 ['anchor'] = {
                     ['pointFrom'] = 'BOTTOM',
                     ['attachTo'] = 'health',
@@ -534,6 +540,7 @@ P['hud']['layout'] = {
                         ['xOffset'] = -4,
                         ['yOffset'] = 0,
                     },
+                    ['tag'] = '[healthcolor][health:current-percent]'
                 },
             },
             ['power'] = {
@@ -569,6 +576,7 @@ P['hud']['layout'] = {
                         ['xOffset'] = 4,
                         ['yOffset'] = 0,
                     },
+                    ['tag'] = '[powercolor][power:current-percent]'
                 },
             },
             ['castbar'] = {

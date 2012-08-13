@@ -236,6 +236,9 @@ function H:UpdateElementAnchor(frame,element)
 	local yOffset = anchor['yOffset']
 	local e = H:GetElement(element)
 	frame[e]:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
+	if config['tag'] then
+		frame:Tag(frame[e], config['tag'])
+	end
 	if config['value'] then
 		if element ~= "classbars" or (element == "classbars" and E.myclass == "WARLOCK") then
 			local venable = config['value']['enabled']
@@ -246,6 +249,9 @@ function H:UpdateElementAnchor(frame,element)
 			local vxOffset = vanchor['xOffset']
 			local vyOffset = vanchor['yOffset']
 			frame[e].value:SetPoint(vpointFrom, vattachTo, vpointTo, vxOffset, vyOffset)
+			if config['value']['tag'] then
+				frame:Tag(frame[e].value,config['value']['tag'])
+			end
 			if venable then
 				frame[e].value:Show()
 			else
