@@ -87,7 +87,7 @@ local function Enable(self, unit)
 			Point:GetStatusBarTexture():SetHorizTile(false)
 		end
 		
-		hb.maxChi = 3
+		hb.maxChi = 5
 		
 		return true
 	end

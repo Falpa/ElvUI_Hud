@@ -32,7 +32,7 @@ function H:ConstructPlayerFrame(frame,unit)
 	end
 
 	if E.myclass == "SHAMAN" then
-		frame.Totems = self:ConstructTotems(frame)
+		frame.TotemBar = self:ConstructTotems(frame)
 	end
 
 	if E.myclass == "MONK" then
@@ -45,6 +45,10 @@ function H:ConstructPlayerFrame(frame,unit)
 
 	if E.myclass == "MAGE" then
 		frame.ArcaneChargeBar = self:ConstructArcaneBar(frame)
+	end
+
+	if E.myclass == "ROGUE" or E.myclass == "DRUID" then
+		frame.CPoints = self:ConstructComboPoints(frame)
 	end
 
 	frame.RaidIcon = self:ConstructRaidIcon(frame)

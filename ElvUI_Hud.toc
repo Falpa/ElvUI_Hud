@@ -5,7 +5,6 @@
 ## Notes: Hud frames for ElvUI
 ## RequiredDeps: ElvUI
 
-libs\oUF_ArcaneCharge\oUF_ArcaneCharge.lua
 libs\oUF_HarmonyBar\oUF_HarmonyBar.lua
 libs\oUF_ShadowOrbsBar\oUF_ShadowOrbsBar.lua
 libs\oUF_ThreatBar\oUF_ThreatBar.lua

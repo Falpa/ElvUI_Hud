@@ -193,6 +193,31 @@ P['hud']['units'] = {
                     },
                 },
             },
+            ['cpoints'] = {
+                ['enabled'] = false,
+                ['anchor'] = {
+                    ['pointFrom'] = 'BOTTOMRIGHT',
+                    ['attachTo'] = 'health',
+                    ['pointTo'] = 'BOTTOMLEFT',
+                    ['xOffset'] = -4,
+                    ['yOffset'] = 0,
+                },
+                ['size'] = {
+                    ['height'] = 146,
+                    ['width'] = 7,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                    ['font'] = {
+                        ['override'] = false,
+                        ['font'] = "ElvUI Font",
+                        ['fontsize'] = 12,
+                    },
+                },
+            },
             ['aurabars'] = {
                 ['enabled'] = true,
                 ['anchor'] = {
@@ -263,7 +288,8 @@ P['hud']['units'] = {
                         ['font'] = "ElvUI Font",
                         ['fontsize'] = 12,
                     },
-                }
+                },
+                ['tag'] = '[pvptimer]'
             },
             ['healcomm'] = {
                 ['enabled'] = true,

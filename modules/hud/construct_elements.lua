@@ -84,7 +84,7 @@ function H:ConstructCastbar(frame)
         castbar.SafeZone = castbar.LatencyTexture
         
         local button = CreateFrame("Frame", nil, castbar)
-        button:SetTemplate("Default")
+        button:SetTemplate("Transparent")
         
         button:Point("BOTTOM", castbar, "BOTTOM", 0, 0)
         
@@ -111,7 +111,7 @@ function H:ConstructCastbar(frame)
         
         castbar.button = CreateFrame("Frame", nil, castbar)
         castbar.button:Size(26)
-        castbar.button:SetTemplate("Default")
+        castbar.button:SetTemplate("Transparent")
         castbar.button:CreateShadow("Default")
 
         castbar.Text = self:ConfigureFontString(frame,'castbar',castbar,'text')
@@ -152,7 +152,7 @@ function H:ConstructEclipseBar(frame)
     eclipseBar:SetFrameStrata("MEDIUM")
     eclipseBar:SetTemplate('Transparent')
     eclipseBar:SetFrameLevel(8)
-    eclipseBar:SetTemplate("Default")
+    eclipseBar:SetTemplate("Transparent")
     eclipseBar:SetBackdropBorderColor(0,0,0,0)
                     
     local lunarBar = self:ConfigureStatusBar(frame,'classbars',frame,'lunarbar')
@@ -180,14 +180,12 @@ end
 function H:ConstructWarlockSpecBars(frame)
     self:AddElement(frame,'classbars')
     local wb = self:ConfigureFrame(frame,'classbars', true)
-    wb:SetTemplate('Transparent')
     wb:SetFrameLevel(frame:GetFrameLevel() + 5)
-    wb:SetTemplate("Default")
+    wb:SetTemplate("Transparent")
     wb:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 4 do
         wb[i] = self:ConfigureStatusBar(frame,'classbars',wb,'warlockspecbar'..i)
-        wb[i]:SetFrameLevel(wb:GetFrameLevel()+1)
         
         if i == 1 then
             wb[i]:SetPoint("BOTTOM",wb)
@@ -213,7 +211,6 @@ function H:ConstructHolyPower(frame)
     
     for i = 1, 5 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'holypower'..i)
-        bars[i]:SetFrameLevel(bars:GetFrameLevel()+1)
 
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
         bars[i].bg:SetTexture(228/255,225/255,16/255)
@@ -239,12 +236,11 @@ function H:ConstructRunes(frame)
     self:AddElement(frame,'classbars')
     local Runes = self:ConfigureFrame(frame,'classbars', true)
     Runes:SetFrameLevel(frame:GetFrameLevel() + 5)
-    Runes:SetTemplate("Default")
+    Runes:SetTemplate("Transparent")
     Runes:SetBackdropBorderColor(0,0,0,0)
 
     for i = 1, 6 do
         Runes[i] = self:ConfigureStatusBar(frame,'classbars',Runes,'rune'..i)
-        Runes[i]:SetFrameLevel(Runes:GetFrameLevel() + 1)
 
         if (i == 1) then
             Runes[i]:SetPoint("BOTTOM", Runes)
@@ -260,19 +256,19 @@ end
 -- Totems for shamans
 function H:ConstructTotems(frame)
     self:AddElement(frame,'classbars')
-    local TotemBar = self:ConfigureFrame(frame,'classbars', true)
+    local TotemBar = self:ConfigureFrame(frame,'classbars',true)
     TotemBar.Destroy = true
     TotemBar:SetFrameLevel(frame:GetFrameLevel() + 5)
 
     for i = 1, 4 do
         TotemBar[i] = self:ConfigureStatusBar(frame,'classbars',TotemBar,'totem'..i)
-        TotemBar[i]:SetFrameLevel(TotemBar:GetFrameLevel()+1)
 
         if (i == 1) then
             TotemBar[i]:SetPoint("BOTTOM",TotemBar)
         else
             TotemBar[i]:SetPoint("BOTTOM", TotemBar[i-1], "TOP", 0, E:Scale(1))
         end
+
         TotemBar[i]:SetOrientation('VERTICAL')
         TotemBar[i]:SetMinMaxValues(0, 1)
     end
@@ -285,12 +281,11 @@ function H:ConstructHarmonyBar(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-    bars:SetTemplate("Default")
+    bars:SetTemplate("Transparent")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 5 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'harmony'..i)
-        bars[i]:SetFrameLevel(bars:GetFrameLevel()+1)
         
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
         
@@ -313,12 +308,11 @@ function H:ConstructShadowOrbBar(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-    bars:SetTemplate("Default")
+    bars:SetTemplate("Transparent")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 3 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'shadoworb'..i)
-        bars[i]:SetFrameLevel(bars:GetFrameLevel()+1)
         
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
         
@@ -341,12 +335,11 @@ function H:ConstructArcaneBar(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-    bars:SetTemplate("Default")
+    bars:SetTemplate("Transparent")
     bars:SetBackdropBorderColor(0,0,0,0)
     
-    for i = 1, 3 do                 
+    for i = 1, 6 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'arcanecharge'..i)
-        bars[i]:SetFrameLevel(bars:GetFrameLevel()+1)
         
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
 
@@ -369,12 +362,11 @@ function H:ConstructComboPoints(frame)
     self:AddElement(frame,'cpoints')
     local bars = self:ConfigureFrame(frame,'cpoints', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-    bars:SetTemplate("Default")
+    bars:SetTemplate("Transparent")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 3 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'combopoint'..i)
-        bars[i]:SetFrameLevel(bars:GetFrameLevel()+1)
         
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
 
@@ -476,8 +468,6 @@ function H:ConstructAuraBarHeader(frame)
             end
         end
     end)
-
-    auraBar:Show()
     
     local healthColor = UF.db.colors.health
 
@@ -486,22 +476,6 @@ function H:ConstructAuraBarHeader(frame)
     auraBar.buffColor = {healthColor.r, healthColor.b, healthColor.g}
     auraBar.down = true
 
-    local stringTitle = E:StringTitle(frame.unit)
-    if stringTitle:find('target') then
-        stringTitle = gsub(stringTitle, 'target', ' Target')
-    end
-    local xoffset
-    if frame.unit == 'player' then
-        xoffset = -275
-    else
-        xoffset = 275
-    end
-    local holder = CreateFrame('Frame', nil, auraBar)
-    holder:Point("TOP", E.UIParent, "CENTER", xoffset, -60)
-    auraBar:SetPoint("BOTTOM", holder, "TOP", 0, 0)
-    auraBar.Holder = holder
-
-    E:CreateMover(auraBar.Holder, frame:GetName()..'AuraBarMover', stringTitle..' Aura Bar Mover', nil, nil, nil, 'ALL, SOLO')
     return auraBar
 end
 
@@ -538,8 +512,6 @@ function H:ConstructPvPIndicator(frame)
     self:AddElement(frame,'pvp')
     local pvp = self:ConfigureFontString(frame,'pvp')
     pvp:SetTextColor(0.69, 0.31, 0.31)
-    
-    self:ScheduleRepeatingTimer("UpdatePvPText", 0.1, frame)
     
     return pvp
 end

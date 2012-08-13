@@ -34,7 +34,7 @@ function H:GetClassBarName()
 	end
 
 	if E.myclass == "SHAMAN" then
-		return 'Totems'
+		return 'TotemBar'
 	end
 
 	if E.myclass == "MONK" then
@@ -128,7 +128,7 @@ function H:UpdateClassBar(frame,element)
 
 	if E.myclass == "SHAMAN" then
 		for i=1,4 do
-			frame.Totems[i]:Size(size.width,(size.height - 3) / 4)
+			frame.TotemBar[i]:Size(size.width,(size.height - 3) / 4)
 		end
 	end
 
@@ -146,7 +146,7 @@ function H:UpdateClassBar(frame,element)
 
 	if E.myclass == "MAGE" then
 		for i=1,6 do
-			frame.ArcaneChargeBar[i]:Width(size.width)
+			frame.ArcaneChargeBar[i]:Size(size.width,(size.height - 5) / 6)
 		end
 	end
 end
@@ -157,12 +157,6 @@ function H:UpdateElement(frame,element)
 	local media = config['media']
 	local e = self.units[frame.unit].elements[element]
 	if size then
-		if e.frame then
-			e.frame:Size(size.width,size.height)
-			if element == 'classbars' or element == 'cpoints' then
-				self:UpdateClassBar(frame,element)
-			end
-		end
 		if e.statusbars then
 			if element == 'castbar' and size['vertical'] ~= nil then
 				if not E.db.hud.horizCastbar then
@@ -175,6 +169,12 @@ function H:UpdateElement(frame,element)
 			for _,statusbar in pairs(e.statusbars) do
 				statusbar:Size(size.width,size.height)
 			end			
+		end
+		if e.frame then
+			e.frame:Size(size.width,size.height)
+			if element == 'classbars' or element == 'cpoints' then
+				self:UpdateClassBar(frame,element)
+			end
 		end
 	end
 	if media then
@@ -258,18 +258,18 @@ function H:UpdateElementAnchor(frame,element)
 
 	if enabled then
 		frame:EnableElement(e)
-		if config['value'] then
-			if config['value']['enable'] then
+		if config['value'] and frame[e].value then
+			if config['value']['enabled'] then
 				frame[e].value:Show()
+			else
+				frame[e].value:Hide()
 			end
 		end
-		frame[e]:Show()
 	else
 		frame:DisableElement(e)
 		if config['value'] then
 			frame[e].value:Hide()
 		end
-		frame[e]:Hide()
 	end
 end
 
@@ -345,21 +345,24 @@ function H:ConfigureStatusBar(frame,element,parent,name)
 	if name == nil then name = "statusbar" end
 
 	-- Create the status bar
-	local sb = CreateFrame('StatusBar', nil, frame)
+	local sb = CreateFrame('StatusBar', nil, parent)
 	sb:SetTemplate('Transparent')
 	sb:CreateBackdrop("Default")
 	sb:CreateShadow("Default")
 
 	-- Dummy texture so we can set colors
-	sb:SetStatusBarTexture(LSM:Fetch("statusbar","Minimalist"))
-	sb:SetBackdrop(backdrop)
-    sb:SetBackdropColor(0, 0, 0, 0)
+	sb:SetStatusBarTexture(E['media'].blankTex)
+	sb:GetStatusBarTexture():SetHorizTile(false)
+ 
+	-- Frame strata/level
+	sb:SetFrameStrata(parent:GetFrameStrata())
+	sb:SetFrameLevel(parent:GetFrameLevel())
+
 	-- Create the status bar background
-	-- Health Bar Background
     local bg = sb:CreateTexture(nil, 'BORDER')
     bg:SetAllPoints()
-    bg:SetTexture(.1, .1, .1)
-    bg:SetAlpha(.2)
+    bg:SetTexture(E['media'].blankTex)
+    bg.multiplier = 0.3
     sb.bg = bg
 
     if not self.units[frame.unit].elements[element].statusbars then
@@ -396,7 +399,7 @@ function H:ConfigureTexture(frame,element,parent,name)
 
 	local t = parent:CreateTexture(nil, "OVERLAY")
 	-- Dummy texture
-	t:SetTexture(LSM:Fetch("statusbar","Minimalist"))
+	t:SetTexture(E['media'].blankTex)
 	self.units[frame.unit].elements[element].textures[name] = t
 	return t
 end
@@ -404,8 +407,9 @@ end
 function H:ConfigureFrame(frame,element,visible)
 	if visible == nil then visible = false end
 	local f = CreateFrame('Frame',nil,frame)
+	f.visible = visible
 	if visible then
-		f:SetTemplate('Transparent')
+		f:SetTemplate("Default")
 		f:CreateBackdrop("Default")
 		f:CreateShadow("Default")
 	end
