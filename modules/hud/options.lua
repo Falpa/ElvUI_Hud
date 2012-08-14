@@ -19,7 +19,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 		order = order,
 		type = 'group',
 		name = L[name],
-		get = function(info) reutrn E.db.hud.units[unit].elements[element][ info[#info] ] end,
+		get = function(info) return E.db.hud.units[unit].elements[element][ info[#info] ] end,
 		set = function(info,value)  E.db.hud.units[unit].elements[element][ info[#info] ] = value; H:UpdateFrames(unit) end,
 		args = {
 			enabled = {
@@ -317,25 +317,24 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         min = 10, max = 30, step = 1,   
                     }, 
                 }
-            },
+            }
 		end
 		if hasColor then
 			if element ~= 'castbar' then
 				options.args.media.args.color = {
-	                    order = 10,
-	                    type = 'color',
-	                    name = L['Color'],
-	                    get = function(info)
-	                        local t = E.db.hud.units[unit].elements[element].media[ info[#info] ]
-	                        return t.r, t.g, t.b, t.a
-	                    end,
-	                    set = function(info, r, g, b)
-	                        local t = E.db.hud.units[unit].elements[element].media[ info[#info] ]
-	                        t.r, t.g, t.b = r, g, b
-	                        H:UpdateAllFrames()
-	                    end,
-	                }
-	            }
+                    order = 10,
+                    type = 'color',
+                    name = L['Color'],
+                    get = function(info)
+                        local t = E.db.hud.units[unit].elements[element].media[ info[#info] ]
+                        return t.r, t.g, t.b, t.a
+                    end,
+                    set = function(info, r, g, b)
+                        local t = E.db.hud.units[unit].elements[element].media[ info[#info] ]
+                        t.r, t.g, t.b = r, g, b
+                        H:UpdateAllFrames()
+                    end,
+                }
 	        else
 	        	options.args.media.args.color = {
                     order = 10,
