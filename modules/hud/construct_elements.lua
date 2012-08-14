@@ -394,7 +394,7 @@ function H:ConstructComboPoints(frame)
 end
 
 function H:ConstructAuraBars()
-    local config = P.hud.units.player.elements['aurabars']
+    local config = E.db.hud.units.player.elements['aurabars']
     local media = config.media
     local size = config.size
     local bar = self.statusBar

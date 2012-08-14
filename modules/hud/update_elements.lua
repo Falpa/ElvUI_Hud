@@ -7,7 +7,7 @@ local warningTextShown = false;
 
 function H.PostUpdateHealth(health, unit, min, max)
     if E.db.hud.colorHealthByValue then
-		local dc = health.defaultColor or (P.hud.units.player.elements.health.media.color)
+		local dc = health.defaultColor or (E.db.hud.units.player.elements.health.media.color)
 		local r = dc.r
 		local g = dc.g
 		local b = dc.b
@@ -32,7 +32,7 @@ end
 -- used to check if a spell is interruptable
 function H:CheckInterrupt(unit)
 	if unit == "vehicle" then unit = "player" end
-	local config = P.hud.units[unit].elements['castbar']
+	local config = E.db.hud.units[unit].elements['castbar']
 	local media = config.media
 	if self.interrupt and UnitCanAttack("player", unit) then
 		self:SetStatusBarColor(media.interruptcolor)	

@@ -94,7 +94,7 @@ end
 -- This function is only responsible for updating bar sizes for class bar children
 -- textures work normally as does parent size
 function H:UpdateClassBar(frame,element)
-	local config = P.hud.units[frame.unit].elements[element]
+	local config = E.db.hud.units[frame.unit].elements[element]
 	local size = config['size']
 	
 	if element == "cpoints" then
@@ -152,7 +152,7 @@ function H:UpdateClassBar(frame,element)
 end
 
 function H:UpdateElement(frame,element)
-	local config = P.hud.units[frame.unit].elements[element]
+	local config = E.db.hud.units[frame.unit].elements[element]
 	local size = config['size']
 	local media = config['media']
 	local e = self.units[frame.unit].elements[element]
@@ -214,7 +214,7 @@ end
 
 function H:UpdateElementAnchor(frame,element)
 	if element == 'healcomm' then return end
-	local config = P.hud.units[frame.unit].elements[element]
+	local config = E.db.hud.units[frame.unit].elements[element]
 	local enabled = config['enabled']
 	local anchor = config['anchor']
 	local e = H:GetElement(element)
@@ -294,10 +294,10 @@ end
 
 function H:UpdateAllFrames()
 	for _,frame in pairs(self.units) do
-		frame:Size(P.hud.units[frame.unit].width,P.hud.units[frame.unit].height)
+		frame:Size(E.db.hud.units[frame.unit].width,E.db.hud.units[frame.unit].height)
 		_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
-		if P.hud.units[frame.unit].enabled then
+		if E.db.hud.units[frame.unit].enabled then
 			frame:EnableMouse(E.db.hud.enableMouse)
 			frame:SetAlpha(E.db.hud.alpha)
 			frame:Show()
@@ -415,4 +415,46 @@ function H:ConfigureFrame(frame,element,visible)
 	end
 	self.units[frame.unit].elements[element].frame = f
 	return f
+end
+
+function H:ResetUnitSettings(unit)
+	local frame = self.units[unit]
+	if not frame then return end
+	E:CopyTable(E.db.hud[unit],P.hud.units[unit])
+	frame:SetAlpha(0)
+	frame:EnableMouse(false)
+	frame:Hide()
+	local stringTitle = E:StringTitle(unit)
+    if stringTitle:find('target') then
+        stringTitle = gsub(stringTitle, 'target', 'Target')
+    end
+    ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
+    self:UpdateAllFrames()
+end
+
+function H:UpdateHud(unit)
+	local frame = self.units[unit]
+	if not frame then return end
+	frame:SetAlpha(0)
+	frame:EnableMouse(false)
+	frame:Hide()
+	local stringTitle = E:StringTitle(unit)
+    if stringTitle:find('target') then
+        stringTitle = gsub(stringTitle, 'target', 'Target')
+    end
+    ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
+    self:UpdateAllFrames()
+end
+
+function H:UpdateElementSizes(unit,newSize,isWidth)
+	local elements = self.units[unit].elements
+	
+	for element,_ in pairs(elements) do
+		local config = E.db.hud.units[frame.unit].elements[element]
+		local size = config['size']
+		if size then
+			local var = (isWidth and 'width') or 'height'
+			size[var] = newSize
+		end
+	end
 end
