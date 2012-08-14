@@ -213,11 +213,18 @@ function H:UpdateElement(frame,element)
 end
 
 function H:UpdateElementAnchor(frame,element)
-	if element == 'healcomm' then return end
+	local e = H:GetElement(element)
 	local config = E.db.hud.units[frame.unit].elements[element]
 	local enabled = config['enabled']
-	local anchor = config['anchor']
-	local e = H:GetElement(element)
+	if element == 'healcomm' then
+		if enabled then
+			frame:EnableElement(e)
+		else
+			frame:DisableElement(e)
+		end
+		return
+	end
+ 	local anchor = config['anchor']
 	if element == 'cpoints' and not (E.myclass == "ROGUE" or E.myclass == "DRUID") then return end;
 	if element == 'castbar' and anchor['vertical'] ~= nil then
 		if not E.db.hud.horizCastbar then
@@ -265,11 +272,13 @@ function H:UpdateElementAnchor(frame,element)
 				frame[e].value:Hide()
 			end
 		end
+		if element ~= 'raidicon' then frame[e]:Show() end
 	else
 		frame:DisableElement(e)
 		if config['value'] then
 			frame[e].value:Hide()
 		end
+		frame[e]:Hide()
 	end
 end
 
@@ -421,20 +430,6 @@ function H:ResetUnitSettings(unit)
 	local frame = self.units[unit]
 	if not frame then return end
 	E:CopyTable(E.db.hud[unit],P.hud.units[unit])
-	frame:SetAlpha(0)
-	frame:EnableMouse(false)
-	frame:Hide()
-	local stringTitle = E:StringTitle(unit)
-    if stringTitle:find('target') then
-        stringTitle = gsub(stringTitle, 'target', 'Target')
-    end
-    ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
-    self:UpdateAllFrames()
-end
-
-function H:UpdateHud(unit)
-	local frame = self.units[unit]
-	if not frame then return end
 	frame:SetAlpha(0)
 	frame:EnableMouse(false)
 	frame:Hide()

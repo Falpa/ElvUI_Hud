@@ -603,6 +603,8 @@ P['hud']['units'] = {
                         ['font'] = "ElvUI Font",
                         ['fontsize'] = 12,
                     },
+                    ['color'] = { r = 0.78, g = 0.25, b = 0.25 },
+                    ["interruptcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
                 },
             },
             ['name'] = {

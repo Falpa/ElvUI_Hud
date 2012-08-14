@@ -37,7 +37,7 @@ E.Options.args.hud = {
                     order = 2,
                     name = L["Reset Settings"],
                     desc = L["Reset the settings of this addon to their defaults."],
-                    func = function() E:CopyTable(E.db.hud,P.hud); H:Enable(); H:UpdateHideSetting(); H:UpdateMedia(); H:UpdateMouseSetting(); end
+                    func = function() E:CopyTable(E.db.hud,P.hud); H:Enable(); H:UpdateHideSetting(); H:UpdateAllFrames(); H:UpdateMouseSetting(); end
                 },
             },
         },
@@ -178,7 +178,7 @@ E.Options.args.hud.args.player = {
     order = 200,
     childGroups = "select",
     get = function(info) return E.db.hud.units['player'][ info[#info] ] end,
-    set = function(info, value) E.db.hud.units['player'][ info[#info] ] = value; H:UpdateHud('player'); end,
+    set = function(info, value) E.db.hud.units['player'][ info[#info] ] = value; H:UpdateAllFrames(); end,
     args = {
         enabled = {
             type = 'toggle',
@@ -199,7 +199,7 @@ E.Options.args.hud.args.player = {
             set = function(info,value) 
                 E.db.hud.units['player'][ info[#info] ] = value; 
                 H:UpdateElementSizes('player',true,value)
-                H:UpdateHud('player') 
+                H:UpdateAllFrames() 
             end
         },
         height = {
@@ -210,7 +210,7 @@ E.Options.args.hud.args.player = {
              set = function(info,value) 
                 E.db.hud.units['player'][ info[#info] ] = value; 
                 H:UpdateElementSizes('player',false,value)
-                H:UpdateHud('player') 
+                H:UpdateAllFrames() 
             end
         },
         health = {
@@ -218,7 +218,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Health'],
             get = function(info) return E.db.hud.units['player'].elements['health'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['health'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['health'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -231,7 +231,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['health'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['health'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -274,7 +274,7 @@ E.Options.args.hud.args.player = {
                     name = L['Size'],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['health'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['health'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -302,7 +302,7 @@ E.Options.args.hud.args.player = {
                             order = 1,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['health'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -327,7 +327,7 @@ E.Options.args.hud.args.player = {
                             order = 2,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['health'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['health'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -364,18 +364,18 @@ E.Options.args.hud.args.player = {
                             set = function(info, r, g, b)
                                 local t = E.db.hud.units['player'].elements.health.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         }
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['health'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['health'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -388,7 +388,7 @@ E.Options.args.hud.args.player = {
                             name = L["Anchor"],
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['health'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -441,7 +441,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Power'],
             get = function(info) return E.db.hud.units['player'].elements['power'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['power'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['power'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -454,7 +454,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['power'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['power'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -497,7 +497,7 @@ E.Options.args.hud.args.player = {
                     name = L['Size'],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['power'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['power'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -525,7 +525,7 @@ E.Options.args.hud.args.player = {
                             order = 1,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['power'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -550,7 +550,7 @@ E.Options.args.hud.args.player = {
                             order = 2,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['power'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['power'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -579,12 +579,12 @@ E.Options.args.hud.args.player = {
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['power'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['power'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -597,7 +597,7 @@ E.Options.args.hud.args.player = {
                             name = L["Anchor"],
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['power'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -650,7 +650,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Castbar'],
             get = function(info) return E.db.hud.units['player'].elements['castbar'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['castbar'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -663,7 +663,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['castbar'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['castbar'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         horizontal = {
                             order = 2,
@@ -671,7 +671,7 @@ E.Options.args.hud.args.player = {
                             name = L["Horizontal"],
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['castbar'].anchor.horizontal[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].anchor.horizontal[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['castbar'].anchor.horizontal[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -714,7 +714,7 @@ E.Options.args.hud.args.player = {
                             name = L["Horizontal"],
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['castbar'].anchor.vertical[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].anchor.vertical[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['castbar'].anchor.vertical[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -759,7 +759,7 @@ E.Options.args.hud.args.player = {
                     name = L['Size'],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['castbar'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['castbar'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         horizontal = {
                             order = 3,
@@ -767,7 +767,7 @@ E.Options.args.hud.args.player = {
                             name = L['Horizontal'],
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['castbar'].size.horizontal[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].size.horizontal[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['castbar'].size.horizontal[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 width = {
                                     order = 4,
@@ -789,7 +789,7 @@ E.Options.args.hud.args.player = {
                             name = L['Horizontal'],
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['castbar'].size.vertical[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].size.verticalal[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['castbar'].size.verticalal[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 width = {
                                     order = 4,
@@ -819,7 +819,7 @@ E.Options.args.hud.args.player = {
                             order = 1,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['castbar'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['castbar'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -844,7 +844,7 @@ E.Options.args.hud.args.player = {
                             order = 2,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['castbar'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['castbar'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -881,7 +881,7 @@ E.Options.args.hud.args.player = {
                             set = function(info, r, g, b)
                                 local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         },
                         interruptcolor = {
@@ -895,7 +895,7 @@ E.Options.args.hud.args.player = {
                             set = function(info, r, g, b)
                                 local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         }
                     },
@@ -907,7 +907,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Class Bars'],
             get = function(info) return E.db.hud.units['player'].elements['classbars'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['classbars'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['classbars'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -920,7 +920,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['classbars'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['classbars'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['classbars'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -963,7 +963,7 @@ E.Options.args.hud.args.player = {
                     name = L['Size'],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['classbars'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['classbars'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['classbars'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -991,7 +991,7 @@ E.Options.args.hud.args.player = {
                             order = 1,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['classbars'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['classbars'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['classbars'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1016,7 +1016,7 @@ E.Options.args.hud.args.player = {
                             order = 2,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['classbars'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['classbars'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['classbars'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1045,12 +1045,12 @@ E.Options.args.hud.args.player = {
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['classbars'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['classbars'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['classbars'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -1063,7 +1063,7 @@ E.Options.args.hud.args.player = {
                             name = L["Anchor"],
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['classbars'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['classbars'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['classbars'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -1116,7 +1116,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Combo Points'],
             get = function(info) return E.db.hud.units['player'].elements['cpoints'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['cpoints'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -1129,7 +1129,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['cpoints'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['cpoints'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -1172,7 +1172,7 @@ E.Options.args.hud.args.player = {
                     name = L['Size'],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['cpoints'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['cpoints'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -1200,7 +1200,7 @@ E.Options.args.hud.args.player = {
                             order = 1,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['cpoints'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['cpoints'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1225,7 +1225,7 @@ E.Options.args.hud.args.player = {
                             order = 2,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['cpoints'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['cpoints'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1260,7 +1260,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Aura Bars'],
             get = function(info) return E.db.hud.units['player'].elements['aurabars'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['aurabars'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -1273,7 +1273,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['aurabars'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['aurabars'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -1316,7 +1316,7 @@ E.Options.args.hud.args.player = {
                     name = L['Size'],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['aurabars'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['aurabars'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -1344,7 +1344,7 @@ E.Options.args.hud.args.player = {
                             order = 1,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['aurabars'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['aurabars'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1369,7 +1369,7 @@ E.Options.args.hud.args.player = {
                             order = 2,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['aurabars'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['aurabars'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1404,7 +1404,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Name'],
             get = function(info) return E.db.hud.units['player'].elements['name'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['name'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['name'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -1417,7 +1417,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['name'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['name'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['name'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -1466,7 +1466,7 @@ E.Options.args.hud.args.player = {
                             order = 2,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['name'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['name'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['name'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1508,7 +1508,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['PVP Text'],
             get = function(info) return E.db.hud.units['player'].elements['pvp'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['pvp'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['pvp'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -1521,7 +1521,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['pvp'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['pvp'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['pvp'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -1570,7 +1570,7 @@ E.Options.args.hud.args.player = {
                             order = 2,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['pvp'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['pvp'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['pvp'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1612,7 +1612,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Raid Icon'],
             get = function(info) return E.db.hud.units['player'].elements['raidicon'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['raidicon'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -1625,7 +1625,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['raidicon'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -1669,7 +1669,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Resting Indicator'],
             get = function(info) return E.db.hud.units['player'].elements['resting'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['resting'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['resting'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -1682,7 +1682,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['resting'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['resting'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['resting'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -1726,7 +1726,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Combat Indicator'],
             get = function(info) return E.db.hud.units['player'].elements['combat'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['combat'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['combat'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -1739,7 +1739,7 @@ E.Options.args.hud.args.player = {
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units['player'].elements['combat'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['combat'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    set = function(info,value) E.db.hud.units['player'].elements['combat'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -1783,7 +1783,7 @@ E.Options.args.hud.args.player = {
             type = 'group',
             name = L['Heal Prediction'],
             get = function(info) return E.db.hud.units['player'].elements['healcomm'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['healcomm'][ info[#info] ] = value; H:UpdateHud('player') end,
+            set = function(info,value) E.db.hud.units['player'].elements['healcomm'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -1802,7 +1802,7 @@ E.Options.args.hud.args.player = {
                             order = 1,
                             guiInline = true,
                             get = function(info) return E.db.hud.units['player'].elements['healcomm'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['healcomm'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            set = function(info,value) E.db.hud.units['player'].elements['healcomm'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1833,8 +1833,8 @@ E.Options.args.hud.args.target = {
     type = 'group',
     order = 400,
     childGroups = "select",
-    get = function(info) return E.db.hud.units['player'][ info[#info] ] end,
-    set = function(info, value) E.db.hud.units['player'][ info[#info] ] = value; H:UpdateHud('player'); end,
+    get = function(info) return E.db.hud.units['target'][ info[#info] ] end,
+    set = function(info, value) E.db.hud.units['target'][ info[#info] ] = value; H:UpdateAllFrames(); end,
     args = {
         enabled = {
             type = 'toggle',
@@ -1845,7 +1845,7 @@ E.Options.args.hud.args.target = {
             type='execute',
             order = 2,
             name = L['Restore Defaults'],
-            func = function(info,value) H:ResetUnitSettings('player'); E:ResetMovers('Player Hud Frame') end,
+            func = function(info,value) H:ResetUnitSettings('target'); E:ResetMovers('Player Hud Frame') end,
         },
         width = {
             order = 4,
@@ -1853,9 +1853,9 @@ E.Options.args.hud.args.target = {
             type = 'range',
             min = 7, max = 50, step = 1,
             set = function(info,value) 
-                E.db.hud.units['player'][ info[#info] ] = value; 
-                H:UpdateElementSizes('player',true,value)
-                H:UpdateHud('player') 
+                E.db.hud.units['target'][ info[#info] ] = value; 
+                H:UpdateElementSizes('target',true,value)
+                H:UpdateAllFrames() 
             end
         },
         height = {
@@ -1864,17 +1864,17 @@ E.Options.args.hud.args.target = {
             type = 'range',
             min = 20, max = 600, step = 1,
              set = function(info,value) 
-                E.db.hud.units['player'][ info[#info] ] = value; 
-                H:UpdateElementSizes('player',false,value)
-                H:UpdateHud('player') 
+                E.db.hud.units['target'][ info[#info] ] = value; 
+                H:UpdateElementSizes('target',false,value)
+                H:UpdateAllFrames() 
             end
         },
         health = {
             order = 100,
             type = 'group',
             name = L['Health'],
-            get = function(info) return E.db.hud.units['player'].elements['health'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['health'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['target'].elements['health'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['target'].elements['health'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -1886,8 +1886,8 @@ E.Options.args.hud.args.target = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['health'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['health'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -1929,8 +1929,8 @@ E.Options.args.hud.args.target = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['health'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['health'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -1957,8 +1957,8 @@ E.Options.args.hud.args.target = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['health'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -1982,8 +1982,8 @@ E.Options.args.hud.args.target = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['health'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['health'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2014,24 +2014,24 @@ E.Options.args.hud.args.target = {
                             type = 'color',
                             name = L['Color'],
                             get = function(info)
-                                local t = E.db.hud.units['player'].elements.health.media[ info[#info] ]
+                                local t = E.db.hud.units['target'].elements.health.media[ info[#info] ]
                                 return t.r, t.g, t.b, t.a
                             end,
                             set = function(info, r, g, b)
-                                local t = E.db.hud.units['player'].elements.health.media[ info[#info] ]
+                                local t = E.db.hud.units['target'].elements.health.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         }
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['health'].value[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['health'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -2043,8 +2043,8 @@ E.Options.args.hud.args.target = {
                             type = "group",
                             name = L["Anchor"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['health'].value.anchor[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -2096,8 +2096,8 @@ E.Options.args.hud.args.target = {
             order = 200,
             type = 'group',
             name = L['Power'],
-            get = function(info) return E.db.hud.units['player'].elements['power'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['power'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['target'].elements['power'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['target'].elements['power'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -2109,8 +2109,8 @@ E.Options.args.hud.args.target = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['power'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['power'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -2152,8 +2152,8 @@ E.Options.args.hud.args.target = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['power'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['power'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -2180,8 +2180,8 @@ E.Options.args.hud.args.target = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['power'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2205,8 +2205,8 @@ E.Options.args.hud.args.target = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['power'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['power'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2235,12 +2235,12 @@ E.Options.args.hud.args.target = {
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['power'].value[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['power'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -2252,8 +2252,8 @@ E.Options.args.hud.args.target = {
                             type = "group",
                             name = L["Anchor"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['power'].value.anchor[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -2305,8 +2305,8 @@ E.Options.args.hud.args.target = {
             order = 300,
             type = 'group',
             name = L['Castbar'],
-            get = function(info) return E.db.hud.units['player'].elements['castbar'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['target'].elements['castbar'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['target'].elements['castbar'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -2318,16 +2318,16 @@ E.Options.args.hud.args.target = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['castbar'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['castbar'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['castbar'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         horizontal = {
                             order = 2,
                             type = "group",
                             name = L["Horizontal"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['castbar'].anchor.horizontal[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].anchor.horizontal[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['castbar'].anchor.horizontal[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['castbar'].anchor.horizontal[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -2369,8 +2369,8 @@ E.Options.args.hud.args.target = {
                             type = "group",
                             name = L["Horizontal"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['castbar'].anchor.vertical[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].anchor.vertical[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['castbar'].anchor.vertical[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['castbar'].anchor.vertical[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -2414,16 +2414,16 @@ E.Options.args.hud.args.target = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['castbar'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['castbar'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['castbar'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         horizontal = {
                             order = 3,
                             type = 'group',
                             name = L['Horizontal'],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['castbar'].size.horizontal[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].size.horizontal[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['castbar'].size.horizontal[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['castbar'].size.horizontal[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 width = {
                                     order = 4,
@@ -2444,8 +2444,8 @@ E.Options.args.hud.args.target = {
                             type = 'group',
                             name = L['Horizontal'],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['castbar'].size.vertical[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].size.verticalal[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['castbar'].size.vertical[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['castbar'].size.verticalal[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 width = {
                                     order = 4,
@@ -2474,8 +2474,8 @@ E.Options.args.hud.args.target = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['castbar'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['castbar'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['castbar'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2499,8 +2499,8 @@ E.Options.args.hud.args.target = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['castbar'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['castbar'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['castbar'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2531,13 +2531,13 @@ E.Options.args.hud.args.target = {
                             type = 'color',
                             name = L['Color'],
                             get = function(info)
-                                local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
+                                local t = E.db.hud.units['target'].elements.castbar.media[ info[#info] ]
                                 return t.r, t.g, t.b, t.a
                             end,
                             set = function(info, r, g, b)
-                                local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
+                                local t = E.db.hud.units['target'].elements.castbar.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         },
                         interruptcolor = {
@@ -2545,13 +2545,13 @@ E.Options.args.hud.args.target = {
                             type = 'color',
                             name = L['Interrupt Color'],
                             get = function(info)
-                                local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
+                                local t = E.db.hud.units['target'].elements.castbar.media[ info[#info] ]
                                 return t.r, t.g, t.b, t.a
                             end,
                             set = function(info, r, g, b)
-                                local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
+                                local t = E.db.hud.units['target'].elements.castbar.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         }
                     },
@@ -2562,8 +2562,8 @@ E.Options.args.hud.args.target = {
             order = 500,
             type = 'group',
             name = L['Combo Points'],
-            get = function(info) return E.db.hud.units['player'].elements['cpoints'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['target'].elements['cpoints'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['target'].elements['cpoints'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -2575,8 +2575,8 @@ E.Options.args.hud.args.target = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['cpoints'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['cpoints'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['cpoints'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -2618,8 +2618,8 @@ E.Options.args.hud.args.target = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['cpoints'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['cpoints'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['cpoints'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -2646,8 +2646,8 @@ E.Options.args.hud.args.target = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['cpoints'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['cpoints'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['cpoints'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2671,8 +2671,8 @@ E.Options.args.hud.args.target = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['cpoints'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['cpoints'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['cpoints'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['cpoints'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2706,8 +2706,8 @@ E.Options.args.hud.args.target = {
             order = 600,
             type = 'group',
             name = L['Aura Bars'],
-            get = function(info) return E.db.hud.units['player'].elements['aurabars'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['target'].elements['aurabars'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['target'].elements['aurabars'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -2719,8 +2719,8 @@ E.Options.args.hud.args.target = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['aurabars'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['aurabars'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['aurabars'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -2762,8 +2762,8 @@ E.Options.args.hud.args.target = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['aurabars'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['aurabars'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['aurabars'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -2790,8 +2790,8 @@ E.Options.args.hud.args.target = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['aurabars'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['aurabars'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['aurabars'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2815,8 +2815,8 @@ E.Options.args.hud.args.target = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['aurabars'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['aurabars'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['aurabars'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['aurabars'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2850,8 +2850,8 @@ E.Options.args.hud.args.target = {
             order = 700,
             type = 'group',
             name = L['Name'],
-            get = function(info) return E.db.hud.units['player'].elements['name'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['name'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['target'].elements['name'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['target'].elements['name'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -2863,8 +2863,8 @@ E.Options.args.hud.args.target = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['name'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['name'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['name'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['name'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -2912,8 +2912,8 @@ E.Options.args.hud.args.target = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['name'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['name'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['target'].elements['name'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['target'].elements['name'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -2954,8 +2954,8 @@ E.Options.args.hud.args.target = {
             order = 900,
             type = 'group',
             name = L['Raid Icon'],
-            get = function(info) return E.db.hud.units['player'].elements['raidicon'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['target'].elements['raidicon'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['target'].elements['raidicon'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -2967,8 +2967,8 @@ E.Options.args.hud.args.target = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['raidicon'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['target'].elements['raidicon'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['target'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -3015,8 +3015,8 @@ E.Options.args.hud.args.pet = {
     type = 'group',
     order = 600,
     childGroups = "select",
-    get = function(info) return E.db.hud.units['player'][ info[#info] ] end,
-    set = function(info, value) E.db.hud.units['player'][ info[#info] ] = value; H:UpdateHud('player'); end,
+    get = function(info) return E.db.hud.units['pet'][ info[#info] ] end,
+    set = function(info, value) E.db.hud.units['pet'][ info[#info] ] = value; H:UpdateAllFrames(); end,
     args = {
         enabled = {
             type = 'toggle',
@@ -3027,7 +3027,7 @@ E.Options.args.hud.args.pet = {
             type='execute',
             order = 2,
             name = L['Restore Defaults'],
-            func = function(info,value) H:ResetUnitSettings('player'); E:ResetMovers('Player Hud Frame') end,
+            func = function(info,value) H:ResetUnitSettings('pet'); E:ResetMovers('Player Hud Frame') end,
         },
         width = {
             order = 4,
@@ -3035,9 +3035,9 @@ E.Options.args.hud.args.pet = {
             type = 'range',
             min = 7, max = 50, step = 1,
             set = function(info,value) 
-                E.db.hud.units['player'][ info[#info] ] = value; 
-                H:UpdateElementSizes('player',true,value)
-                H:UpdateHud('player') 
+                E.db.hud.units['pet'][ info[#info] ] = value; 
+                H:UpdateElementSizes('pet',true,value)
+                H:UpdateAllFrames() 
             end
         },
         height = {
@@ -3046,17 +3046,17 @@ E.Options.args.hud.args.pet = {
             type = 'range',
             min = 20, max = 600, step = 1,
              set = function(info,value) 
-                E.db.hud.units['player'][ info[#info] ] = value; 
-                H:UpdateElementSizes('player',false,value)
-                H:UpdateHud('player') 
+                E.db.hud.units['pet'][ info[#info] ] = value; 
+                H:UpdateElementSizes('pet',false,value)
+                H:UpdateAllFrames() 
             end
         },
         health = {
             order = 100,
             type = 'group',
             name = L['Health'],
-            get = function(info) return E.db.hud.units['player'].elements['health'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['health'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['pet'].elements['health'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['pet'].elements['health'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -3068,8 +3068,8 @@ E.Options.args.hud.args.pet = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['health'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['health'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -3111,8 +3111,8 @@ E.Options.args.hud.args.pet = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['health'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['health'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -3139,8 +3139,8 @@ E.Options.args.hud.args.pet = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pet'].elements['health'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pet'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -3164,8 +3164,8 @@ E.Options.args.hud.args.pet = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pet'].elements['health'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pet'].elements['health'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -3196,24 +3196,24 @@ E.Options.args.hud.args.pet = {
                             type = 'color',
                             name = L['Color'],
                             get = function(info)
-                                local t = E.db.hud.units['player'].elements.health.media[ info[#info] ]
+                                local t = E.db.hud.units['pet'].elements.health.media[ info[#info] ]
                                 return t.r, t.g, t.b, t.a
                             end,
                             set = function(info, r, g, b)
-                                local t = E.db.hud.units['player'].elements.health.media[ info[#info] ]
+                                local t = E.db.hud.units['pet'].elements.health.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         }
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['health'].value[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['health'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -3225,8 +3225,8 @@ E.Options.args.hud.args.pet = {
                             type = "group",
                             name = L["Anchor"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pet'].elements['health'].value.anchor[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pet'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -3278,8 +3278,8 @@ E.Options.args.hud.args.pet = {
             order = 200,
             type = 'group',
             name = L['Power'],
-            get = function(info) return E.db.hud.units['player'].elements['power'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['power'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['pet'].elements['power'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['pet'].elements['power'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -3291,8 +3291,8 @@ E.Options.args.hud.args.pet = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['power'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['power'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -3334,8 +3334,8 @@ E.Options.args.hud.args.pet = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['power'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['power'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -3362,8 +3362,8 @@ E.Options.args.hud.args.pet = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pet'].elements['power'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pet'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -3387,8 +3387,8 @@ E.Options.args.hud.args.pet = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pet'].elements['power'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pet'].elements['power'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -3417,12 +3417,12 @@ E.Options.args.hud.args.pet = {
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['power'].value[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['power'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -3434,8 +3434,8 @@ E.Options.args.hud.args.pet = {
                             type = "group",
                             name = L["Anchor"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pet'].elements['power'].value.anchor[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pet'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -3487,8 +3487,8 @@ E.Options.args.hud.args.pet = {
             order = 300,
             type = 'group',
             name = L['Castbar'],
-            get = function(info) return E.db.hud.units['player'].elements['castbar'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['pet'].elements['castbar'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['pet'].elements['castbar'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -3500,8 +3500,8 @@ E.Options.args.hud.args.pet = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['castbar'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['castbar'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['castbar'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -3543,8 +3543,8 @@ E.Options.args.hud.args.pet = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['castbar'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['castbar'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['castbar'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -3571,8 +3571,8 @@ E.Options.args.hud.args.pet = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['castbar'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pet'].elements['castbar'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pet'].elements['castbar'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -3596,8 +3596,8 @@ E.Options.args.hud.args.pet = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['castbar'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['castbar'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pet'].elements['castbar'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pet'].elements['castbar'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -3628,13 +3628,13 @@ E.Options.args.hud.args.pet = {
                             type = 'color',
                             name = L['Color'],
                             get = function(info)
-                                local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
+                                local t = E.db.hud.units['pet'].elements.castbar.media[ info[#info] ]
                                 return t.r, t.g, t.b, t.a
                             end,
                             set = function(info, r, g, b)
-                                local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
+                                local t = E.db.hud.units['pet'].elements.castbar.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         },
                         interruptcolor = {
@@ -3642,13 +3642,13 @@ E.Options.args.hud.args.pet = {
                             type = 'color',
                             name = L['Interrupt Color'],
                             get = function(info)
-                                local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
+                                local t = E.db.hud.units['pet'].elements.castbar.media[ info[#info] ]
                                 return t.r, t.g, t.b, t.a
                             end,
                             set = function(info, r, g, b)
-                                local t = E.db.hud.units['player'].elements.castbar.media[ info[#info] ]
+                                local t = E.db.hud.units['pet'].elements.castbar.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         }
                     },
@@ -3659,8 +3659,8 @@ E.Options.args.hud.args.pet = {
             order = 700,
             type = 'group',
             name = L['Name'],
-            get = function(info) return E.db.hud.units['player'].elements['name'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['name'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['pet'].elements['name'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['pet'].elements['name'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -3672,8 +3672,8 @@ E.Options.args.hud.args.pet = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['name'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['name'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['name'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['name'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -3721,8 +3721,8 @@ E.Options.args.hud.args.pet = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['name'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['name'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pet'].elements['name'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pet'].elements['name'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -3763,8 +3763,8 @@ E.Options.args.hud.args.pet = {
             order = 900,
             type = 'group',
             name = L['Raid Icon'],
-            get = function(info) return E.db.hud.units['player'].elements['raidicon'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['pet'].elements['raidicon'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['pet'].elements['raidicon'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -3776,8 +3776,8 @@ E.Options.args.hud.args.pet = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['raidicon'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pet'].elements['raidicon'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pet'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -3824,8 +3824,8 @@ E.Options.args.hud.args.targettarget = {
     type = 'group',
     order = 800,
     childGroups = "select",
-    get = function(info) return E.db.hud.units['player'][ info[#info] ] end,
-    set = function(info, value) E.db.hud.units['player'][ info[#info] ] = value; H:UpdateHud('player'); end,
+    get = function(info) return E.db.hud.units['targettarget'][ info[#info] ] end,
+    set = function(info, value) E.db.hud.units['targettarget'][ info[#info] ] = value; H:UpdateAllFrames(); end,
     args = {
         enabled = {
             type = 'toggle',
@@ -3836,7 +3836,7 @@ E.Options.args.hud.args.targettarget = {
             type='execute',
             order = 2,
             name = L['Restore Defaults'],
-            func = function(info,value) H:ResetUnitSettings('player'); E:ResetMovers('Player Hud Frame') end,
+            func = function(info,value) H:ResetUnitSettings('targettarget'); E:ResetMovers('Player Hud Frame') end,
         },
         width = {
             order = 4,
@@ -3844,9 +3844,9 @@ E.Options.args.hud.args.targettarget = {
             type = 'range',
             min = 7, max = 50, step = 1,
             set = function(info,value) 
-                E.db.hud.units['player'][ info[#info] ] = value; 
-                H:UpdateElementSizes('player',true,value)
-                H:UpdateHud('player') 
+                E.db.hud.units['targettarget'][ info[#info] ] = value; 
+                H:UpdateElementSizes('targettarget',true,value)
+                H:UpdateAllFrames() 
             end
         },
         height = {
@@ -3855,17 +3855,17 @@ E.Options.args.hud.args.targettarget = {
             type = 'range',
             min = 20, max = 600, step = 1,
              set = function(info,value) 
-                E.db.hud.units['player'][ info[#info] ] = value; 
-                H:UpdateElementSizes('player',false,value)
-                H:UpdateHud('player') 
+                E.db.hud.units['targettarget'][ info[#info] ] = value; 
+                H:UpdateElementSizes('targettarget',false,value)
+                H:UpdateAllFrames() 
             end
         },
         health = {
             order = 100,
             type = 'group',
             name = L['Health'],
-            get = function(info) return E.db.hud.units['player'].elements['health'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['health'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['targettarget'].elements['health'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['targettarget'].elements['health'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -3877,8 +3877,8 @@ E.Options.args.hud.args.targettarget = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['targettarget'].elements['health'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['targettarget'].elements['health'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -3920,8 +3920,8 @@ E.Options.args.hud.args.targettarget = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['targettarget'].elements['health'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['targettarget'].elements['health'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -3948,8 +3948,8 @@ E.Options.args.hud.args.targettarget = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['targettarget'].elements['health'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['targettarget'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -3973,8 +3973,8 @@ E.Options.args.hud.args.targettarget = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['targettarget'].elements['health'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['targettarget'].elements['health'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -4005,24 +4005,24 @@ E.Options.args.hud.args.targettarget = {
                             type = 'color',
                             name = L['Color'],
                             get = function(info)
-                                local t = E.db.hud.units['player'].elements.health.media[ info[#info] ]
+                                local t = E.db.hud.units['targettarget'].elements.health.media[ info[#info] ]
                                 return t.r, t.g, t.b, t.a
                             end,
                             set = function(info, r, g, b)
-                                local t = E.db.hud.units['player'].elements.health.media[ info[#info] ]
+                                local t = E.db.hud.units['targettarget'].elements.health.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         }
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['targettarget'].elements['health'].value[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['targettarget'].elements['health'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -4034,8 +4034,8 @@ E.Options.args.hud.args.targettarget = {
                             type = "group",
                             name = L["Anchor"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['targettarget'].elements['health'].value.anchor[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['targettarget'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -4087,8 +4087,8 @@ E.Options.args.hud.args.targettarget = {
             order = 200,
             type = 'group',
             name = L['Power'],
-            get = function(info) return E.db.hud.units['player'].elements['power'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['power'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['targettarget'].elements['power'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['targettarget'].elements['power'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -4100,8 +4100,8 @@ E.Options.args.hud.args.targettarget = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['targettarget'].elements['power'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['targettarget'].elements['power'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -4143,8 +4143,8 @@ E.Options.args.hud.args.targettarget = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['targettarget'].elements['power'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['targettarget'].elements['power'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -4171,8 +4171,8 @@ E.Options.args.hud.args.targettarget = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['targettarget'].elements['power'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['targettarget'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -4196,8 +4196,8 @@ E.Options.args.hud.args.targettarget = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['targettarget'].elements['power'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['targettarget'].elements['power'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -4226,12 +4226,12 @@ E.Options.args.hud.args.targettarget = {
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['targettarget'].elements['power'].value[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['targettarget'].elements['power'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -4243,8 +4243,8 @@ E.Options.args.hud.args.targettarget = {
                             type = "group",
                             name = L["Anchor"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['targettarget'].elements['power'].value.anchor[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['targettarget'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -4296,8 +4296,8 @@ E.Options.args.hud.args.targettarget = {
             order = 700,
             type = 'group',
             name = L['Name'],
-            get = function(info) return E.db.hud.units['player'].elements['name'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['name'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['targettarget'].elements['name'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['targettarget'].elements['name'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -4309,8 +4309,8 @@ E.Options.args.hud.args.targettarget = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['name'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['name'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['targettarget'].elements['name'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['targettarget'].elements['name'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -4358,8 +4358,8 @@ E.Options.args.hud.args.targettarget = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['name'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['name'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['targettarget'].elements['name'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['targettarget'].elements['name'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -4400,8 +4400,8 @@ E.Options.args.hud.args.targettarget = {
             order = 900,
             type = 'group',
             name = L['Raid Icon'],
-            get = function(info) return E.db.hud.units['player'].elements['raidicon'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['targettarget'].elements['raidicon'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['targettarget'].elements['raidicon'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -4413,8 +4413,8 @@ E.Options.args.hud.args.targettarget = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['raidicon'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['targettarget'].elements['raidicon'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['targettarget'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -4461,8 +4461,8 @@ E.Options.args.hud.args.pettarget = {
     type = 'group',
     order = 1000,
     childGroups = "select",
-    get = function(info) return E.db.hud.units['player'][ info[#info] ] end,
-    set = function(info, value) E.db.hud.units['player'][ info[#info] ] = value; H:UpdateHud('player'); end,
+    get = function(info) return E.db.hud.units['pettarget'][ info[#info] ] end,
+    set = function(info, value) E.db.hud.units['pettarget'][ info[#info] ] = value; H:UpdateAllFrames(); end,
     args = {
         enabled = {
             type = 'toggle',
@@ -4473,7 +4473,7 @@ E.Options.args.hud.args.pettarget = {
             type='execute',
             order = 2,
             name = L['Restore Defaults'],
-            func = function(info,value) H:ResetUnitSettings('player'); E:ResetMovers('Player Hud Frame') end,
+            func = function(info,value) H:ResetUnitSettings('pettarget'); E:ResetMovers('Player Hud Frame') end,
         },
         width = {
             order = 4,
@@ -4481,9 +4481,9 @@ E.Options.args.hud.args.pettarget = {
             type = 'range',
             min = 7, max = 50, step = 1,
             set = function(info,value) 
-                E.db.hud.units['player'][ info[#info] ] = value; 
-                H:UpdateElementSizes('player',true,value)
-                H:UpdateHud('player') 
+                E.db.hud.units['pettarget'][ info[#info] ] = value; 
+                H:UpdateElementSizes('pettarget',true,value)
+                H:UpdateAllFrames() 
             end
         },
         height = {
@@ -4492,17 +4492,17 @@ E.Options.args.hud.args.pettarget = {
             type = 'range',
             min = 20, max = 600, step = 1,
              set = function(info,value) 
-                E.db.hud.units['player'][ info[#info] ] = value; 
-                H:UpdateElementSizes('player',false,value)
-                H:UpdateHud('player') 
+                E.db.hud.units['pettarget'][ info[#info] ] = value; 
+                H:UpdateElementSizes('pettarget',false,value)
+                H:UpdateAllFrames() 
             end
         },
         health = {
             order = 100,
             type = 'group',
             name = L['Health'],
-            get = function(info) return E.db.hud.units['player'].elements['health'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['health'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['pettarget'].elements['health'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['pettarget'].elements['health'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -4514,8 +4514,8 @@ E.Options.args.hud.args.pettarget = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pettarget'].elements['health'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pettarget'].elements['health'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -4557,8 +4557,8 @@ E.Options.args.hud.args.pettarget = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pettarget'].elements['health'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pettarget'].elements['health'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -4585,8 +4585,8 @@ E.Options.args.hud.args.pettarget = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pettarget'].elements['health'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pettarget'].elements['health'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -4610,8 +4610,8 @@ E.Options.args.hud.args.pettarget = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pettarget'].elements['health'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pettarget'].elements['health'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -4642,24 +4642,24 @@ E.Options.args.hud.args.pettarget = {
                             type = 'color',
                             name = L['Color'],
                             get = function(info)
-                                local t = E.db.hud.units['player'].elements.health.media[ info[#info] ]
+                                local t = E.db.hud.units['pettarget'].elements.health.media[ info[#info] ]
                                 return t.r, t.g, t.b, t.a
                             end,
                             set = function(info, r, g, b)
-                                local t = E.db.hud.units['player'].elements.health.media[ info[#info] ]
+                                local t = E.db.hud.units['pettarget'].elements.health.media[ info[#info] ]
                                 t.r, t.g, t.b = r, g, b
-                                H:UpdateHud('player')
+                                H:UpdateAllFrames()
                             end,
                         }
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['health'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['health'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pettarget'].elements['health'].value[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pettarget'].elements['health'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -4671,8 +4671,8 @@ E.Options.args.hud.args.pettarget = {
                             type = "group",
                             name = L["Anchor"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['health'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pettarget'].elements['health'].value.anchor[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pettarget'].elements['health'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -4724,8 +4724,8 @@ E.Options.args.hud.args.pettarget = {
             order = 200,
             type = 'group',
             name = L['Power'],
-            get = function(info) return E.db.hud.units['player'].elements['power'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['power'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['pettarget'].elements['power'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['pettarget'].elements['power'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -4737,8 +4737,8 @@ E.Options.args.hud.args.pettarget = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pettarget'].elements['power'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pettarget'].elements['power'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -4780,8 +4780,8 @@ E.Options.args.hud.args.pettarget = {
                     type = 'group',
                     name = L['Size'],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].size[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].size[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pettarget'].elements['power'].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pettarget'].elements['power'].size[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         width = {
                             order = 4,
@@ -4808,8 +4808,8 @@ E.Options.args.hud.args.pettarget = {
                             name = L['Texture'],
                             order = 1,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].media.texture[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pettarget'].elements['power'].media.texture[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pettarget'].elements['power'].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -4833,8 +4833,8 @@ E.Options.args.hud.args.pettarget = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pettarget'].elements['power'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pettarget'].elements['power'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -4863,12 +4863,12 @@ E.Options.args.hud.args.pettarget = {
                     },
                 },
                 value = {
-                    order = 2,
+                    order = 10,
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['power'].value[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['power'].value[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pettarget'].elements['power'].value[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pettarget'].elements['power'].value[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         enabled = {
                             type = 'toggle',
@@ -4880,8 +4880,8 @@ E.Options.args.hud.args.pettarget = {
                             type = "group",
                             name = L["Anchor"],
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['power'].value.anchor[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pettarget'].elements['power'].value.anchor[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pettarget'].elements['power'].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 pointFrom = {
                                     type = 'select',
@@ -4933,8 +4933,8 @@ E.Options.args.hud.args.pettarget = {
             order = 700,
             type = 'group',
             name = L['Name'],
-            get = function(info) return E.db.hud.units['player'].elements['name'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['name'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['pettarget'].elements['name'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['pettarget'].elements['name'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -4946,8 +4946,8 @@ E.Options.args.hud.args.pettarget = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['name'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['name'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pettarget'].elements['name'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pettarget'].elements['name'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -4995,8 +4995,8 @@ E.Options.args.hud.args.pettarget = {
                             name = L['Font'],
                             order = 2,
                             guiInline = true,
-                            get = function(info) return E.db.hud.units['player'].elements['name'].media.font[ info[#info] ] end,
-                            set = function(info,value) E.db.unitframe.units['player'].elements['name'].media.font[ info[#info] ] = value; H:UpdateHud('player') end,
+                            get = function(info) return E.db.hud.units['pettarget'].elements['name'].media.font[ info[#info] ] end,
+                            set = function(info,value) E.db.hud.units['pettarget'].elements['name'].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                             args = {
                                 override = {
                                     type = "toggle",
@@ -5037,8 +5037,8 @@ E.Options.args.hud.args.pettarget = {
             order = 900,
             type = 'group',
             name = L['Raid Icon'],
-            get = function(info) return E.db.hud.units['player'].elements['raidicon'][ info[#info] ] end,
-            set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'][ info[#info] ] = value; H:UpdateHud('player') end,
+            get = function(info) return E.db.hud.units['pettarget'].elements['raidicon'][ info[#info] ] end,
+            set = function(info,value) E.db.hud.units['pettarget'].elements['raidicon'][ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -5050,8 +5050,8 @@ E.Options.args.hud.args.pettarget = {
                     type = "group",
                     name = L["Anchor"],
                     guiInline = true,
-                    get = function(info) return E.db.hud.units['player'].elements['raidicon'].anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.unitframe.units['player'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateHud('player') end,
+                    get = function(info) return E.db.hud.units['pettarget'].elements['raidicon'].anchor[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units['pettarget'].elements['raidicon'].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         pointFrom = {
                             type = 'select',
