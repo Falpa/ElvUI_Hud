@@ -429,27 +429,27 @@ end
 function H:ResetUnitSettings(unit)
 	local frame = self.units[unit]
 	if not frame then return end
-	E:CopyTable(E.db.hud[unit],P.hud.units[unit])
-	frame:SetAlpha(0)
-	frame:EnableMouse(false)
-	frame:Hide()
-	local stringTitle = E:StringTitle(unit)
-    if stringTitle:find('target') then
-        stringTitle = gsub(stringTitle, 'target', 'Target')
-    end
-    ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
+	E:CopyTable(E.db.hud.units[unit],P.hud.units[unit])
     self:UpdateAllFrames()
 end
 
-function H:UpdateElementSizes(unit,newSize,isWidth)
+function H:UpdateElementSizes(unit,isWidth,newSize)
 	local elements = self.units[unit].elements
 	
 	for element,_ in pairs(elements) do
-		local config = E.db.hud.units[frame.unit].elements[element]
+		local config = E.db.hud.units[unit].elements[element]
 		local size = config['size']
 		if size then
+			local config = true
+			if element == 'castbar' and (unit == 'player' or unit == 'target') then 
+				if E.db.hud.horizCastbar then
+					config = false
+				else
+					size = size['vertical']
+				end
+			end
 			local var = (isWidth and 'width') or 'height'
-			size[var] = newSize
+			if config then size[var] = newSize end
 		end
 	end
 end
