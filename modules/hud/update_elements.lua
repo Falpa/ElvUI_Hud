@@ -1,31 +1,21 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
+local UF = E:GetModule('UnitFrames');
 
 local warningTextShown = false;
 
 function H.PostUpdateHealth(health, unit, min, max)
-    local r, g, b
+    if E.db.hud.colorHealthByValue then
+		local dc = health.defaultColor or (E.db.hud.units.player.elements.health.media.color)
+		local r = dc.r
+		local g = dc.g
+		local b = dc.b
+		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
-    -- overwrite healthbar color for enemy player (a tukui option if enabled), target vehicle/pet too far away returning unitreaction nil and friend unit not a player. (mostly for overwrite tapped for friendly)
-    -- I don't know if we really need to call ElvUICF["unitframes"].unicolor but anyway, it's safe this way.
-    if (E.db.hud.unicolor ~= true and unit == "target" and UnitIsEnemy(unit, "player")) or (E.db.hud.unicolor ~= true and unit == "target" and not UnitIsPlayer(unit) and UnitIsFriend(unit, "player")) then
-        local c = ElvUF["colors"].reaction[UnitReaction(unit, "player")]
-        if c then 
-            r, g, b = c[1], c[2], c[3]
-            health:SetStatusBarColor(r, g, b)
-        else
-            -- if "c" return nil it's because it's a vehicle or pet unit too far away, we force friendly color
-            -- this should fix color not updating for vehicle/pet too far away from yourself.
-            r, g, b = 75/255,  175/255, 76/255
-            health:SetStatusBarColor(r, g, b)
-        end					
-    end
-
-	if E.db.hud.showValues then
-		health.value:SetText(format("%.f", min / max * 100).." %")
+		health:SetStatusBarColor(newr, newg, newb)
 	end
-	
+
     -- Flash health below threshold %
 	if (min / max * 100) < (E.db.hud.lowThreshold) then
 		H.Flash(health, 0.6)
@@ -42,11 +32,12 @@ end
 -- used to check if a spell is interruptable
 function H:CheckInterrupt(unit)
 	if unit == "vehicle" then unit = "player" end
-
+	local config = E.db.hud.units[unit].elements['castbar']
+	local media = config.media
 	if self.interrupt and UnitCanAttack("player", unit) then
-		self:SetStatusBarColor(E.db.unitframe.units.player.castbar.interruptcolor)	
+		self:SetStatusBarColor(media.interruptcolor)	
 	else
-		self:SetStatusBarColor(E.db.unitframe.units.player.castbar.color)	
+		self:SetStatusBarColor(media.color)	
 	end
 end
 
@@ -76,14 +67,7 @@ end
 
 function H.PostUpdatePowerHud(power, unit, min, max)
     local self = power:GetParent()
-    local pType, pToken = UnitPowerType(unit)
-    local color = ElvUF["colors"].power[pToken]
 
-    if color and E.db.hud.showValues then
-        power.value:SetTextColor(color[1], color[2], color[3])
-		power.value:SetText(format("%.f",min / max * 100).." %")
-    end
-	
 	-- Flash mana below threshold %
 	local powerMana, _ = UnitPowerType(unit)
 	if (min / max * 100) < (E.db.hud.lowThreshold) and (powerMana == SPELL_POWER_MANA) and E.db.hud.flash then
@@ -145,7 +129,7 @@ local updateSafeZone = function(self,c)
 		-- MADNESS!
 		local safeZonePercent = (height / self.max) * (ms / 1e5)
 		if(safeZonePercent > 1) then safeZonePercent = 1 end
-		sz:SetWidth(height * safeZonePercent)
+		sz:SetHeight(height * safeZonePercent)
 		sz:Show()
 	else
 		sz:Hide()
@@ -153,6 +137,7 @@ local updateSafeZone = function(self,c)
 end
 
 function H:PostCastStart(unit, name, rank, castid)
+	H.CheckInterrupt(self,unit)
 	local sz = self.SafeZone
 	if sz then
 		updateSafeZone(self,true)
@@ -160,6 +145,7 @@ function H:PostCastStart(unit, name, rank, castid)
 end
 
 function H:PostChannelStart(unit, name, rank, castid)
+	H.CheckInterrupt(self,unit)
 	local sz = self.SafeZone
 	if sz then
 		updateSafeZone(self,false)
@@ -264,4 +250,106 @@ function H:UpdateShards(event, unit, powerType)
 			self.SoulShards[i]:SetAlpha(.2)
 		end
 	end
+end
+
+function H:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
+	local name, _, _, _, dtype, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unit, index, button.filter)
+
+	
+	button.text:Show()
+	
+	if button.isDebuff then
+		if(not UnitIsFriend("player", unit) and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
+			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			if unit and not unit:find('arena%d') then
+				button.icon:SetDesaturated(true)
+			else
+				button.icon:SetDesaturated(false)
+			end
+		else
+			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
+			if (name == "Unstable Affliction" or name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
+				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
+			else
+				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
+			end
+			button.icon:SetDesaturated(false)
+		end
+	else
+		if (button.isStealable or ((E.myclass == "PRIEST" or E.myclass == "SHAMAN" or E.myclass == "MAGE") and dtype == "Magic")) and not UnitIsFriend("player", unit) then
+			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
+		else
+			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))		
+		end	
+	end
+	
+	button.duration = duration
+	button.timeLeft = expirationTime
+	button.first = true	
+	
+	local size = button:GetParent().size
+	if size then
+		button:Size(size)
+	end
+	
+	button:SetScript('OnUpdate', UF.UpdateAuraTimer)
+end
+
+local function CheckFilter(type, isFriend)
+	if type == 'ALL' or (type == 'FRIENDLY' and isFriend) or (type == 'ENEMY' and not isFriend) then
+		return true
+	end
+	
+	return false
+end
+
+function H:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
+	local db = ElvUF_Player.db.aurabar
+	if not db then return; end
+		
+	local isPlayer, isFriend
+
+	if unitCaster == 'player' or unitCaster == 'vehicle' then isPlayer = true end
+	if UnitIsFriend('player', unit) then isFriend = true end
+
+	if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and CheckFilter(db.useBlacklist, isFriend) then
+		return false
+	end	
+	
+	if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and CheckFilter(db.useWhitelist, isFriend) then
+		return true
+	end
+
+	if (duration == 0 or not duration) and CheckFilter(db.noDuration, isFriend) then
+		return false
+	end	
+
+	if shouldConsolidate == 1 and CheckFilter(db.noConsolidated, isFriend) then
+		return false
+	end	
+
+	if not isPlayer and CheckFilter(db.playerOnly, isFriend) then
+		return false
+	end
+	
+	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
+		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
+		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
+
+		if type == 'Whitelist' then
+			if spellList[name] and spellList[name].enable then
+				return true
+			else
+				return false
+			end		
+		elseif type == 'Blacklist' then
+			if spellList[name] and spellList[name].enable then
+				return false
+			else
+				return true
+			end				
+		end
+	end	
+	
+	return true
 end

@@ -1,237 +1,455 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
-local LSM = LibStub("LibSharedMedia-3.0");
 local UF = E:GetModule('UnitFrames');
+local LSM = LibStub("LibSharedMedia-3.0");
 
 local backdrop = {
 	bgFile = E["media"].blankTex,
 	insets = {top = -E.mult, left = -E.mult, bottom = -E.mult, right = -E.mult},
 }
 
-local function SimpleHealth(self,unit)
-	Construct_SimpleHealth(self,unit)
+function H:GetUnitFrame(unit)
+	local stringTitle = E:StringTitle(unit)
+	if stringTitle:find('target') then
+		stringTitle = gsub(stringTitle, 'target', 'Target')
+	end
+	return "ElvUF_"..stringTitle.."Hud"
+end
 
-	if E.db.hud.classBars and unit == "player" then
-		if E.myclass == "DRUID" then
-			Construct_EclipseBar(self,unit)
-		end
+function H:GetClassBarName()
+	if E.myclass == "DRUID" then
+		return 'EclipseBar'
+	end
 
-		if E.myclass == "WARLOCK" then
-			Construct_Shards(self,unit)
-		end
+	if E.myclass == "WARLOCK" then
+		return 'WarlockSpecBars'
+	end
 
-		if E.myclass == "PALADIN" then
-			Construct_HolyPower(self,unit)
-		end
+	if E.myclass == "PALADIN" then
+		return 'HolyPower'
+	end
 
-		if E.myclass == "DEATHKNIGHT" then
-			Construct_Runes(self,unit)
-		end
+	if E.myclass == "DEATHKNIGHT" then
+		return 'Runes'
+	end
 
-		if E.myclass == "SHAMAN" then
-			Construct_Totems(self,unit)
-		end
+	if E.myclass == "SHAMAN" then
+		return 'TotemBar'
+	end
 
-		if E.myclass == "DRUID" or E.myclass == "ROGUE" then
-			Construct_ComboPoints(self,unit)
-		end
+	if E.myclass == "MONK" then
+		return 'HarmonyBar'
+	end
+
+	if E.myclass == "PRIEST" then
+		return 'ShadowOrbsBar'
+	end
+
+	if E.myclass == "MAGE" then
+		return 'ArcaneChargeBar'
 	end
 end
 
-local function SimplePower(self,unit)
-	Construct_SimplePower(self,unit)
-end
+local elements = {
+	['health'] = 'Health',
+	['power'] = 'Power',
+	['castbar'] = 'Castbar',
+	['name'] = 'Name',
+	['aurabars'] = 'AuraBars',
+	['cpoints'] = 'CPoints',
+	['raidicon'] = 'RaidIcon',
+	['resting'] = 'Resting',
+	['combat'] = 'Combat',
+	['pvp'] = 'PvPText',
+	['healcomm'] = 'HealPrediction',
+}
 
-local function Hud(self,unit)
-	-- Set Colors
-    self.colors = ElvUF["colors"]
-
-    -- Update all elements on show
-    self:HookScript("OnShow", H.updateAllElements)
-	self:EnableMouse(false) -- HUD should be click-through
-
-	if unit == "player" then
-		Construct_PlayerHealth(self,unit)
-
-		Construct_PlayerPower(self,unit)
-
-		Construct_PlayerCastbar(self,unit)
-
-		Construct_Name(self,unit)
-		if E.db.hud.names then
-			self.Name:Show()
-		else
-			self.Name:Hide()
-		end
-
-		if E.db.hud.classBars then
-			if E.myclass == "DRUID" then
-				Construct_EclipseBar(self,unit)
-			end
-
-			if E.myclass == "WARLOCK" then
-				Construct_Shards(self,unit)
-			end
-
-			if E.myclass == "PALADIN" then
-				Construct_HolyPower(self,unit)
-			end
-
-			if E.myclass == "DEATHKNIGHT" then
-				Construct_Runes(self,unit)
-			end
-
-			if E.myclass == "SHAMAN" then
-				Construct_Totems(self,unit)
-			end
-		end
-
-		if E.db.hud.showThreat then
-			Construct_Threat(self,unit)
-		end
-	elseif unit == "target" then
-		Construct_TargetHealth(self,unit)
-
-		Construct_Name(self,unit)
-		if E.db.hud.names then
-			self.Name:Show()
-		else
-			self.Name:Hide()
-		end
-
-		Construct_TargetPower(self,unit)
-
-		Construct_TargetCastbar(self,unit)
-
-		Construct_ComboPoints(self,unit)
+function H:GetElement(element)
+	if element == 'classbars' then
+		return H:GetClassBarName()
 	else
-		Construct_PetHealth(self,unit)
-
-		Construct_PetPower(self,unit)
-
-		Construct_PetCastbar(self,unit)
+		return elements[element]
 	end
 end
 
-ElvUF:RegisterStyle('ElvUI_Hud',Hud)
-ElvUF:RegisterStyle('ElvUI_Hud_Simple_Health',SimpleHealth)
-ElvUF:RegisterStyle('ElvUI_Hud_Simple_Power',SimplePower)
-
-function H:Construct_Hud()
-	local hud_height = E:Scale(E.db.hud.height)
-	local hud_width = E:Scale(E.db.hud.width)
-	local hud_power_width = E:Scale((hud_width/3)*2)
-
-	if E.db.hud.warningText then
-		H:CreateWarningFrame()
-	end
-
-	if E.db.hud.simpleLayout then
-		local alpha = E.db.hud.alpha
-
-		ElvUF:SetActiveStyle('ElvUI_Hud_Simple_Health')
-
-		local player_health = ElvUF:Spawn('player', "oUF_Elv_player_HudHealth")
-		player_health:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-E.db.hud.offset), 0)
-		player_health:SetSize(hud_width, hud_height)
-		player_health:SetAlpha(alpha)
-
-		H:HideOOC(player_health)
-
-		if E.db.hud.simpleTarget then
-			local target_health = ElvUF:Spawn('target', "oUF_Elv_target_HudHealth")
-			target_health:SetPoint("LEFT", player_health, "RIGHT", E:Scale(15) + hud_width, 0)
-			target_health:SetSize(hud_width, hud_height)
-			target_health:SetAlpha(alpha)
-			
-			H:HideOOC(target_health)
-		end
-
-		ElvUF:SetActiveStyle('ElvUI_Hud_Simple_Power')
-		local player_power = ElvUF:Spawn('player', "oUF_Elv_player_HudPower")
-		player_power:SetPoint("LEFT", UIParent, "CENTER", E:Scale(E.db.hud.offset), 0)
-		player_power:SetSize(hud_width, hud_height)
-		player_power:SetAlpha(alpha)
-		
-		H:HideOOC(player_power)
-
-		if E.db.hud.simpleTarget then
-			local target_power = ElvUF:Spawn('target', "oUF_Elv_target_HudPower")
-			target_power:SetPoint("RIGHT", player_power, "LEFT", E:Scale(-15) - hud_width, 0)
-			target_power:SetSize(hud_width, hud_height)
-			target_power:SetAlpha(alpha)
-			
-			H:HideOOC(target_power)
-		end
+function H:GetAnchor(frame,anchor)
+	if anchor == 'self' then
+		return frame
+	elseif anchor == 'ui' then
+		return UIParent
+	elseif string.find(anchor,':') then
+		local f,e = string.split(':',anchor)
+		f = H:GetUnitFrame(f)
+		e = H:GetElement(e)
+		return _G[f][e]
 	else
-        ElvUF:SetActiveStyle('ElvUI_Hud')
-		local width = hud_width
-		width = width + hud_power_width + 2
-
-		if E.db.hud.showThreat then
-			width = width + hud_power_width + 2
-		end
-
-		local alpha = E.db.hud.alpha
-
-		local player_hud = ElvUF:Spawn('player', "oUF_Elv_player_Hud")
-		player_hud:SetPoint("RIGHT", UIParent, "CENTER", E:Scale(-E.db.hud.offset), 0)
-		player_hud:SetSize(width, hud_height)
-		player_hud:SetAlpha(alpha)
-		player_hud:RegisterForClicks("AnyUp")
-		player_hud:SetScript("OnEnter", UnitFrame_OnEnter)
-		player_hud:SetScript("OnLeave", UnitFrame_OnLeave)
-		player_hud.menu = UF.SpawnMenu
-
-		H:HideOOC(player_hud)
-
-		width = hud_width
-		width = width + hud_power_width + 2
-
-		local target_hud = ElvUF:Spawn('target', "oUF_Elv_target_Hud")
-		target_hud:SetPoint("LEFT", UIParent, "CENTER", E:Scale(E.db.hud.offset), 0)
-		target_hud:SetSize(width, hud_height)
-		target_hud:SetAlpha(alpha)
-		target_hud:RegisterForClicks("AnyUp")
-		target_hud:SetScript("OnEnter", UnitFrame_OnEnter)
-		target_hud:SetScript("OnLeave", UnitFrame_OnLeave)
-		target_hud.menu = UF.SpawnMenu
-
-		H:HideOOC(target_hud)
-
-		if E.db.hud.petHud then
-			width = hud_width
-			width = width + hud_power_width + 2
-
-			local pet_hud = ElvUF:Spawn('pet', "oUF_Elv_pet_Hud")
-			pet_hud:SetPoint("BOTTOMRIGHT", oUF_Elv_player_Hud, "BOTTOMLEFT", -E:Scale(80), 0)
-			pet_hud:SetSize(width, hud_height * .75)
-			pet_hud:SetAlpha(alpha)
-			pet_hud:RegisterForClicks("AnyUp")
-			pet_hud:SetScript("OnEnter", UnitFrame_OnEnter)
-			pet_hud:SetScript("OnLeave", UnitFrame_OnLeave)
-			pet_hud.menu = UF.SpawnMenu
-			H:HideOOC(pet_hud)
-		end
+		local e = anchor
+		e = H:GetElement(e)
+		return frame[e]
 	end
 
-	H:UpdateMouseSetting()
+	return frame
+end
+
+-- This function is only responsible for updating bar sizes for class bar children
+-- textures work normally as does parent size
+function H:UpdateClassBar(frame,element)
+	local config = E.db.hud.units[frame.unit].elements[element]
+	local size = config['size']
 	
-	H:UpdateElvUFSetting(false,true)
+	if element == "cpoints" then
+		for i=1,5 do
+			frame.CPoints[i].Size(size.width,(size.height - 4)/5)
+		end
+	end
 
-	local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
+	if E.myclass == "DRUID" then
+		frame.EclipseBar.LunarBar:Size(size.width,size.height)
+		frame.EclipseBar.SolarBar:Size(size.width,size.height)
+	end
 
-	ElvUF_Player:HookScript("OnShow", function(self,event) for _,f in pairs(elv_frames) do
-	        if f and E.db.hud.hideElv then 
-	        	H.updateElvFunction(f)
-	        end
-	    end 
-	end)
+	if E.myclass == "WARLOCK" then
+		for i=1,4 do
+			frame.WarlockSpecBars[i]:Size(size.width,(size.height - 2) / 4)
+		end
+	end
 
-	ElvUF_Player:Hide()
-	ElvUF_Player:Show()
+	if E.myclass == "PALADIN" then
+		for i=1,5 do
+			frame.HolyPower[i]:Size(size.width,(size.height - 2) / 5)
+		end
+	end
 
-	if not E.db.hud.enabled then
-		H:Enable()
+	if E.myclass == "DEATHKNIGHT" then
+		for i=1,6 do
+			frame.Runes[i]:Size(size.width,(size.height - 5) / 6)
+		end
+	end
+
+	if E.myclass == "SHAMAN" then
+		for i=1,4 do
+			frame.TotemBar[i]:Size(size.width,(size.height - 3) / 4)
+		end
+	end
+
+	if E.myclass == "MONK" then
+		for i=1,5 do
+			frame.HarmonyBar[i]:Size(size.width,(size.height - 2) / 5)
+		end
+	end
+
+	if E.myclass == "PRIEST" then
+		for i=1,3 do
+			frame.ShadowOrbsBar[i]:Size(size.width,(size.height - 2) / 3)
+		end
+	end
+
+	if E.myclass == "MAGE" then
+		for i=1,6 do
+			frame.ArcaneChargeBar[i]:Size(size.width,(size.height - 5) / 6)
+		end
+	end
+end
+
+function H:UpdateElement(frame,element)
+	local config = E.db.hud.units[frame.unit].elements[element]
+	local size = config['size']
+	local media = config['media']
+	local e = self.units[frame.unit].elements[element]
+	if size then
+		if e.statusbars then
+			if element == 'castbar' and size['vertical'] ~= nil then
+				if not E.db.hud.horizCastbar then
+					size = size['vertical']
+				else
+					size = size['horizontal']
+				end
+			end
+			
+			for _,statusbar in pairs(e.statusbars) do
+				statusbar:Size(size.width,size.height)
+			end			
+		end
+		if e.frame then
+			e.frame:Size(size.width,size.height)
+			if element == 'classbars' or element == 'cpoints' then
+				self:UpdateClassBar(frame,element)
+			end
+		end
+	end
+	if media then
+		if e.statusbars then
+			for _,statusbar in pairs(e.statusbars) do
+				if media.texture.override then
+					statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", media.texture.statusbar))
+				else
+					statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", E.db.hud.statusbar))
+				end
+				if media.color and element ~= "castbar" then
+					statusbar.defaultColor = media.color
+					statusbar:SetStatusBarColor(media.color)
+				end
+			end
+		end
+		if e.textures then
+			for _,texture in pairs(e.textures) do
+				if media.texture.override then
+					texture:SetTexture(LSM:Fetch("statusbar", media.texture.statusbar))
+				else
+					texture:SetTexture(LSM:Fetch("statusbar", E.db.hud.statusbar))
+				end
+			end
+		end
+		if e.fontstrings then
+			for n,fs in pairs(e.fontstrings) do
+				if media.font.override then
+					fs:FontTemplate(LSM:Fetch("font", media.font.font), media.font.fontsize, "THINOUTLINE")
+				else
+					fs:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
+				end
+			end
+		end
+	end
+end
+
+function H:UpdateElementAnchor(frame,element)
+	local e = H:GetElement(element)
+	local config = E.db.hud.units[frame.unit].elements[element]
+	local enabled = config['enabled']
+	if element == 'healcomm' then
+		if enabled then
+			frame:EnableElement(e)
+		else
+			frame:DisableElement(e)
+		end
+		return
+	end
+ 	local anchor = config['anchor']
+	if element == 'cpoints' and not (E.myclass == "ROGUE" or E.myclass == "DRUID") then return end;
+	if element == 'castbar' and anchor['vertical'] ~= nil then
+		if not E.db.hud.horizCastbar then
+			anchor = anchor['vertical']
+		else
+			anchor = anchor['horizontal']
+		end
+	end
+	local pointFrom = anchor['pointFrom']
+	local attachTo = H:GetAnchor(frame,anchor['attachTo'])
+	local pointTo = anchor['pointTo']
+	local xOffset = anchor['xOffset']
+	local yOffset = anchor['yOffset']
+	frame[e]:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
+	if config['tag'] then
+		frame:Tag(frame[e], config['tag'])
+	end
+	if config['value'] then
+		if element ~= "classbars" or (element == "classbars" and E.myclass == "WARLOCK") then
+			local venable = config['value']['enabled']
+			local vanchor = config['value']['anchor']
+			local vpointFrom = vanchor['pointFrom']
+			local vattachTo = H:GetAnchor(frame,vanchor['attachTo'])
+			local vpointTo = vanchor['pointTo']
+			local vxOffset = vanchor['xOffset']
+			local vyOffset = vanchor['yOffset']
+			frame[e].value:SetPoint(vpointFrom, vattachTo, vpointTo, vxOffset, vyOffset)
+			if config['value']['tag'] then
+				frame:Tag(frame[e].value,config['value']['tag'])
+			end
+			if venable then
+				frame[e].value:Show()
+			else
+				frame[e].value:Hide()
+			end
+		end
+	end
+
+	if enabled then
+		frame:EnableElement(e)
+		if config['value'] and frame[e].value then
+			if config['value']['enabled'] then
+				frame[e].value:Show()
+			else
+				frame[e].value:Hide()
+			end
+		end
+		if element ~= 'raidicon' then frame[e]:Show() end
+	else
+		frame:DisableElement(e)
+		if config['value'] then
+			frame[e].value:Hide()
+		end
+		frame[e]:Hide()
+	end
+end
+
+function H:ConstructHudFrame(frame,unit)
+	if not self.units then self.units = { } end
+	self.units[unit] = frame
+	self.units[unit]['elements'] = { }
+	frame.unit = unit
+	frame:RegisterForClicks("AnyUp")
+	frame:SetScript('OnEnter', UnitFrame_OnEnter)
+	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
+	
+	frame.menu = UF.SpawnMenu
+	
+	local stringTitle = E:StringTitle(unit)
+	if stringTitle:find('target') then
+		stringTitle = gsub(stringTitle, 'target', 'Target')
+	end
+	self["Construct"..stringTitle.."Frame"](self, frame, unit)
+	return frame
+end
+
+function H:UpdateAllFrames()
+	for _,frame in pairs(self.units) do
+		frame:Size(E.db.hud.units[frame.unit].width,E.db.hud.units[frame.unit].height)
+		_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+
+		if E.db.hud.units[frame.unit].enabled then
+			frame:EnableMouse(E.db.hud.enableMouse)
+			frame:SetAlpha(E.db.hud.alpha)
+			frame:Show()
+			local event
+			if InCombatLockdown() then
+				event = "PLAYER_REGEN_DISABLED"
+			else
+				event = "PLAYER_REGEN_ENABLED"
+			end
+			if E.db.hud.hideOOC then H:Hide(frame, event) end
+			self:UpdateAllElements(frame)
+			self:UpdateAllElementAnchors(frame)
+		else
+			frame:EnableMouse(false)
+			frame:SetAlpha(0)
+			frame:Hide()
+		end
+	end
+end
+
+function H:UpdateAllElements(frame)
+	local elements = self.units[frame.unit].elements
+	
+	for element,_ in pairs(elements) do
+		self:UpdateElement(frame,element)
+	end
+end
+
+function H:UpdateAllElementAnchors(frame)
+	local elements = self.units[frame.unit].elements
+	
+	for element,_ in pairs(elements) do
+		self:UpdateElementAnchor(frame,element)
+	end
+end
+
+function H:AddElement(frame,element)
+	if not self.units[frame.unit].elements[element] then
+		self.units[frame.unit].elements[element] = { }
+	end
+end
+
+function H:ConfigureStatusBar(frame,element,parent,name)
+	if parent == nil then parent = frame end
+	if name == nil then name = "statusbar" end
+
+	-- Create the status bar
+	local sb = CreateFrame('StatusBar', nil, parent)
+	sb:SetTemplate('Transparent')
+	sb:CreateBackdrop("Default")
+	sb:CreateShadow("Default")
+
+	-- Dummy texture so we can set colors
+	sb:SetStatusBarTexture(E['media'].blankTex)
+	sb:GetStatusBarTexture():SetHorizTile(false)
+ 
+	-- Frame strata/level
+	sb:SetFrameStrata(parent:GetFrameStrata())
+	sb:SetFrameLevel(parent:GetFrameLevel())
+
+	-- Create the status bar background
+    local bg = sb:CreateTexture(nil, 'BORDER')
+    bg:SetAllPoints()
+    bg:SetTexture(E['media'].blankTex)
+    bg.multiplier = 0.3
+    sb.bg = bg
+
+    if not self.units[frame.unit].elements[element].statusbars then
+		self.units[frame.unit].elements[element].statusbars =  { }
+	end
+
+    self.units[frame.unit].elements[element].statusbars[name] = sb
+    return sb
+end
+
+function H:ConfigureFontString(frame,element,parent,name)
+	if parent == nil then parent = frame end
+	if name == nil then name = 'value' end
+
+	if not self.units[frame.unit].elements[element].fontstrings then
+		self.units[frame.unit].elements[element].fontstrings=  { }
+	end
+
+	local fs = parent:CreateFontString(nil, "THINOUTLINE")
+	-- Dummy font
+	fs:FontTemplate(LSM:Fetch("font", "ElvUI Font"), 12, "THINOUTLINE")
+	self.units[frame.unit].elements[element].fontstrings[name] = fs
+
+	return fs
+end
+
+function H:ConfigureTexture(frame,element,parent,name)
+	if parent == nil then parent = frame end
+	if name == nil then name = 'texture' end
+
+	if not self.units[frame.unit].elements[element].textures then
+		self.units[frame.unit].elements[element].textures =  { }
+	end
+
+	local t = parent:CreateTexture(nil, "OVERLAY")
+	-- Dummy texture
+	t:SetTexture(E['media'].blankTex)
+	self.units[frame.unit].elements[element].textures[name] = t
+	return t
+end
+
+function H:ConfigureFrame(frame,element,visible)
+	if visible == nil then visible = false end
+	local f = CreateFrame('Frame',nil,frame)
+	f.visible = visible
+	if visible then
+		f:SetTemplate("Default")
+		f:CreateBackdrop("Default")
+		f:CreateShadow("Default")
+	end
+	self.units[frame.unit].elements[element].frame = f
+	return f
+end
+
+function H:ResetUnitSettings(unit)
+	local frame = self.units[unit]
+	if not frame then return end
+	E:CopyTable(E.db.hud.units[unit],P.hud.units[unit])
+    self:UpdateAllFrames()
+end
+
+function H:UpdateElementSizes(unit,isWidth,newSize)
+	local elements = self.units[unit].elements
+	
+	for element,_ in pairs(elements) do
+		local config = E.db.hud.units[unit].elements[element]
+		local size = config['size']
+		if size then
+			local config = true
+			if element == 'castbar' and (unit == 'player' or unit == 'target') then 
+				if E.db.hud.horizCastbar then
+					config = false
+				else
+					size = size['vertical']
+				end
+			end
+			local var = (isWidth and 'width') or 'height'
+			if config then size[var] = newSize end
+		end
 	end
 end

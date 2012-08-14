@@ -1,18 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:NewModule('HUD','AceTimer-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
-
 H.frames = {}
 
 function H:updateAllElements(frame)
     for _, v in ipairs(frame.__elements) do
         v(frame, "UpdateElement", frame.unit)
     end
-end
-
-function H:SetUpParameters()
-    H.width = E:Scale(E.db.hud.width)
-    H.height = E:Scale(E.db.hud.height)
 end
 
 function H:SetUpAnimGroup()
@@ -180,23 +174,6 @@ function H:Enable()
     end
 end
 
-local media_frames = {}
-
-function H:RegisterFrame(frame)
-    tinsert(media_frames,frame)
-end
-
-function H:UpdateMedia()
-    for _,f in pairs(media_frames) do
-        f:SetStatusBarTexture(LSM:Fetch("statusbar", E.db.hud.texture))
-        if E.db.hud.showValues then
-            if f.value ~= nil then
-                f.value:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")
-            end
-        end
-    end
-end
-
 function H:UpdateMouseSetting()
     for _,f in pairs(frames) do
         if E.db.hud.enableMouse or E.db.hud.hideElv then
@@ -207,3 +184,48 @@ function H:UpdateMouseSetting()
     end
 end
 
+function H:Initialize()
+    if E.db.hud.warningText then
+        H:CreateWarningFrame()
+    end
+
+    ElvUF:RegisterStyle('ElvUI_Hud',function(frame,unit)
+        H:ConstructHudFrame(frame,unit)
+    end)
+
+    ElvUF:SetActiveStyle('ElvUI_Hud')
+    local units = { 'player', 'target', 'pet', 'targettarget', 'pettarget' }
+    for _,unit in pairs(units) do
+        local stringTitle = E:StringTitle(unit)
+        if stringTitle:find('target') then
+            stringTitle = gsub(stringTitle, 'target', 'Target')
+        end
+        ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
+    end
+
+    H:UpdateAllFrames()
+    H:UpdateMouseSetting()
+    
+    H:UpdateElvUFSetting(false,true)
+
+    local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
+
+    ElvUF_Player:HookScript("OnShow", function(self,event) for _,f in pairs(elv_frames) do
+            if f and E.db.hud.hideElv then 
+                H.updateElvFunction(f)
+            end
+        end 
+    end)
+
+    ElvUF_Player:Hide()
+    ElvUF_Player:Show()
+
+    if not E.db.hud.enabled then
+        H:Enable()
+    end
+
+    self.version = '3.0beta'
+    print(L["ElvUI Hud "]..format("v|cff33ffff%s|r",self.version)..L[" is loaded. Thank you for using it and note that I will always support you."])
+end
+
+E:RegisterModule(H:GetName())
