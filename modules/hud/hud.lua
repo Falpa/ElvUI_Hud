@@ -301,29 +301,34 @@ function H:ConstructHudFrame(frame,unit)
 	return frame
 end
 
-function H:UpdateAllFrames()
-	for _,frame in pairs(self.units) do
-		frame:Size(E.db.hud.units[frame.unit].width,E.db.hud.units[frame.unit].height)
-		_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+function H:UpdateFrame(unit)
+	frame = self.units[unit]
+	frame:Size(E.db.hud.units[frame.unit].width,E.db.hud.units[frame.unit].height)
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
-		if E.db.hud.units[frame.unit].enabled then
-			frame:EnableMouse(E.db.hud.enableMouse)
-			frame:SetAlpha(E.db.hud.alpha)
-			frame:Show()
-			local event
-			if InCombatLockdown() then
-				event = "PLAYER_REGEN_DISABLED"
-			else
-				event = "PLAYER_REGEN_ENABLED"
-			end
-			if E.db.hud.hideOOC then H:Hide(frame, event) end
-			self:UpdateAllElements(frame)
-			self:UpdateAllElementAnchors(frame)
+	if E.db.hud.units[frame.unit].enabled then
+		frame:EnableMouse(E.db.hud.enableMouse)
+		frame:SetAlpha(E.db.hud.alpha)
+		frame:Show()
+		local event
+		if InCombatLockdown() then
+			event = "PLAYER_REGEN_DISABLED"
 		else
-			frame:EnableMouse(false)
-			frame:SetAlpha(0)
-			frame:Hide()
+			event = "PLAYER_REGEN_ENABLED"
 		end
+		if E.db.hud.hideOOC then H:Hide(frame, event) end
+		self:UpdateAllElements(frame)
+		self:UpdateAllElementAnchors(frame)
+	else
+		frame:EnableMouse(false)
+		frame:SetAlpha(0)
+		frame:Hide()
+	end
+end
+
+function H:UpdateAllFrames()
+	for unit,_ in pairs(self.units) do
+		self:UpdateFrame(unit)
 	end
 end
 

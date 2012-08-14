@@ -3,4 +3,5 @@
     <Script file="hud.lua"/>
     <Script file="update_elements.lua"/>
     <Script file="construct_elements.lua"/>
+    <Script file="options.lua"/>
 </Ui>
