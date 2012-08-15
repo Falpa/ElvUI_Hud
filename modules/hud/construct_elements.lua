@@ -155,13 +155,13 @@ function H:ConstructEclipseBar(frame)
     eclipseBar:SetTemplate("Transparent")
     eclipseBar:SetBackdropBorderColor(0,0,0,0)
                     
-    local lunarBar = self:ConfigureStatusBar(frame,'classbars',frame,'lunarbar')
+    local lunarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'lunarbar')
     lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
     lunarBar:SetStatusBarColor(.30, .52, .90)
     lunarBar:SetOrientation('VERTICAL')
     eclipseBar.LunarBar = lunarBar
 
-    local solarBar = self:ConfigureStatusBar(frame,'classbars',frame,'solarbar')
+    local solarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'solarbar')
     solarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
     solarBar:SetStatusBarColor(.30, .52, .90)
     solarBar:SetOrientation('VERTICAL')
@@ -172,8 +172,31 @@ function H:ConstructEclipseBar(frame)
     
     eclipseBar.PostUpdatePower = H.EclipseDirection
     eclipseBar.Text = eclipseBarText
-    
+
     return eclipseBar
+end
+
+-- Wild Mushroom Bar for Druids
+function H:ConstructWildMushroomBar(frame)
+    self:AddElement(frame,'mushroom')
+    local wb = self:ConfigureFrame(frame,'mushroom', true)
+    wb:SetFrameLevel(frame:GetFrameLevel() + 5)
+    wb:SetTemplate("Transparent")
+    wb:SetBackdropBorderColor(0,0,0,0)
+    
+    for i = 1, 3 do
+        wb[i] = self:ConfigureStatusBar(frame,'mushroom',wb,'wildmushroom'..i)
+        
+        if i == 1 then
+            wb[i]:SetPoint("BOTTOM",wb)
+        else
+            wb[i]:SetPoint("BOTTOM", wb[i-1], "TOP", 0, E:Scale(1))
+        end
+     
+        wb[i]:SetOrientation('VERTICAL')
+    end
+    
+    return wb
 end
 
 -- Warlock spec bars
@@ -365,8 +388,8 @@ function H:ConstructComboPoints(frame)
     bars:SetTemplate("Transparent")
     bars:SetBackdropBorderColor(0,0,0,0)
     
-    for i = 1, 3 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'combopoint'..i)
+    for i = 1, 5 do                 
+        bars[i]=self:ConfigureStatusBar(frame,'cpoints',bars,'combopoint'..i)
         
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
 

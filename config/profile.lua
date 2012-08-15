@@ -193,6 +193,35 @@ P['hud']['units'] = {
                     },
                 },
             },
+            ['mushroom'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['default'] = {
+                        ['pointFrom'] = 'BOTTOMRIGHT',
+                        ['attachTo'] = 'health',
+                        ['pointTo'] = 'BOTTOMLEFT',
+                        ['xOffset'] = -4,
+                        ['yOffset'] = 0,
+                    },
+                    ['eclipse'] = {
+                        ['pointFrom'] = 'BOTTOMRIGHT',
+                        ['attachTo'] = 'classbars',
+                        ['pointTo'] = 'BOTTOMLEFT',
+                        ['xOffset'] = -4,
+                        ['yOffset'] = 0,
+                    },
+                },
+                ['size'] = {
+                    ['height'] = 146,
+                    ['width'] = 7,
+                },
+                ['media'] = {
+                    ['texture'] = {
+                        ['ovveride'] = false,
+                        ['statusbar'] = "Minimalist",
+                    },
+                },
+            },
             ['cpoints'] = {
                 ['enabled'] = false,
                 ['anchor'] = {

@@ -17,6 +17,7 @@ function H:ConstructPlayerFrame(frame,unit)
 
 	if E.myclass == "DRUID" then
 		frame.EclipseBar = self:ConstructEclipseBar(frame)
+		frame.WildMushroom = self:ConstructWildMushroomBar(frame)
 	end
 
 	if E.myclass == "WARLOCK" then

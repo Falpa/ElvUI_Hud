@@ -62,6 +62,8 @@ local elements = {
 	['combat'] = 'Combat',
 	['pvp'] = 'PvPText',
 	['healcomm'] = 'HealPrediction',
+	['mushroom'] = 'WildMushroom',
+	['gcd'] = 'GCD'
 }
 
 function H:GetElement(element)
@@ -91,62 +93,89 @@ function H:GetAnchor(frame,anchor)
 	return frame
 end
 
+function H:CheckHealthValue(frame,eclipse)
+	local config = E.db.hud.units.player.elements.health.value
+	if config.enabled then
+		local pointFrom = 'TOPRIGHT'
+        local attachTo = 'health'
+        local pointTo = 'TOPLEFT'
+        local xOffset = -20
+        local yOffset = 0
+        local anchor = config.anchor
+        if anchor.pointFrom == pointFrom and anchor.attachTo == attachTo and anchor.pointTo == pointTo and anchor.xOffset == xOffset and anchor.yOffset == yOffset then
+        	if eclipse then
+        		frame.Health.value:Point('TOPRIGHT',frame.Health,'TOPLEFT',-30,0)
+        	else
+        		frame.Health.value:Point('TOPRIGHT',frame.Health,'TOPLEFT',-20,0)
+        	end
+        end
+    end
+end
+
 -- This function is only responsible for updating bar sizes for class bar children
 -- textures work normally as does parent size
 function H:UpdateClassBar(frame,element)
 	local config = E.db.hud.units[frame.unit].elements[element]
 	local size = config['size']
 	
+	if element == 'mushroom' then
+		for i = 1,3 do
+			frame.WildMushroom[i]:Size(size.width,(size.height - 2)/3)
+		end
+	end
+
 	if element == "cpoints" then
 		for i=1,5 do
-			frame.CPoints[i].Size(size.width,(size.height - 4)/5)
+			frame.CPoints[i]:Size(size.width,(size.height - 4)/5)
 		end
 	end
 
-	if E.myclass == "DRUID" then
-		frame.EclipseBar.LunarBar:Size(size.width,size.height)
-		frame.EclipseBar.SolarBar:Size(size.width,size.height)
-	end
-
-	if E.myclass == "WARLOCK" then
-		for i=1,4 do
-			frame.WarlockSpecBars[i]:Size(size.width,(size.height - 2) / 4)
+	if element == 'classbars' then
+		if E.myclass == "DRUID" then
+			frame.EclipseBar.LunarBar:Size(size.width,size.height)
+			frame.EclipseBar.SolarBar:Size(size.width,size.height)
 		end
-	end
 
-	if E.myclass == "PALADIN" then
-		for i=1,5 do
-			frame.HolyPower[i]:Size(size.width,(size.height - 2) / 5)
+		if E.myclass == "WARLOCK" then
+			for i=1,4 do
+				frame.WarlockSpecBars[i]:Size(size.width,(size.height - 2) / 4)
+			end
 		end
-	end
 
-	if E.myclass == "DEATHKNIGHT" then
-		for i=1,6 do
-			frame.Runes[i]:Size(size.width,(size.height - 5) / 6)
+		if E.myclass == "PALADIN" then
+			for i=1,5 do
+				frame.HolyPower[i]:Size(size.width,(size.height - 2) / 5)
+			end
 		end
-	end
 
-	if E.myclass == "SHAMAN" then
-		for i=1,4 do
-			frame.TotemBar[i]:Size(size.width,(size.height - 3) / 4)
+		if E.myclass == "DEATHKNIGHT" then
+			for i=1,6 do
+				frame.Runes[i]:Size(size.width,(size.height - 5) / 6)
+			end
 		end
-	end
 
-	if E.myclass == "MONK" then
-		for i=1,5 do
-			frame.HarmonyBar[i]:Size(size.width,(size.height - 2) / 5)
+		if E.myclass == "SHAMAN" then
+			for i=1,4 do
+				frame.TotemBar[i]:Size(size.width,(size.height - 3) / 4)
+			end
 		end
-	end
 
-	if E.myclass == "PRIEST" then
-		for i=1,3 do
-			frame.ShadowOrbsBar[i]:Size(size.width,(size.height - 2) / 3)
+		if E.myclass == "MONK" then
+			for i=1,5 do
+				frame.HarmonyBar[i]:Size(size.width,(size.height - 2) / 5)
+			end
 		end
-	end
 
-	if E.myclass == "MAGE" then
-		for i=1,6 do
-			frame.ArcaneChargeBar[i]:Size(size.width,(size.height - 5) / 6)
+		if E.myclass == "PRIEST" then
+			for i=1,3 do
+				frame.ShadowOrbsBar[i]:Size(size.width,(size.height - 2) / 3)
+			end
+		end
+
+		if E.myclass == "MAGE" then
+			for i=1,6 do
+				frame.ArcaneChargeBar[i]:Size(size.width,(size.height - 5) / 6)
+			end
 		end
 	end
 end
@@ -172,7 +201,7 @@ function H:UpdateElement(frame,element)
 		end
 		if e.frame then
 			e.frame:Size(size.width,size.height)
-			if element == 'classbars' or element == 'cpoints' then
+			if element == 'classbars' or element == 'cpoints' or element == 'mushroom' then
 				self:UpdateClassBar(frame,element)
 			end
 		end
@@ -231,6 +260,36 @@ function H:UpdateElementAnchor(frame,element)
 			anchor = anchor['vertical']
 		else
 			anchor = anchor['horizontal']
+		end
+	end
+	if element == 'mushroom' then
+		local WMFrame = CreateFrame('Frame',nil,frame)
+		WMFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
+		WMFrame:SetScript('OnEvent',function(self,event)
+			local config = E.db.hud.units[frame.unit].elements['mushroom']
+			local anchor = config['anchor']
+			local eclipse
+			local spec = GetSpecialization()
+			if spec == 1 then
+				anchor = anchor['eclipse']
+				eclipse = true
+			else
+				anchor = anchor['default']
+				eclipse = false
+			end
+			local pointFrom = anchor['pointFrom']
+			local attachTo = H:GetAnchor(frame,anchor['attachTo'])
+			local pointTo = anchor['pointTo']
+			local xOffset = anchor['xOffset']
+			local yOffset = anchor['yOffset']
+			frame.WildMushroom:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
+			H:CheckHealthValue(frame,eclipse)
+		end)
+		local spec = GetSpecialization()
+		if spec == 1 then
+			anchor = anchor['eclipse']
+		else
+			anchor = anchor['default']
 		end
 	end
 	local pointFrom = anchor['pointFrom']
@@ -319,6 +378,11 @@ function H:UpdateFrame(unit)
 		if E.db.hud.hideOOC then H:Hide(frame, event) end
 		self:UpdateAllElements(frame)
 		self:UpdateAllElementAnchors(frame)
+
+		if E.myclass == 'DRUID' and unit == 'player' then
+			local spec = GetSpecialization()
+			self:CheckHealthValue(frame,spec==1)
+		end
 	else
 		frame:EnableMouse(false)
 		frame:SetAlpha(0)
@@ -334,7 +398,7 @@ end
 
 function H:UpdateAllElements(frame)
 	local elements = self.units[frame.unit].elements
-	
+	local seenClassbars = false
 	for element,_ in pairs(elements) do
 		self:UpdateElement(frame,element)
 	end
@@ -342,9 +406,23 @@ end
 
 function H:UpdateAllElementAnchors(frame)
 	local elements = self.units[frame.unit].elements
-	
+	local seenClassbars = false
+
 	for element,_ in pairs(elements) do
-		self:UpdateElementAnchor(frame,element)
+		if element == 'mushroom' then
+			if not seenClassbars then
+				self:UpdateElementAnchor(frame,'classbars')
+				seenClassbars = true
+			end
+			self:UpdateElementAnchor(frame,element)
+		elseif element == 'classbars' then
+			if not seenClassbars then
+				self:UpdateElementAnchor(frame,element)
+				seenClassbars = true
+			end
+		else
+			self:UpdateElementAnchor(frame,element)
+		end
 	end
 end
 
@@ -376,7 +454,9 @@ function H:ConfigureStatusBar(frame,element,parent,name)
     local bg = sb:CreateTexture(nil, 'BORDER')
     bg:SetAllPoints()
     bg:SetTexture(E['media'].blankTex)
-    bg.multiplier = 0.3
+    bg:SetTexture(.1, .1, .1)
+    bg:SetAlpha(.2)
+    bg.multiplier = 0.3 
     sb.bg = bg
 
     if not self.units[frame.unit].elements[element].statusbars then
@@ -457,4 +537,19 @@ function H:UpdateElementSizes(unit,isWidth,newSize)
 			if config then size[var] = newSize end
 		end
 	end
+end
+
+function H:SimpleLayout()
+	E.db.hud.units.target.enabled = false
+	E.db.hud.units.targettarget.enabled = false
+	E.db.hud.units.pet.enabled = false
+	E.db.hud.units.pettarget.enabled = false
+	for element,_ in pairs(E.db.hud.units.player.elements) do
+		E.db.hud.units.player.elements[element].enabled = false
+	end
+	E.db.hud.units.player.elements.health.enabled = true
+	E.db.hud.units.player.elements.power.enabled = true
+	E.db.hud.units.player.elements.power.anchor.xOffset = 550
+	E.db.hud.units.player.elements.classbars.enabled = true
+	E.db.hud.units.player.elements.cpoints.enabled = true
 end

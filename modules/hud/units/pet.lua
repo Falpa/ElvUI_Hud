@@ -18,4 +18,3 @@ function H:ConstructPetFrame(frame,unit)
     frame:Point("BOTTOMRIGHT", ElvUF_PlayerHud, "BOTTOMLEFT", -110, 0)
     E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Hud Frame', nil, nil, nil, 'ALL,SOLO')
 end
-

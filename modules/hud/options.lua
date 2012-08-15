@@ -30,7 +30,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 		}
 	}
 	if hasAnchor then
-		if not ((unit == 'player' or unit == 'target') and element == 'castbar') then
+		if not ((unit == 'player' or unit == 'target') and element == 'castbar') and element ~= 'mushroom' then
 			options.args.anchor = {
 				order = 2,
 	            type = "group",
@@ -74,7 +74,104 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 	                },
 	            } 
 			}
-		else
+		elseif element == 'mushroom' then
+            options.args.anchor = {
+                order = 2,
+                type = "group",
+                name = L["Anchor"],
+                guiInline = true,
+                get = function(info) return E.db.hud.units[unit].elements[element].anchor[ info[#info] ] end,
+                set = function(info,value) E.db.hud.units[unit].elements[element].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
+                args = {
+                    default = {
+                        order = 2,
+                        type = "group",
+                        name = L["Default"],
+                        guiInline = true,
+                        get = function(info) return E.db.hud.units[unit].elements[element].anchor.default[ info[#info] ] end,
+                        set = function(info,value) E.db.hud.units[unit].elements[element].anchor.default[ info[#info] ] = value; H:UpdateAllFrames() end,
+                        args = {
+                            pointFrom = {
+                                type = 'select',
+                                name = L["Point From"],
+                                desc = L["Position on the element to anchor"],
+                                order = 2,
+                                values = positionValues,
+                            },
+                            attachTo = {
+                                type = 'input',
+                                width = 'full',
+                                name = L['Attach To'],
+                                desc = L['What to attach this element to.'],
+                                order = 3,
+                            },
+                            pointTo = {
+                                type = 'select',
+                                desc = L["Position on the attached element to anchor to"],
+                                name = L['Point To'],
+                                order = 4,
+                                values = positionValues,
+                            },
+                            xOffset = {
+                                order = 5,
+                                name = L['X Offset'],
+                                type = 'range',
+                                min = -1000, max = 1000, step = 1,
+                            },
+                            yOffset = {
+                                order = 6,
+                                name = L['Y Offset'],
+                                type = 'range',
+                                min = -1000, max = 1000, step = 1,
+                            },
+                        },
+                    },
+                    eclipse = {
+                        order = 2,
+                        type = "group",
+                        name = L["Eclipse"],
+                        guiInline = true,
+                        get = function(info) return E.db.hud.units[unit].elements[element].anchor.eclipse[ info[#info] ] end,
+                        set = function(info,value) E.db.hud.units[unit].elements[element].anchor.eclipse[ info[#info] ] = value; H:UpdateAllFrames() end,
+                        args = {
+                            pointFrom = {
+                                type = 'select',
+                                name = L["Point From"],
+                                desc = L["Position on the element to anchor"],
+                                order = 2,
+                                values = positionValues,
+                            },
+                            attachTo = {
+                                type = 'input',
+                                width = 'full',
+                                name = L['Attach To'],
+                                desc = L['What to attach this element to.'],
+                                order = 3,
+                            },
+                            pointTo = {
+                                type = 'select',
+                                desc = L["Position on the attached element to anchor to"],
+                                name = L['Point To'],
+                                order = 4,
+                                values = positionValues,
+                            },
+                            xOffset = {
+                                order = 5,
+                                name = L['X Offset'],
+                                type = 'range',
+                                min = -1000, max = 1000, step = 1,
+                            },
+                            yOffset = {
+                                order = 6,
+                                name = L['Y Offset'],
+                                type = 'range',
+                                min = -1000, max = 1000, step = 1,
+                            },
+                        }
+                    },    
+                }    
+            }
+        else
 			options.args.anchor = {
                 order = 2,
                 type = "group",
@@ -462,6 +559,7 @@ local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'re
 local function combatOptions(unit) return H:GenerateElementOptionTable(unit,'combat',1000,'Combat Indicator',true,false,false,false,false,false,false) end
 local function pvpOptions(unit) return H:GenerateElementOptionTable(unit,'pvp',1100,'PVP Text',true,false,false,true,false,false,true) end
 local function healcommOptions(unit) return H:GenerateElementOptionTable(unit,'healcomm',1200,'Heal Prediction',false,false,true,false,false,false,false) end
+local function mushroomOptions(unit) return H:GenerateElementOptionTable(unit,'mushroom',550,'Wild Mushroom Tracker',true,true,true,false,false,false) end
 
 local elementOptions = {
 	['health'] = healthOptions,
@@ -476,6 +574,7 @@ local elementOptions = {
 	['combat'] = combatOptions,
 	['pvp'] = pvpOptions,
 	['healcomm'] = healcommOptions,
+    ['mushroom'] = mushroomOptions,
 }
 
 function H:GenerateUnitOptionTable(unit,name,order,mover,elements)

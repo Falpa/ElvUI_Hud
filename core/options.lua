@@ -39,6 +39,13 @@ E.Options.args.hud = {
                     desc = L["Reset the settings of this addon to their defaults."],
                     func = function() E:CopyTable(E.db.hud,P.hud); H:Enable(); H:UpdateHideSetting(); H:UpdateAllFrames(); H:UpdateMouseSetting(); end
                 },
+                simpleLayout = {
+                    type = 'execute',
+                    order = 3,
+                    name = L['Simple Layout'],
+                    desc = L['Use the simple layout from 2.0'],
+                    func = function() H:SimpleLayout(); H:UpdateAllFrames(); end,
+                }
             },
         },
         hudOptions = {
