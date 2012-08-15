@@ -203,6 +203,7 @@ function H:Initialize()
         ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
     end
 
+    H:GenerateOptionTables()
     H:UpdateAllFrames()
     H:UpdateMouseSetting()
     

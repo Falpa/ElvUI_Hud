@@ -15,7 +15,7 @@ local positionValues = {
 };
 
 function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,hasTexture,hasFont,hasColor,hasValue,hasTag)
-	options = {
+    local options = {
 		order = order,
 		type = 'group',
 		name = L[name],
@@ -75,7 +75,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 	            } 
 			}
 		else
-			options.arg.anchor = {
+			options.args.anchor = {
                 order = 2,
                 type = "group",
                 name = L["Anchor"],
@@ -129,7 +129,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     vertical = {
                         order = 2,
                         type = "group",
-                        name = L["Horizontal"],
+                        name = L["Vertical"],
                         guiInline = true,
                         get = function(info) return E.db.hud.units[unit].elements[element].anchor.vertical[ info[#info] ] end,
                         set = function(info,value) E.db.hud.units[unit].elements[element].anchor.vertical[ info[#info] ] = value; H:UpdateAllFrames() end,
@@ -198,7 +198,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 	            },
 			}
 		else
-			options.arg.size = {
+			options.args.size = {
                 order = 3,
                 type = 'group',
                 name = L['Size'],
@@ -231,7 +231,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     vertical = {
                         order = 3,
                         type = 'group',
-                        name = L['Horizontal'],
+                        name = L['Vertical'],
                         guiInline = true,
                         get = function(info) return E.db.hud.units[unit].elements[element].size.vertical[ info[#info] ] end,
                         set = function(info,value) E.db.hud.units[unit].elements[element].size.verticalal[ info[#info] ] = value; H:UpdateAllFrames() end,
@@ -461,7 +461,7 @@ local function raidIconOptions(unit) return H:GenerateElementOptionTable(unit,'r
 local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Resting Indicator',true,false,false,false,false,false,false) end
 local function combatOptions(unit) return H:GenerateElementOptionTable(unit,'combat',1000,'Combat Indicator',true,false,false,false,false,false,false) end
 local function pvpOptions(unit) return H:GenerateElementOptionTable(unit,'pvp',1100,'PVP Text',true,false,false,true,false,false,true) end
-local function healcommOptions(unit) return H:GenerateElementOptionTable(unit,'healcomm',false,false,true,false,false,false,false) end
+local function healcommOptions(unit) return H:GenerateElementOptionTable(unit,'healcomm',1200,'Heal Prediction',false,false,true,false,false,false,false) end
 
 local elementOptions = {
 	['health'] = healthOptions,
@@ -475,14 +475,14 @@ local elementOptions = {
 	['resting'] = restingOptions,
 	['combat'] = combatOptions,
 	['pvp'] = pvpOptions,
-	['healcommOptions'] = healcommOptions,
+	['healcomm'] = healcommOptions,
 }
 
 function H:GenerateUnitOptionTable(unit,name,order,mover,elements)
-	options = {
+	local options = {
         name = L[name],
         type = 'group',
-        order = 200,
+        order = order,
         childGroups = "select",
         get = function(info) return E.db.hud.units[unit][ info[#info] ] end,
         set = function(info, value) E.db.hud.units[unit][ info[#info] ] = value; H:UpdateFrame(unit); end,
@@ -525,8 +525,10 @@ function H:GenerateUnitOptionTable(unit,name,order,mover,elements)
         }
     }
     for element,_ in pairs(elements) do
-        options.args[element] = elementOptions[element]
+        options.args[element] = elementOptions[element](unit)
     end
+
+    return options
 end
 
 local nameMap = {
