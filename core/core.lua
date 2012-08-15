@@ -1,3 +1,4 @@
+local addon, ns = ...
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:NewModule('HUD','AceTimer-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
@@ -225,7 +226,7 @@ function H:Initialize()
         H:Enable()
     end
 
-    self.version = GetAddOnMetadata('EvUI_Hud','Version')
+    self.version = GetAddOnMetadata(addon,'Version')
     print(L["ElvUI Hud "]..format("v|cff33ffff%s|r",self.version)..L[" is loaded. Thank you for using it and note that I will always support you."])
 end
 
