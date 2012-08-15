@@ -328,6 +328,20 @@ P['hud']['units'] = {
                         ['statusbar'] = "Minimalist",
                     },
                 }
+            },
+            ['gcd'] = {
+                ['enabled'] = true,
+                ['anchor'] = {
+                    ['pointFrom'] = 'LEFT',
+                    ['attachTo'] = 'power',
+                    ['pointTo'] = 'RIGHT',
+                    ['xOffset'] = 4,
+                    ['yOffset'] = 0,
+                },
+                ['size'] = {
+                    ['height'] = 150,
+                    ['width'] = 4,
+                },
             }
         },
     },

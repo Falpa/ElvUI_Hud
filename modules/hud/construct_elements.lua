@@ -75,6 +75,7 @@ function H:ConstructCastbar(frame)
         castbar.Text:SetTextColor(0.84, 0.75, 0.65)
         
         castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
+        castbar.Spark:Height(12)
         castbar.Spark:SetBlendMode('ADD')
         castbar.Spark:SetVertexColor(1, 1, 1)
 
@@ -113,6 +114,11 @@ function H:ConstructCastbar(frame)
         castbar.button:Size(26)
         castbar.button:SetTemplate("Transparent")
         castbar.button:CreateShadow("Default")
+
+        castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
+        castbar.Spark:SetBlendMode('ADD')
+        castbar.Spark:SetVertexColor(1, 1, 1)
+        castbar.Spark:Width(12)
 
         castbar.Text = self:ConfigureFontString(frame,'castbar',castbar,'text')
         castbar.Text:SetTextColor(0.84, 0.75, 0.65)
@@ -565,4 +571,27 @@ function H:ConstructHealComm(frame)
             if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
         end
     }
+end
+
+function H:ConstructGCD(frame)
+    self:AddElement(frame,'gcd')
+    local GCD = self:ConfigureStatusBar(frame,'gcd')
+    GCD:SetStatusBarColor(.8,.8,.8,0)
+    GCD:SetAlpha(1)
+    GCD:SetOrientation('VERTICAL')
+    GCD:SetFrameStrata(frame.Power:GetFrameStrata())
+    GCD:SetFrameLevel(frame.Power:GetFrameLevel()+2)
+    --[[GCD.Backdrop = CreateFrame("Frame", nil, GCD)
+    GCD.Backdrop:CreatePanel(nil, 1, 1, "CENTER", GCD, "CENTER", 0, 0)
+    GCD.Backdrop:Point("TOPLEFT", -2, 2)
+    GCD.Backdrop:Point("BOTTOMRIGHT", 2, -2)]]
+    
+    GCD.Spark = GCD:CreateTexture(frame:GetName().."_GCDSpark", "OVERLAY")
+    GCD.Spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
+    GCD.Spark:SetVertexColor(1,1,1)
+    GCD.Spark:Height(12)
+    GCD.Spark:Point('CENTER',GCD:GetStatusBarTexture(),'TOP')
+    GCD.Spark:SetBlendMode("ADD")
+
+    return GCD
 end

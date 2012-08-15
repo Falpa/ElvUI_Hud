@@ -5,13 +5,7 @@
 ## Notes: Hud frames for ElvUI
 ## RequiredDeps: ElvUI
 
-libs\oUF_HarmonyBar\oUF_HarmonyBar.lua
-libs\oUF_ShadowOrbsBar\oUF_ShadowOrbsBar.lua
-libs\oUF_ThreatBar\oUF_ThreatBar.lua
-libs\oUF_WarlockSpecBars\oUF_WarlockSpecBars.lua
-libs\oUF_WeakenedSoul\oUF_WeakenedSoul.lua
-libs\oUF_WildMushroom\oUF_WildMushroom.lua
-
+libs\load_libs.xml
 core\load_core.xml
 config\load_config.xml
 modules\load_modules.xml
