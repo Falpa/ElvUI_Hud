@@ -225,7 +225,7 @@ function H:Initialize()
         H:Enable()
     end
 
-    self.version = '3.0beta'
+    self.version = '3.0.3'
     print(L["ElvUI Hud "]..format("v|cff33ffff%s|r",self.version)..L[" is loaded. Thank you for using it and note that I will always support you."])
 end
 
