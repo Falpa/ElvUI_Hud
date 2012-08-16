@@ -431,13 +431,15 @@ function H:ConstructAuraBars()
     self:SetTemplate('Default')
 
     bar:Size(size.width,size.height)
-    if media.texture.override then
+    local textureSetting = 'units.player.elements.aurabars.media.texture'
+    local fontSetting = 'units.player.elements.aurabars.media.font'
+    if not H:IsDefault(textureSetting) then
         bar:SetStatusBarTexture(LSM:Fetch("statusbar", media.texture.statusbar))
     else
         bar:SetStatusBarTexture(LSM:Fetch("statusbar", E.db.hud.statusbar))
     end
     
-    if media.font.override then
+    if not H:IsDefault(fontSetting) then
         bar.spelltime:FontTemplate(LSM:Fetch("font", media.font.font), media.font.fontsize, "THINOUTLINE")
         bar.spellname:FontTemplate(LSM:Fetch("font", media.font.font), media.font.fontsize, "THINOUTLINE")
     else

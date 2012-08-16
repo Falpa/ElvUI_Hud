@@ -8,6 +8,39 @@ local backdrop = {
 	insets = {top = -E.mult, left = -E.mult, bottom = -E.mult, right = -E.mult},
 }
 
+local function IsDefaultHelper( tbl1, tbl2 )
+    --
+    for k,v in pairs(tbl2) do
+        --
+        if (tbl1[k] ~= v) then
+            
+            if ((type(tbl1[k])~="table") or (type(v)~="table")) then
+                --
+                return false    -- some entry didn't exist or was different!
+            end
+            
+            -- Subtables need to be dived into (different refs doesn't mean
+            -- different contents).
+            --
+            if (not IsDefaultHelper( tbl1[k], v )) then
+                return false
+            end
+        end
+    end    
+
+    return true     -- covered it all!
+end
+
+function H:IsDefault(settingstring)
+	local settings = { string.split('.',settingstring) }
+	local options,profile = E.db.hud,P.hud
+	for _,setting in pairs(settings) do
+		options = options[setting]
+		profile = profile[setting]
+	end
+	return IsDefaultHelper(options,profile)
+end
+
 function H:GetUnitFrame(unit)
 	local stringTitle = E:StringTitle(unit)
 	if stringTitle:find('target') then
@@ -96,13 +129,7 @@ end
 function H:CheckHealthValue(frame,eclipse)
 	local config = E.db.hud.units.player.elements.health.value
 	if config.enabled then
-		local pointFrom = 'TOPRIGHT'
-        local attachTo = 'health'
-        local pointTo = 'TOPLEFT'
-        local xOffset = -20
-        local yOffset = 0
-        local anchor = config.anchor
-        if anchor.pointFrom == pointFrom and anchor.attachTo == attachTo and anchor.pointTo == pointTo and anchor.xOffset == xOffset and anchor.yOffset == yOffset then
+		if H:IsDefault('units.player.elements.health.value.anchor') then
         	if eclipse then
         		frame.Health.value:Point('TOPRIGHT',frame.Health,'TOPLEFT',-30,0)
         	else
@@ -207,9 +234,11 @@ function H:UpdateElement(frame,element)
 		end
 	end
 	if media then
+		local textureSetting = string.format('units.%s.elements.%s.media.texture',frame.unit,element)
+		local fontSetting = string.format('units.%s.elements.%s.media.font',frame.unit,element)
 		if e.statusbars then
 			for _,statusbar in pairs(e.statusbars) do
-				if media.texture.override then
+				if media.texture.override or not self:IsDefault(textureSetting) then
 					statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", media.texture.statusbar))
 				else
 					statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", E.db.hud.statusbar))
@@ -222,7 +251,7 @@ function H:UpdateElement(frame,element)
 		end
 		if e.textures then
 			for _,texture in pairs(e.textures) do
-				if media.texture.override then
+				if media.texture.override or not self:IsDefault(textureSetting) then
 					texture:SetTexture(LSM:Fetch("statusbar", media.texture.statusbar))
 				else
 					texture:SetTexture(LSM:Fetch("statusbar", E.db.hud.statusbar))
@@ -231,7 +260,7 @@ function H:UpdateElement(frame,element)
 		end
 		if e.fontstrings then
 			for n,fs in pairs(e.fontstrings) do
-				if media.font.override then
+				if media.font.override or not self:IsDefault(fontSetting) then
 					fs:FontTemplate(LSM:Fetch("font", media.font.font), media.font.fontsize, "THINOUTLINE")
 				else
 					fs:FontTemplate(LSM:Fetch("font", E.db.hud.font), E.db.hud.fontsize, "THINOUTLINE")

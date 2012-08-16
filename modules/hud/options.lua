@@ -372,7 +372,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         type = "toggle",
                         order = 1,
                         name = L["Override"],
-                        desc = L["Override the default statusbar texture for the hud to use this texture for the element"],
+                        desc = L["Override the texture for this element"],
                     },
                     statusbar = {
                         type = "select", dialogControl = 'LSM30_Statusbar',
@@ -397,7 +397,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         type = "toggle",
                         order = 1,
                         name = L["Override"],
-                        desc = L["Override the default font for the hud to use this font for this element"],
+                        desc = L["Override the font for this element"],
                     },
                     font = {
                         type = "select", dialogControl = 'LSM30_Font',
@@ -521,7 +521,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         },
                     },
                 },  
-            },
+            },w
         }
     end
 
@@ -552,7 +552,7 @@ local function powerOptions(unit) return H:GenerateElementOptionTable(unit,'powe
 local function castbarOptions(unit) return H:GenerateElementOptionTable(unit,'castbar',300,'Castbar',true,true,true,true,true,false,false) end
 local function nameOptions(unit) return H:GenerateElementOptionTable(unit,'name',400,'Name',true,false,false,true,false,false,true) end
 local function classbarOptions(unit) return H:GenerateElementOptionTable(unit,'classbars',500,'Classbars',true,true,true,true,false,true,false) end
-local function cpointOptions(unit) return H:GenerateElementOptionTable(unit,'cpoints',600,'Combo Points',true,true,true,true,false,false,false) end
+local function cpointOptions(unit) return H:GenerateElementOptionTable(unit,'cpoints',600,'Combo Points',true,true,true,false,false,false,false) end
 local function aurabarOptions(unit) return H:GenerateElementOptionTable(unit,'aurabars',700,'Aurabars',true,true,true,true,false,false,false) end
 local function raidIconOptions(unit) return H:GenerateElementOptionTable(unit,'raidicon',800,'Raid Icon',true,false,false,false,false,false,false) end
 local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Resting Indicator',true,false,false,false,false,false,false) end
@@ -649,7 +649,7 @@ local nameMap = {
         ['name'] = 'Target Target Hud',
         ['mover'] = 'Target Target Hud Frame'
     },
-     ['pettarget'] = {
+    ['pettarget'] = {
         ['name'] = 'Pet Target Hud',
         ['mover'] = 'Pet Target Hud Frame'
     },

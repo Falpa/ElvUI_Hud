@@ -39,7 +39,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -76,7 +76,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -101,7 +101,7 @@ P['hud']['units'] = {
                 ['enabled'] = true,
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -172,7 +172,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -217,7 +217,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                 },
@@ -237,13 +237,8 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
-                    },
-                    ['font'] = {
-                        ['override'] = false,
-                        ['font'] = "ElvUI Font",
-                        ['fontsize'] = 12,
                     },
                 },
             },
@@ -262,7 +257,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -324,7 +319,7 @@ P['hud']['units'] = {
                 ['enabled'] = true,
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                 }
@@ -365,7 +360,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -402,7 +397,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -443,7 +438,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -498,14 +493,9 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
-                    },
-                    ['font'] = {
-                        ['override'] = false,
-                        ['font'] = "ElvUI Font",
-                        ['fontsize'] = 12,
-                    },
+                    }, d
                 },
             },
             ['aurabars'] = {
@@ -523,7 +513,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -565,7 +555,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -602,7 +592,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -638,7 +628,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -700,7 +690,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -737,7 +727,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -808,7 +798,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {
@@ -845,7 +835,7 @@ P['hud']['units'] = {
                 },
                 ['media'] = {
                     ['texture'] = {
-                        ['ovveride'] = false,
+                        ['overide'] = false,
                         ['statusbar'] = "Minimalist",
                     },
                     ['font'] = {

@@ -113,7 +113,7 @@ E.Options.args.hud = {
                     desc = L["The font that the core of the UI will use."],
                     values = AceGUIWidgetLSMlists.font, 
                     get = function(info) return E.db.hud[ info[#info] ] end,   
-                    set = function(info, value) E.db.hud[ info[#info] ] = value; H:UpdateMAllFrames() end,
+                    set = function(info, value) E.db.hud[ info[#info] ] = value; H:UpdateAllFrames() end,
                 },
                 texture = {
                     type = "select", dialogControl = 'LSM30_Statusbar',
