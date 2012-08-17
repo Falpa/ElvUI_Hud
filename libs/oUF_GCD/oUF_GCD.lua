@@ -15,6 +15,7 @@ local referenceSpells = {
 	331,			-- Healing Wave (Shaman)
 	1752,			-- Sinister Strike (Rogue)
 	5176,			-- Wrath (Druid)
+	100780,			-- Jab (Monk)
 }
 
 local GetTime = GetTime

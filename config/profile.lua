@@ -181,7 +181,6 @@ P['hud']['units'] = {
                         ['fontsize'] = 12,
                     },
                 },
-                -- value for warlock demonology spec
                 ['value'] = {
                     ['enabled'] = true,
                     ['anchor'] = {
@@ -191,6 +190,7 @@ P['hud']['units'] = {
                         ['xOffset'] = -4,
                         ['yOffset'] = 15,
                     },
+                    ['tag'] = '[classpowercolor][classpower:current-max]'
                 },
             },
             ['mushroom'] = {

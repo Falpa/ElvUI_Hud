@@ -330,24 +330,22 @@ function H:UpdateElementAnchor(frame,element)
 	if config['tag'] then
 		frame:Tag(frame[e], config['tag'])
 	end
-	if config['value'] then
-		if element ~= "classbars" or (element == "classbars" and E.myclass == "WARLOCK") then
-			local venable = config['value']['enabled']
-			local vanchor = config['value']['anchor']
-			local vpointFrom = vanchor['pointFrom']
-			local vattachTo = H:GetAnchor(frame,vanchor['attachTo'])
-			local vpointTo = vanchor['pointTo']
-			local vxOffset = vanchor['xOffset']
-			local vyOffset = vanchor['yOffset']
-			frame[e].value:SetPoint(vpointFrom, vattachTo, vpointTo, vxOffset, vyOffset)
-			if config['value']['tag'] then
-				frame:Tag(frame[e].value,config['value']['tag'])
-			end
-			if venable then
-				frame[e].value:Show()
-			else
-				frame[e].value:Hide()
-			end
+	if config['value'] and frame[e].value then
+		local venable = config['value']['enabled']
+		local vanchor = config['value']['anchor']
+		local vpointFrom = vanchor['pointFrom']
+		local vattachTo = H:GetAnchor(frame,vanchor['attachTo'])
+		local vpointTo = vanchor['pointTo']
+		local vxOffset = vanchor['xOffset']
+		local vyOffset = vanchor['yOffset']
+		frame[e].value:SetPoint(vpointFrom, vattachTo, vpointTo, vxOffset, vyOffset)
+		if config['value']['tag'] then
+			frame:Tag(frame[e].value,config['value']['tag'])
+		end
+		if venable then
+			frame[e].value:Show()
+		else
+			frame[e].value:Hide()
 		end
 	end
 

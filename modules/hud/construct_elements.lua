@@ -255,6 +255,8 @@ function H:ConstructHolyPower(frame)
         bars[i].bg:SetAlpha(.15)
     end
     
+    bars.value = self:ConfigureFontString(frame,'classbars',wb)                
+    bars.value:Hide()
     bars.Override = H.UpdateHoly
 
     return bars 
@@ -329,6 +331,9 @@ function H:ConstructHarmonyBar(frame)
         bars[i].bg:SetAlpha(.15)
     end
 
+    bars.value = self:ConfigureFontString(frame,'classbars',wb)                
+    bars.value:Hide()
+
    return bars 
 end
  
@@ -356,7 +361,9 @@ function H:ConstructShadowOrbBar(frame)
         bars[i].bg:SetAlpha(.15)
     end
 
-   return bars 
+    bars.value = self:ConfigureFontString(frame,'classbars',wb)                
+    bars.value:Hide()
+    return bars 
 end
 
 -- Construct arcane bar for mages
@@ -383,7 +390,10 @@ function H:ConstructArcaneBar(frame)
         bars[i].bg:SetAlpha(.15)
     end
 
-   return bars 
+    bars.value = self:ConfigureFontString(frame,'classbars',wb)                
+    bars.value:Hide()
+    
+    return bars 
 end
 
 -- Combo points for rogues and druids
