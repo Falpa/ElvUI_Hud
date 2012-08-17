@@ -213,7 +213,7 @@ function H:Initialize()
     local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
 
     ElvUF_Player:HookScript("OnShow", function(self,event) for _,f in pairs(elv_frames) do
-            if f and E.db.hud.hideElv then 
+            if f then 
                 H.updateElvFunction(f)
             end
         end 
