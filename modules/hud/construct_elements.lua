@@ -331,7 +331,7 @@ function H:ConstructHarmonyBar(frame)
         bars[i].bg:SetAlpha(.15)
     end
 
-    bars.value = self:ConfigureFontString(frame,'classbars',wb)                
+    bars.value = self:ConfigureFontString(frame,'classbars',bars)                
     bars.value:Hide()
 
    return bars 
@@ -593,10 +593,6 @@ function H:ConstructGCD(frame)
     GCD:SetOrientation('VERTICAL')
     GCD:SetFrameStrata(frame.Power:GetFrameStrata())
     GCD:SetFrameLevel(frame.Power:GetFrameLevel()+2)
-    --[[GCD.Backdrop = CreateFrame("Frame", nil, GCD)
-    GCD.Backdrop:CreatePanel(nil, 1, 1, "CENTER", GCD, "CENTER", 0, 0)
-    GCD.Backdrop:Point("TOPLEFT", -2, 2)
-    GCD.Backdrop:Point("BOTTOMRIGHT", 2, -2)]]
     
     GCD.Spark = GCD:CreateTexture(frame:GetName().."_GCDSpark", "OVERLAY")
     GCD.Spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
