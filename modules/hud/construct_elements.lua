@@ -377,7 +377,7 @@ function H:ConstructArcaneBar(frame)
     for i = 1, 6 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'arcanecharge'..i)
         
-        bars[i]:SetStatusBarColor(228/255,225/255,16/255)
+        bars[i]:SetStatusBarColor(0, 157/255, 255/255)
 
         if i == 1 then
             bars[i]:SetPoint("BOTTOM", bars)
