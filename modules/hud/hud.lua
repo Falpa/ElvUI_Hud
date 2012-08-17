@@ -145,63 +145,188 @@ function H:UpdateClassBar(frame,element)
 	local config = E.db.hud.units[frame.unit].elements[element]
 	local size = config['size']
 	
+	local spaced = config.spaced
+	if element == 'mushroom' then
+		local numPoints = 3
+		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
+		for i = 1, numPoints do
+			frame.WildMushroom[i]:Size(size.width,(size.height - (spaced and totalspacing or 2))/3)
+		end
+	end
+
+	if element == "cpoints" then
+		local numPoints = 5
+		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
+		for i = 1, numPoints do
+			frame.CPoints[i]:Size(size.width,(size.height - (spaced and totalspacing or 4))/5)
+		end
+	end
+
+	if element == 'classbars' then
+		local numPoints
+		local maxPoints
+		if E.myclass == "DRUID" then
+			frame.EclipseBar.LunarBar:Size(frame.EclipseBar:GetSize())
+			frame.EclipseBar.SolarBar:Size(frame.EclipseBar:GetSize())
+			frame.EclipseBar:ForceUpdate()
+			return
+		end
+
+		if E.myclass == "WARLOCK" then
+			local spec = GetSpecialization()
+			if spec == SPEC_WARLOCK_DESTRUCTION then
+				numPoints = UnitPowerMax('player',SPELL_POWER_BURNING_EMBERS)
+				maxPoints = 4
+			elseif spec == SPEC_WARLOCK_DEMONOLOGY then
+				numPoints = 1
+				maxPoints = 1
+			else
+				numPoints = UnitPowerMax('player',SPELL_POWER_SOUL_SHARDS)
+				maxPoints = 4
+			end
+		end
+
+		if E.myclass == "PALADIN" then
+			numPoints = UnitPowerMax('player',SPELL_POWER_HOLY_POWER)
+			maxPoints = 5
+		end
+
+		if E.myclass == "DEATHKNIGHT" then
+			numPoints = 6
+			maxPoints = 6
+		end
+
+		if E.myclass == "SHAMAN" then
+			numPoints = 4
+			maxPoints = 4
+		end
+
+		if E.myclass == "MONK" then
+			numPoints = UnitPowerMax('player',SPELL_POWER_LIGHT_FORCE)
+			maxPoints = 5
+		end
+
+		if E.myclass == "PRIEST" then
+			numPoints = 3
+			maxPoints = 3
+		end
+
+		if E.myclass == "MAGE" then
+			numPoints = 6
+			maxPoints = 6
+		end
+
+		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
+		local e = H:GetElement(element)
+		frame[e]:ForceUpdate()
+		for i = 1, numPoints do
+			frame[e][i]:Size(size.width,(size.height - (spaced and totalspacing or 2)) / numPoints)
+		end
+	end
+end
+
+function H:UpdateClassBarAnchors(frame,element)
+	local config = E.db.hud.units[frame.unit].elements[element]
+	
+	local spaced = config.spaced
+	local spacing = config.spacesettings.spacing
+	if not spaced then
+		spacing = 1
+	end
+
 	if element == 'mushroom' then
 		for i = 1,3 do
-			frame.WildMushroom[i]:Size(size.width,(size.height - 2)/3)
+			if i == 1 then
+	            frame.WildMushroom[i]:Point("BOTTOM",frame.WildMushroom)
+	        else
+	            frame.WildMushroom[i]:Point("BOTTOM",frame.WildMushroom[i-1], "TOP", 0, spacing)
+	        end
 		end
 	end
 
 	if element == "cpoints" then
 		for i=1,5 do
-			frame.CPoints[i]:Size(size.width,(size.height - 4)/5)
+			if i == 1 then
+	            frame.CPoints[i]:Point("BOTTOM",frame.CPoints)
+	        else
+	            frame.CPoints[i]:Point("BOTTOM",frame.CPoints[i-1], "TOP", 0, spacing)
+	        end
 		end
 	end
 
 	if element == 'classbars' then
 		if E.myclass == "DRUID" then
-			frame.EclipseBar.LunarBar:Size(size.width,size.height)
-			frame.EclipseBar.SolarBar:Size(size.width,size.height)
+			frame.EclipseBar.LunarBar:SetPoint('LEFT', frame.EclipseBar, 'LEFT', 0, 0)
+			frame.EclipseBar.SolarBar:SetPoint('LEFT', frame.EclipseBar, 'LEFT', 0, 0)
 		end
 
 		if E.myclass == "WARLOCK" then
 			for i=1,4 do
-				frame.WarlockSpecBars[i]:Size(size.width,(size.height - 2) / 4)
+				if i == 1 then
+		            frame.WarlockSpecBars[i]:Point("BOTTOM",frame.WarlockSpecBars)
+		        else
+		            frame.WarlockSpecBars[i]:Point("BOTTOM",frame.WarlockSpecBars[i-1], "TOP", 0, spacing)
+		        end
 			end
 		end
 
 		if E.myclass == "PALADIN" then
 			for i=1,5 do
-				frame.HolyPower[i]:Size(size.width,(size.height - 2) / 5)
+				if i == 1 then
+		            frame.HolyPower[i]:Point("BOTTOM",frame.HolyPower)
+		        else
+		            frame.HolyPower[i]:Point("BOTTOM",frame.HolyPower[i-1], "TOP", 0, spacing)
+		        end
 			end
 		end
 
 		if E.myclass == "DEATHKNIGHT" then
 			for i=1,6 do
-				frame.Runes[i]:Size(size.width,(size.height - 5) / 6)
+				if i == 1 then
+		            frame.Runes[i]:Point("BOTTOM",frame.Runes)
+		        else
+		            frame.Runes[i]:Point("BOTTOM",frame.Runes[i-1], "TOP", 0, spacing)
+		        end
 			end
 		end
 
 		if E.myclass == "SHAMAN" then
 			for i=1,4 do
-				frame.TotemBar[i]:Size(size.width,(size.height - 3) / 4)
+				if i == 1 then
+		            frame.TotemBar[i]:Point("BOTTOM",frame.TotemBar)
+		        else
+		            frame.TotemBar[i]:Point("BOTTOM",frame.TotemBar[i-1], "TOP", 0, spacing)
+		        end
 			end
 		end
 
 		if E.myclass == "MONK" then
 			for i=1,5 do
-				frame.HarmonyBar[i]:Size(size.width,(size.height - 2) / 5)
+				if i == 1 then
+		            frame.HarmonyBar[i]:Point("BOTTOM",frame.HarmonyBar)
+		        else
+		            frame.HarmonyBar[i]:Point("BOTTOM",frame.HarmonyBar[i-1], "TOP", 0, spacing)
+		        end
 			end
 		end
 
 		if E.myclass == "PRIEST" then
 			for i=1,3 do
-				frame.ShadowOrbsBar[i]:Size(size.width,(size.height - 2) / 3)
+				if i == 1 then
+		            frame.ShadowOrbsBar[i]:Point("BOTTOM",frame.ShadowOrbsBar)
+		        else
+		            frame.ShadowOrbsBar[i]:Point("BOTTOM",frame.ShadowOrbsBar[i-1], "TOP", 0, spacing)
+		        end
 			end
 		end
 
 		if E.myclass == "MAGE" then
 			for i=1,6 do
-				frame.ArcaneChargeBar[i]:Size(size.width,(size.height - 5) / 6)
+				if i == 1 then
+		            frame.ArcaneChargeBar[i]:Point("BOTTOM",frame.ArcaneChargeBar)
+		        else
+		            frame.ArcaneChargeBar[i]:Point("BOTTOM",frame.ArcaneChargeBar[i-1], "TOP", 0, spacing)
+		        end
 			end
 		end
 	end
@@ -227,7 +352,11 @@ function H:UpdateElement(frame,element)
 			end			
 		end
 		if e.frame then
-			e.frame:Size(size.width,size.height)
+			local height = size.height
+			if element == 'classbars' or element == 'cpoints' or element == 'mushroom' then
+				if config['spaced'] then height = height + 2 - (config['spacesettings'].offset*2) end
+			end
+			e.frame:Size(size.width,height)
 			if element == 'classbars' or element == 'cpoints' or element == 'mushroom' then
 				self:UpdateClassBar(frame,element)
 			end
@@ -311,6 +440,7 @@ function H:UpdateElementAnchor(frame,element)
 			local pointTo = anchor['pointTo']
 			local xOffset = anchor['xOffset']
 			local yOffset = anchor['yOffset']
+			if config['spaced'] then yOffset = yOffset + config['spacesettings'].offset end
 			frame.WildMushroom:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
 			H:CheckHealthValue(frame,eclipse)
 		end)
@@ -326,7 +456,13 @@ function H:UpdateElementAnchor(frame,element)
 	local pointTo = anchor['pointTo']
 	local xOffset = anchor['xOffset']
 	local yOffset = anchor['yOffset']
+	if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
+		if config['spaced'] then yOffset = yOffset + config['spacesettings'].offset end
+	end
 	frame[e]:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
+	if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
+		self:UpdateClassBarAnchors(frame,element)
+	end
 	if config['tag'] then
 		frame:Tag(frame[e], config['tag'])
 	end
@@ -529,11 +665,11 @@ function H:ConfigureFrame(frame,element,visible)
 	if visible == nil then visible = false end
 	local f = CreateFrame('Frame',nil,frame)
 	f.visible = visible
-	if visible then
+	--[[if visible then
 		f:SetTemplate("Default")
 		f:CreateBackdrop("Default")
 		f:CreateShadow("Default")
-	end
+	end]]
 	self.units[frame.unit].elements[element].frame = f
 	return f
 end

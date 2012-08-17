@@ -14,13 +14,13 @@ local positionValues = {
     BOTTOM = 'BOTTOM',
 };
 
-function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,hasTexture,hasFont,hasColor,hasValue,hasTag)
+function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,hasTexture,hasFont,hasColor,hasValue,hasTag,hasSpacing)
     local options = {
 		order = order,
 		type = 'group',
 		name = L[name],
 		get = function(info) return E.db.hud.units[unit].elements[element][ info[#info] ] end,
-		set = function(info,value)  E.db.hud.units[unit].elements[element][ info[#info] ] = value; H:UpdateFrames(unit) end,
+		set = function(info,value)  E.db.hud.units[unit].elements[element][ info[#info] ] = value; H:UpdateFrame(unit) end,
 		args = {
 			enabled = {
                 type = 'toggle',
@@ -471,7 +471,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
             name = L["Anchor"],
             guiInline = true,
             get = function(info) return E.db.hud.units[unit].elements[element].value[ info[#info] ] end,
-            set = function(info,value) E.db.hud.units[unit].elements[element].value[ info[#info] ] = value; H:UpdateAllFrames() end,
+            set = function(info,value) E.db.hud.units[unit].elements[element].value[ info[#info] ] = value; H:UpdateFrame(unit) end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -484,7 +484,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units[unit].elements[element].value.anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.hud.units[unit].elements[element].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
+                    set = function(info,value) E.db.hud.units[unit].elements[element].value.anchor[ info[#info] ] = value; H:UpdateFrame(unit) end,
                     args = {
                         pointFrom = {
                             type = 'select',
@@ -521,7 +521,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         },
                     },
                 },  
-            },w
+            },
         }
     end
 
@@ -544,23 +544,62 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 	        }
 	    end
 	end
+
+    if hasSpacing then
+        options.args.spacing = {
+            order = 11,
+            type = "group",
+            name = L["Spacing"],
+            guiInline = true,
+            args = {
+                spaced = {
+                    type = 'toggle',
+                    order = 1,
+                    name = L['Spaced'],
+                },
+                spacesettings = {
+                    order = 2,
+                    type = "group",
+                    name = L["Anchor"],
+                    guiInline = true,
+                    get = function(info) return E.db.hud.units[unit].elements[element].spacesettings[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units[unit].elements[element].spacesettings[ info[#info] ] = value; H:UpdateFrame(unit) end,
+                    args = {
+                        offset = {
+                            order = 5,
+                            name = L['Offset'],
+                            type = 'range',
+                            min = -200, max = 200, step = 1,
+                        },
+                        spacing = {
+                            order = 6,
+                            name = L['Spacing'],
+                            type = 'range',
+                            min = 1, max = 100, step = 1,
+                        },
+                    },
+                },  
+            },
+        }
+    end
+
     return options
 end
 
-local function healthOptions(unit) return H:GenerateElementOptionTable(unit,'health',100,'Health',true,true,true,true,true,true,true) end
-local function powerOptions(unit) return H:GenerateElementOptionTable(unit,'power',200,'Power',true,true,true,true,false,true,true) end
-local function castbarOptions(unit) return H:GenerateElementOptionTable(unit,'castbar',300,'Castbar',true,true,true,true,true,false,false) end
-local function nameOptions(unit) return H:GenerateElementOptionTable(unit,'name',400,'Name',true,false,false,true,false,false,true) end
-local function classbarOptions(unit) return H:GenerateElementOptionTable(unit,'classbars',500,'Classbars',true,true,true,true,false,true,true) end
-local function cpointOptions(unit) return H:GenerateElementOptionTable(unit,'cpoints',600,'Combo Points',true,true,true,false,false,false,false) end
-local function aurabarOptions(unit) return H:GenerateElementOptionTable(unit,'aurabars',700,'Aurabars',true,true,true,true,false,false,false) end
-local function raidIconOptions(unit) return H:GenerateElementOptionTable(unit,'raidicon',800,'Raid Icon',true,false,false,false,false,false,false) end
-local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Resting Indicator',true,false,false,false,false,false,false) end
-local function combatOptions(unit) return H:GenerateElementOptionTable(unit,'combat',1000,'Combat Indicator',true,false,false,false,false,false,false) end
-local function pvpOptions(unit) return H:GenerateElementOptionTable(unit,'pvp',1100,'PVP Text',true,false,false,true,false,false,true) end
-local function healcommOptions(unit) return H:GenerateElementOptionTable(unit,'healcomm',1200,'Heal Prediction',false,false,true,false,false,false,false) end
-local function mushroomOptions(unit) return H:GenerateElementOptionTable(unit,'mushroom',550,'Wild Mushroom Tracker',true,true,true,false,false,false) end
-local function gcdOptions(unit) return H:GenerateElementOptionTable(unit,'gcd',1300,'GCD Spark',true,true,false,false,false,false,false) end
+local function healthOptions(unit) return H:GenerateElementOptionTable(unit,'health',100,'Health',true,true,true,true,true,true,true,false) end
+local function powerOptions(unit) return H:GenerateElementOptionTable(unit,'power',200,'Power',true,true,true,true,false,true,true,false) end
+local function castbarOptions(unit) return H:GenerateElementOptionTable(unit,'castbar',300,'Castbar',true,true,true,true,true,false,false,false) end
+local function nameOptions(unit) return H:GenerateElementOptionTable(unit,'name',400,'Name',true,false,false,true,false,false,true,false) end
+local function classbarOptions(unit) return H:GenerateElementOptionTable(unit,'classbars',500,'Classbars',true,true,true,true,false,true,true,true) end
+local function cpointOptions(unit) return H:GenerateElementOptionTable(unit,'cpoints',600,'Combo Points',true,true,true,false,false,false,false,true) end
+local function aurabarOptions(unit) return H:GenerateElementOptionTable(unit,'aurabars',700,'Aurabars',true,true,true,true,false,false,false,false) end
+local function raidIconOptions(unit) return H:GenerateElementOptionTable(unit,'raidicon',800,'Raid Icon',true,false,false,false,false,false,false,false) end
+local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Resting Indicator',true,false,false,false,false,false,false,false) end
+local function combatOptions(unit) return H:GenerateElementOptionTable(unit,'combat',1000,'Combat Indicator',true,false,false,false,false,false,false,false) end
+local function pvpOptions(unit) return H:GenerateElementOptionTable(unit,'pvp',1100,'PVP Text',true,false,false,true,false,false,true,false) end
+local function healcommOptions(unit) return H:GenerateElementOptionTable(unit,'healcomm',1200,'Heal Prediction',false,false,true,false,false,false,false,false) end
+local function mushroomOptions(unit) return H:GenerateElementOptionTable(unit,'mushroom',550,'Wild Mushroom Tracker',true,true,true,false,false,false,false,true) end
+local function gcdOptions(unit) return H:GenerateElementOptionTable(unit,'gcd',1300,'GCD Spark',true,true,false,false,false,false,false,false) end
 
 local elementOptions = {
 	['health'] = healthOptions,

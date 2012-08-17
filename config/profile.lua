@@ -163,8 +163,13 @@ P['hud']['units'] = {
                     ['pointFrom'] = 'BOTTOMRIGHT',
                     ['attachTo'] = 'health',
                     ['pointTo'] = 'BOTTOMLEFT',
-                    ['xOffset'] = -4,
+                    ['xOffset'] = -1,
                     ['yOffset'] = 0,
+                },
+                ['spaced'] = true,
+                ['spacesettings'] = {
+                    ['offset'] = 4,
+                    ['spacing'] = 6,
                 },
                 ['size'] = {
                     ['height'] = 146,
@@ -211,6 +216,11 @@ P['hud']['units'] = {
                         ['yOffset'] = 0,
                     },
                 },
+                ['spaced'] = true,
+                ['spacesettings'] = {
+                    ['offset'] = 4,
+                    ['spacing'] = 6,
+                },
                 ['size'] = {
                     ['height'] = 146,
                     ['width'] = 7,
@@ -230,6 +240,11 @@ P['hud']['units'] = {
                     ['pointTo'] = 'BOTTOMLEFT',
                     ['xOffset'] = -4,
                     ['yOffset'] = 0,
+                },
+                ['spaced'] = true,
+                ['spacesettings'] = {
+                    ['offset'] = 4,
+                    ['spacing'] = 6,
                 },
                 ['size'] = {
                     ['height'] = 146,
@@ -484,12 +499,17 @@ P['hud']['units'] = {
                     ['pointFrom'] = 'BOTTOMLEFT',
                     ['attachTo'] = 'health',
                     ['pointTo'] = 'BOTTOMRIGHT',
-                    ['xOffset'] = 0,
+                    ['xOffset'] = -2,
                     ['yOffset'] = 0,
                 },
                 ['size'] = {
                     ['height'] = 146,
                     ['width'] = 7,
+                },
+                ['spaced'] = true,
+                ['spacesettings'] = {
+                    ['offset'] = 4,
+                    ['spacing'] = 6,
                 },
                 ['media'] = {
                     ['texture'] = {
