@@ -231,7 +231,7 @@ end
 function H:UpdateHoly(event,unit,powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local num = UnitPower(unit, SPELL_POWER_HOLY_POWER)
-	for i = 1, MAX_HOLY_POWER do
+	for i = 1, 5 do
 		if(i <= num) then
 			self.HolyPower[i]:SetAlpha(1)
 		else
