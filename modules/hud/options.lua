@@ -594,7 +594,7 @@ local function classbarOptions(unit) return H:GenerateElementOptionTable(unit,'c
 local function cpointOptions(unit) return H:GenerateElementOptionTable(unit,'cpoints',600,'Combobar',true,true,true,false,false,false,false,true) end
 local function aurabarOptions(unit) return H:GenerateElementOptionTable(unit,'aurabars',700,'Aura Bars',true,true,true,true,false,false,false,false) end
 local function raidIconOptions(unit) return H:GenerateElementOptionTable(unit,'raidicon',800,'Raid Icon',true,false,false,false,false,false,false,false) end
-local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Resting Indicator',true,false,false,false,false,false,false,false) end
+local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Rest Icon',true,false,false,false,false,false,false,false) end
 local function combatOptions(unit) return H:GenerateElementOptionTable(unit,'combat',1000,'Combat Indicator',true,false,false,false,false,false,false,false) end
 local function pvpOptions(unit) return H:GenerateElementOptionTable(unit,'pvp',1100,'PVP Text',true,false,false,true,false,false,true,false) end
 local function healcommOptions(unit) return H:GenerateElementOptionTable(unit,'healcomm',1200,'Heal Prediction',false,false,true,false,false,false,false,false) end
