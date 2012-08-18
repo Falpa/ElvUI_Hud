@@ -53,3 +53,4 @@ L['Override the font for this element'] = "Заменить стандартны
 L['Set the font for this element'] = "Установить шрифт для этого элемента"
 L['Set the font size for this element'] = "Установить размер шрифта этого элемента"
 L['Spacing'] = "Отступ"
+L["Texture"] = "Текстура"
