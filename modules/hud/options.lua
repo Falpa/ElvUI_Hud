@@ -377,7 +377,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     statusbar = {
                         type = "select", dialogControl = 'LSM30_Statusbar',
                         order = 2,
-                        name = L["Texture"],
+                        name = L["StatusBar Texture"],
                         desc = L["The texture that will be used for statusbars on this element."],
                         values = AceGUIWidgetLSMlists.statusbar,
                     },
@@ -590,9 +590,9 @@ local function healthOptions(unit) return H:GenerateElementOptionTable(unit,'hea
 local function powerOptions(unit) return H:GenerateElementOptionTable(unit,'power',200,'Power',true,true,true,true,false,true,true,false) end
 local function castbarOptions(unit) return H:GenerateElementOptionTable(unit,'castbar',300,'Castbar',true,true,true,true,true,false,false,false) end
 local function nameOptions(unit) return H:GenerateElementOptionTable(unit,'name',400,'Name',true,false,false,true,false,false,true,false) end
-local function classbarOptions(unit) return H:GenerateElementOptionTable(unit,'classbars',500,'Classbars',true,true,true,true,false,true,true,true) end
-local function cpointOptions(unit) return H:GenerateElementOptionTable(unit,'cpoints',600,'Combo Points',true,true,true,false,false,false,false,true) end
-local function aurabarOptions(unit) return H:GenerateElementOptionTable(unit,'aurabars',700,'Aurabars',true,true,true,true,false,false,false,false) end
+local function classbarOptions(unit) return H:GenerateElementOptionTable(unit,'classbars',500,'Classbar',true,true,true,true,false,true,true,true) end
+local function cpointOptions(unit) return H:GenerateElementOptionTable(unit,'cpoints',600,'Combobar',true,true,true,false,false,false,false,true) end
+local function aurabarOptions(unit) return H:GenerateElementOptionTable(unit,'aurabars',700,'Aura Bars',true,true,true,true,false,false,false,false) end
 local function raidIconOptions(unit) return H:GenerateElementOptionTable(unit,'raidicon',800,'Raid Icon',true,false,false,false,false,false,false,false) end
 local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Resting Indicator',true,false,false,false,false,false,false,false) end
 local function combatOptions(unit) return H:GenerateElementOptionTable(unit,'combat',1000,'Combat Indicator',true,false,false,false,false,false,false,false) end

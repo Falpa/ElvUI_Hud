@@ -88,7 +88,7 @@ E.Options.args.hud = {
                     type = "toggle",
                     order = 18,
                     name = L["Color Health By Value"],
-                    desc = L["Color the health bars relative to their value"],
+                    desc = L["Color health by amount remaining."],
                 },
                 enableMouse = {
                     type = "toggle",
@@ -138,7 +138,7 @@ E.Options.args.hud = {
                     type = "range",
                     order = 5,
                     name = L["Font Size"],
-                    desc = L["Set the Width of the Text Font"],
+                    desc = L[""],
                     min = 10, max = 30, step = 1,   
                 },
                 alpha = {
@@ -152,7 +152,7 @@ E.Options.args.hud = {
                     type = "range",
                     order = 7,
                     name = L["Out of Combat Alpha"],
-                    desc = L["Set the Alpha of the Hud when OOC"],
+                    desc = L["Set the Alpha of the Hud when out of combat"],
                     min = 0, max = 1, step = 0.05,  
                 },
                 lowThreshold = {
