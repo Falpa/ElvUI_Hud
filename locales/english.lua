@@ -25,7 +25,6 @@ L["Out of Combat Alpha"] = true
 L["Low Threshold"] = true
 L["Start flashing health/power under this percentage"] = true
 L["Raid Icon"] = true
-L["Rest Icon"] = true
 L["Combat Indicator"] = true
 L["PVP Text"] = true
 L["Wild Mushroom Tracker"] = true
