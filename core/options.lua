@@ -94,7 +94,7 @@ E.Options.args.hud = {
                     type = "toggle",
                     order = 19,
                     name = L["Enable Mouse"],
-                    desc = L["Enable the mouse to interface with the hud (this option has no effect is ElvUI Unitframes are hidden)"],
+                    desc = L["Enable the mouse to interface with the hud (this option has no effect if ElvUI Unitframes are hidden)"],
                     get = function(info) return E.db.hud[ info[#info] ] end,   
                     set = function(info, value) E.db.hud[ info[#info] ] = value; H:UpdateMouseSetting() end,
                 },
@@ -129,7 +129,7 @@ E.Options.args.hud = {
         hudVariables = {
             order = 5,
             type = "group",
-            name = L["Variables and Movers"],
+            name = L["Variables"],
             guiInline = true,
             get = function(info) return E.db.hud[info[#info]] end,
             set = function(info,value) E.db.hud[info[#info]] = value; end,
@@ -138,7 +138,6 @@ E.Options.args.hud = {
                     type = "range",
                     order = 5,
                     name = L["Font Size"],
-                    desc = L[""],
                     min = 10, max = 30, step = 1,   
                 },
                 alpha = {

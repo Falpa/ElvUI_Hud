@@ -5,8 +5,8 @@
 ## Notes: Hud frames for ElvUI
 ## RequiredDeps: ElvUI
 
+locales\load_locales.xml
 libs\load_libs.xml
 core\load_core.xml
-locales\load_locales.xml
 config\load_config.xml
 modules\load_modules.xml

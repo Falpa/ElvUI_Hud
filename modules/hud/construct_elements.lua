@@ -304,6 +304,7 @@ function H:ConstructTotems(frame)
         TotemBar[i]:SetMinMaxValues(0, 1)
     end
 
+
     return TotemBar
 end
 
