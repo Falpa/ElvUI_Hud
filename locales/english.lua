@@ -45,7 +45,6 @@ L["ElvUI Hud provides a configurable Heads Up Display for use with ElvUI.\n"] = 
 L["Reset the settings of this addon to their defaults."] = true
 L["Hide Out of Combat"] = true
 L["Hide the Hud when out of Combat"] = true
-L["Color Health By Value"] = true
 L["Enable Mouse"] = true
 L["Enable the mouse to interface with the hud (this option has no effect if ElvUI Unitframes are hidden)"] = true
 L["Horizontal Castbar"] = true
