@@ -87,7 +87,7 @@ E.Options.args.hud = {
                 colorHealthByValue = {
                     type = "toggle",
                     order = 18,
-                    name = L["Color Health By Value"],
+                    name = L["Health By Value"],
                     desc = L["Color health by amount remaining."],
                 },
                 enableMouse = {
