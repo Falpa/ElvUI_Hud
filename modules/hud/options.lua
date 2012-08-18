@@ -20,7 +20,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 		type = 'group',
 		name = L[name],
 		get = function(info) return E.db.hud.units[unit].elements[element][ info[#info] ] end,
-		set = function(info,value)  E.db.hud.units[unit].elements[element][ info[#info] ] = value; H:UpdateFrame(unit) end,
+		set = function(info,value)  E.db.hud.units[unit].elements[element][ info[#info] ] = value; H:UpdateAllFrames() end,
 		args = {
 			enabled = {
                 type = 'toggle',
@@ -30,6 +30,16 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 		}
 	}
 	if hasAnchor then
+        local pointOneChanged = false
+        local updateIf = function() 
+            if not pointOneChanged then 
+                pointOneChanged = true
+                return
+            else
+                pointOneChanged = false
+                E:StaticPopup_Show("CONFIG_RL")
+            end
+        end
 		if not ((unit == 'player' or unit == 'target') and element == 'castbar') and element ~= 'mushroom' then
 			options.args.anchor = {
 				order = 2,
@@ -37,28 +47,14 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 	            name = L["Anchor"],
 	            guiInline = true,
 	            get = function(info) return E.db.hud.units[unit].elements[element].anchor[ info[#info] ] end,
-	            set = function(info,value) E.db.hud.units[unit].elements[element].anchor[ info[#info] ] = value; H:UpdateFrame(unit) end,
+	            set = function(info,value) E.db.hud.units[unit].elements[element].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
 	            args = {
-	                pointFrom = {
-	                    type = 'select',
-	                    name = L["Point From"],
-	                    desc = L["Position on the element to anchor"],
-	                    order = 2,
-	                    values = positionValues,
-	                },
 	                attachTo = {
 	                    type = 'input',
 	                    width = 'full',
 	                    name = L['Attach To'],
 	                    desc = L['What to attach this element to.'],
 	                    order = 3,
-	                },
-	                pointTo = {
-	                    type = 'select',
-	                    desc = L["Position on the attached element to anchor to"],
-	                    name = L['Point To'],
-	                    order = 4,
-	                    values = positionValues,
 	                },
 	                xOffset = {
 	                    order = 5,
@@ -91,26 +87,12 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         get = function(info) return E.db.hud.units[unit].elements[element].anchor.default[ info[#info] ] end,
                         set = function(info,value) E.db.hud.units[unit].elements[element].anchor.default[ info[#info] ] = value; H:UpdateAllFrames() end,
                         args = {
-                            pointFrom = {
-                                type = 'select',
-                                name = L["Point From"],
-                                desc = L["Position on the element to anchor"],
-                                order = 2,
-                                values = positionValues,
-                            },
                             attachTo = {
                                 type = 'input',
                                 width = 'full',
                                 name = L['Attach To'],
                                 desc = L['What to attach this element to.'],
                                 order = 3,
-                            },
-                            pointTo = {
-                                type = 'select',
-                                desc = L["Position on the attached element to anchor to"],
-                                name = L['Point To'],
-                                order = 4,
-                                values = positionValues,
                             },
                             xOffset = {
                                 order = 5,
@@ -134,26 +116,12 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         get = function(info) return E.db.hud.units[unit].elements[element].anchor.eclipse[ info[#info] ] end,
                         set = function(info,value) E.db.hud.units[unit].elements[element].anchor.eclipse[ info[#info] ] = value; H:UpdateAllFrames() end,
                         args = {
-                            pointFrom = {
-                                type = 'select',
-                                name = L["Point From"],
-                                desc = L["Position on the element to anchor"],
-                                order = 2,
-                                values = positionValues,
-                            },
                             attachTo = {
                                 type = 'input',
                                 width = 'full',
                                 name = L['Attach To'],
                                 desc = L['What to attach this element to.'],
                                 order = 3,
-                            },
-                            pointTo = {
-                                type = 'select',
-                                desc = L["Position on the attached element to anchor to"],
-                                name = L['Point To'],
-                                order = 4,
-                                values = positionValues,
                             },
                             xOffset = {
                                 order = 5,
@@ -188,26 +156,12 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         get = function(info) return E.db.hud.units[unit].elements[element].anchor.horizontal[ info[#info] ] end,
                         set = function(info,value) E.db.hud.units[unit].elements[element].anchor.horizontal[ info[#info] ] = value; H:UpdateAllFrames() end,
                         args = {
-                            pointFrom = {
-                                type = 'select',
-                                name = L["Point From"],
-                                desc = L["Position on the element to anchor"],
-                                order = 2,
-                                values = positionValues,
-                            },
                             attachTo = {
                                 type = 'input',
                                 width = 'full',
                                 name = L['Attach To'],
                                 desc = L['What to attach this element to.'],
                                 order = 3,
-                            },
-                            pointTo = {
-                                type = 'select',
-                                desc = L["Position on the attached element to anchor to"],
-                                name = L['Point To'],
-                                order = 4,
-                                values = positionValues,
                             },
                             xOffset = {
                                 order = 5,
@@ -231,26 +185,12 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         get = function(info) return E.db.hud.units[unit].elements[element].anchor.vertical[ info[#info] ] end,
                         set = function(info,value) E.db.hud.units[unit].elements[element].anchor.vertical[ info[#info] ] = value; H:UpdateAllFrames() end,
                         args = {
-                            pointFrom = {
-                                type = 'select',
-                                name = L["Point From"],
-                                desc = L["Position on the element to anchor"],
-                                order = 2,
-                                values = positionValues,
-                            },
                             attachTo = {
                                 type = 'input',
                                 width = 'full',
                                 name = L['Attach To'],
                                 desc = L['What to attach this element to.'],
                                 order = 3,
-                            },
-                            pointTo = {
-                                type = 'select',
-                                desc = L["Position on the attached element to anchor to"],
-                                name = L['Point To'],
-                                order = 4,
-                                values = positionValues,
                             },
                             xOffset = {
                                 order = 5,
@@ -278,7 +218,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 	            name = L['Size'],
 	            guiInline = true,
 	            get = function(info) return E.db.hud.units[unit].elements[element].size[ info[#info] ] end,
-	            set = function(info,value) E.db.hud.units[unit].elements[element].size[ info[#info] ] = value; H:UpdateFrame(unit) end,
+	            set = function(info,value) E.db.hud.units[unit].elements[element].size[ info[#info] ] = value; H:UpdateAllFrames() end,
 	            args = {
 	                width = {
 	                    order = 4,
@@ -366,7 +306,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                 order = 1,
                 guiInline = true,
                 get = function(info) return E.db.hud.units[unit].elements[element].media.texture[ info[#info] ] end,
-                set = function(info,value) E.db.hud.units[unit].elements[element].media.texture[ info[#info] ] = value; H:UpdateFrame(unit) end,
+                set = function(info,value) E.db.hud.units[unit].elements[element].media.texture[ info[#info] ] = value; H:UpdateAllFrames() end,
                 args = {
                     override = {
                         type = "toggle",
@@ -391,7 +331,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                 order = 2,
                 guiInline = true,
                 get = function(info) return E.db.hud.units[unit].elements[element].media.font[ info[#info] ] end,
-                set = function(info,value) E.db.hud.units[unit].elements[element].media.font[ info[#info] ] = value; H:UpdateFrame(unit) end,
+                set = function(info,value) E.db.hud.units[unit].elements[element].media.font[ info[#info] ] = value; H:UpdateAllFrames() end,
                 args = {
                     override = {
                         type = "toggle",
@@ -471,7 +411,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
             name = L["Anchor"],
             guiInline = true,
             get = function(info) return E.db.hud.units[unit].elements[element].value[ info[#info] ] end,
-            set = function(info,value) E.db.hud.units[unit].elements[element].value[ info[#info] ] = value; H:UpdateFrame(unit) end,
+            set = function(info,value) E.db.hud.units[unit].elements[element].value[ info[#info] ] = value; H:UpdateAllFrames() end,
             args = {
                 enabled = {
                     type = 'toggle',
@@ -484,28 +424,14 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units[unit].elements[element].value.anchor[ info[#info] ] end,
-                    set = function(info,value) E.db.hud.units[unit].elements[element].value.anchor[ info[#info] ] = value; H:UpdateFrame(unit) end,
+                    set = function(info,value) E.db.hud.units[unit].elements[element].value.anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
-                        pointFrom = {
-                            type = 'select',
-                            name = L["Point From"],
-                            desc = L["Position on the element to anchor"],
-                            order = 2,
-                            values = positionValues,
-                        },
                         attachTo = {
                             type = 'input',
                             width = 'full',
                             name = L['Attach To'],
                             desc = L['What to attach this element to.'],
                             order = 3,
-                        },
-                        pointTo = {
-                            type = 'select',
-                            desc = L["Position on the attached element to anchor to"],
-                            name = L['Point To'],
-                            order = 4,
-                            values = positionValues,
                         },
                         xOffset = {
                             order = 5,
@@ -563,7 +489,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     name = L["Anchor"],
                     guiInline = true,
                     get = function(info) return E.db.hud.units[unit].elements[element].spacesettings[ info[#info] ] end,
-                    set = function(info,value) E.db.hud.units[unit].elements[element].spacesettings[ info[#info] ] = value; H:UpdateFrame(unit) end,
+                    set = function(info,value) E.db.hud.units[unit].elements[element].spacesettings[ info[#info] ] = value; H:UpdateAllFrames() end,
                     args = {
                         offset = {
                             order = 5,
@@ -586,7 +512,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
     return options
 end
 
-local function healthOptions(unit) return H:GenerateElementOptionTable(unit,'health',100,'Health',true,true,true,true,true,true,true,false) end
+local function healthOptions(unit) return H:GenerateElementOptionTable(unit,'health',100,'Health',false,true,true,true,true,true,true,false) end
 local function powerOptions(unit) return H:GenerateElementOptionTable(unit,'power',200,'Power',true,true,true,true,false,true,true,false) end
 local function castbarOptions(unit) return H:GenerateElementOptionTable(unit,'castbar',300,'Castbar',true,true,true,true,true,false,false,false) end
 local function nameOptions(unit) return H:GenerateElementOptionTable(unit,'name',400,'Name',true,false,false,true,false,false,true,false) end
@@ -594,7 +520,7 @@ local function classbarOptions(unit) return H:GenerateElementOptionTable(unit,'c
 local function cpointOptions(unit) return H:GenerateElementOptionTable(unit,'cpoints',600,'Combobar',true,true,true,false,false,false,false,true) end
 local function aurabarOptions(unit) return H:GenerateElementOptionTable(unit,'aurabars',700,'Aura Bars',true,true,true,true,false,false,false,false) end
 local function raidIconOptions(unit) return H:GenerateElementOptionTable(unit,'raidicon',800,'Raid Icon',true,false,false,false,false,false,false,false) end
-local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Resting Indicator',true,false,false,false,false,false,false,false) end
+local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Rest Icon',true,false,false,false,false,false,false,false) end
 local function combatOptions(unit) return H:GenerateElementOptionTable(unit,'combat',1000,'Combat Indicator',true,false,false,false,false,false,false,false) end
 local function pvpOptions(unit) return H:GenerateElementOptionTable(unit,'pvp',1100,'PVP Text',true,false,false,true,false,false,true,false) end
 local function healcommOptions(unit) return H:GenerateElementOptionTable(unit,'healcomm',1200,'Heal Prediction',false,false,true,false,false,false,false,false) end
@@ -625,7 +551,7 @@ function H:GenerateUnitOptionTable(unit,name,order,mover,elements)
         order = order,
         childGroups = "select",
         get = function(info) return E.db.hud.units[unit][ info[#info] ] end,
-        set = function(info, value) E.db.hud.units[unit][ info[#info] ] = value; H:UpdateFrame(unit); end,
+        set = function(info, value) E.db.hud.units[unit][ info[#info] ] = value; H:UpdateAllFrames(); end,
         args = {
             enabled = {
                 type = 'toggle',
@@ -636,7 +562,7 @@ function H:GenerateUnitOptionTable(unit,name,order,mover,elements)
                 type='execute',
                 order = 2,
                 name = L['Restore Defaults'],
-                func = function(info,value) H:ResetUnitSettings(unit); E:ResetMovers(mover) end,
+                func = function(info,value) H:ResetUnitSettings(unit); E:ResetMovers(mover); end,
             },
             width = {
                 order = 4,

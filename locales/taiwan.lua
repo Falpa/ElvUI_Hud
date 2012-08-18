@@ -25,7 +25,6 @@ L["Out of Combat Alpha"] = true
 L["Low Threshold"] = true
 L["Start flashing health/power under this percentage"] = true
 L["Raid Icon"] = true
-L["Resting Indicator"] = true
 L["Combat Indicator"] = true
 L["PVP Text"] = true
 L["Wild Mushroom Tracker"] = true
@@ -54,7 +53,6 @@ L["Enable the mouse to interface with the hud (this option has no effect if ElvU
 L["Horizontal Castbar"] = true
 L["Set the Alpha of the Hud when in combat"] = true
 L["Out of Combat Alpha"] = true
-L["Low Threshold"] = true
 L["Start flashing health/power under this percentage"] = true
 L["Hide the ElvUI Unitframes when the Hud is enabled"] = true
 L["Position on the attached element to anchor to"] = true

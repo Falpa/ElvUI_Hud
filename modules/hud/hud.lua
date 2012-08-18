@@ -103,10 +103,10 @@ function H:GetElement(element)
 	if element == 'classbars' then
 		return H:GetClassBarName()
 	else
-		return elements[element]
+		if elements[element] then return elements[element] else return nil end
 	end
 end
-
+	
 function H:GetAnchor(frame,anchor)
 	if anchor == 'self' then
 		return frame
@@ -120,7 +120,12 @@ function H:GetAnchor(frame,anchor)
 	else
 		local e = anchor
 		e = H:GetElement(e)
-		return frame[e]
+		if e then
+			return frame[e]
+		else
+			e = H:GetUnitFrame(anchor)
+			return e
+		end
 	end
 
 	return frame
@@ -184,6 +189,11 @@ function H:UpdateClassBar(frame,element)
 				numPoints = UnitPowerMax('player',SPELL_POWER_SOUL_SHARDS)
 				maxPoints = 4
 			end
+			if not frame.WarlockSpecBars.PostUpdate then
+				frame.WarlockSpecBars.PostUpdate = function(self)
+					H:UpdateClassBar(frame,element)
+				end
+			end
 		end
 
 		if E.myclass == "PALADIN" then
@@ -204,6 +214,11 @@ function H:UpdateClassBar(frame,element)
 		if E.myclass == "MONK" then
 			numPoints = UnitPowerMax('player',SPELL_POWER_LIGHT_FORCE)
 			maxPoints = 5
+			if not frame.HarmonyBar.PostUpdate then
+				frame.HarmonyBar.PostUpdate = function(self)
+					H:UpdateClassBar(frame,element)
+				end
+			end
 		end
 
 		if E.myclass == "PRIEST" then
@@ -218,9 +233,12 @@ function H:UpdateClassBar(frame,element)
 
 		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
 		local e = H:GetElement(element)
-		frame[e]:ForceUpdate()
+		for i = 1, maxPoints do
+			frame[e][i]:SetAlpha(0)
+		end
 		for i = 1, numPoints do
 			frame[e][i]:Size(size.width,(size.height - (spaced and totalspacing or 2)) / numPoints)
+			frame[e][i]:SetAlpha(1)
 		end
 	end
 end
@@ -354,7 +372,7 @@ function H:UpdateElement(frame,element)
 		if e.frame then
 			local height = size.height
 			if element == 'classbars' or element == 'cpoints' or element == 'mushroom' then
-				if config['spaced'] then height = height + 2 - (config['spacesettings'].offset*2) end
+				if config['spaced'] then height = (height + 2) - (config['spacesettings'].offset*2) end
 			end
 			e.frame:Size(size.width,height)
 			if element == 'classbars' or element == 'cpoints' or element == 'mushroom' then
