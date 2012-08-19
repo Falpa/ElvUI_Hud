@@ -17,6 +17,7 @@ function H.PostUpdateHealth(health, unit, min, max)
 	end
 
     -- Flash health below threshold %
+    if max == 0 then return end
 	if (min / max * 100) < (E.db.hud.lowThreshold) then
 		H.Flash(health, 0.6)
 		if (not warningTextShown and unit == "player") and E.db.hud.warningText then
