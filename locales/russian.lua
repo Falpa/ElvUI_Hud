@@ -54,14 +54,14 @@ L['Set the font for this element'] = "Установить шрифт для э�
 L['Set the font size for this element'] = "Установить размер шрифта этого элемента"
 L['Spacing'] = "Отступ"
 L["Texture"] = "Текстура"
-L["ELVUI_HUD_CREDITS"] = [[Many thanks to the following people:
+L["ELVUI_HUD_CREDITS"] = [[Благодарю следующих людей:
 
-Tukz whose unitframe code was the basis for the Hud
-Elv for his amazing UI which was the inspiration for version 3
-Hydrazine for inspiration
-Boradan for help with the options
-Sgt.Hydra for suggestions
-Darth Predator for the Russian translation
+Tukz, чей код рамок юнитов послужил основой этого аддона
+Elv за его замечательный UI, который вдохновил меня на создание версии 3
+Hydrazine за вдохновение
+Boradan за помощь с опциями
+Sgt.Hydra за преждложения
+Darth Predator за русский перевод
 
-The Tukui community for being supportive
+Сообщество Tuku за поддержку.
 ]]
