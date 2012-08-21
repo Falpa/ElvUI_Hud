@@ -253,47 +253,136 @@ function H:UpdateShards(event, unit, powerType)
 	end
 end
 
-function H:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
-	local name, _, _, _, dtype, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unit, index, button.filter)
+local function FormatTime(s)
+	local day, hour, minute = 86400, 3600, 60
+	if s >= day then
+		return format("%dd", ceil(s / day))
+	elseif s >= hour then
+		return format("%dh", ceil(s / hour))
+	elseif s >= minute then
+		return format("%dm", ceil(s / minute))
+	elseif s >= minute / 12 then
+		return floor(s)
+	end
+	return format("%.1f", s)
+end
 
-	
-	button.text:Show()
-	
-	if button.isDebuff then
-		if(not UnitIsFriend("player", unit) and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
-			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-			if unit and not unit:find('arena%d') then
-				button.icon:SetDesaturated(true)
+-- create a timer on a buff or debuff
+local function CreateAuraTimer(self, elapsed)
+	if self.timeLeft then
+		self.elapsed = (self.elapsed or 0) + elapsed
+		if self.elapsed >= 0.1 then
+			if not self.first then
+				self.timeLeft = self.timeLeft - self.elapsed
 			else
-				button.icon:SetDesaturated(false)
+				self.timeLeft = self.timeLeft - GetTime()
+				self.first = false
 			end
-		else
-			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
-			if (name == "Unstable Affliction" or name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
-				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
+			if self.timeLeft > 0 then
+				local time = FormatTime(self.timeLeft)
+				self.remaining:SetText(time)
+				if self.timeLeft <= 5 then
+					self.remaining:SetTextColor(0.99, 0.31, 0.31)
+				else
+					self.remaining:SetTextColor(1, 1, 1)
+				end
 			else
-				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
+				self.remaining:Hide()
+				self:SetScript("OnUpdate", nil)
 			end
-			button.icon:SetDesaturated(false)
+			self.elapsed = 0
 		end
-	else
-		if (button.isStealable or ((E.myclass == "PRIEST" or E.myclass == "SHAMAN" or E.myclass == "MAGE") and dtype == "Magic")) and not UnitIsFriend("player", unit) then
-			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
+	end
+end
+
+-- create a skin for all unitframes buffs/debuffs
+function H:PostCreateAura(button)
+	button:SetTemplate("Default")
+	
+	button.remaining = button:CreateFontString(nil, "THINOUTLINE")
+	-- Dummy font
+	button.remaining:FontTemplate(LSM:Fetch("font", "ElvUI Font"), 12, "THINOUTLINE")
+	button.remaining:Point("CENTER", 1, 0)
+	
+	button.cd.noOCC = true -- hide OmniCC CDs, because we  create our own cd with CreateAuraTimer()
+	button.cd.noCooldownCount = true -- hide CDC CDs, because we create our own cd with CreateAuraTimer()
+	
+	button.cd:SetReverse()
+	button.icon:Point("TOPLEFT", 2, -2)
+	button.icon:Point("BOTTOMRIGHT", -2, 2)
+	button.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	button.icon:SetDrawLayer('ARTWORK')
+	
+	button.count:Point("BOTTOMRIGHT", 3, 3)
+	button.count:SetJustifyH("RIGHT")
+	button.count:SetFont(LSM:Fetch("font", "ElvUI Font"), 9, "THICKOUTLINE")
+	button.count:SetTextColor(0.84, 0.75, 0.65)
+	
+	button.overlayFrame = CreateFrame("frame", nil, button, nil)
+	button.cd:SetFrameLevel(button:GetFrameLevel() + 1)
+	button.cd:ClearAllPoints()
+	button.cd:Point("TOPLEFT", button, "TOPLEFT", 2, -2)
+	button.cd:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 2)
+	button.overlayFrame:SetFrameLevel(button.cd:GetFrameLevel() + 1)	   
+	button.overlay:SetParent(button.overlayFrame)
+	button.count:SetParent(button.overlayFrame)
+	button.remaining:SetParent(button.overlayFrame)
+			
+	button.Glow = CreateFrame("Frame", nil, button)
+	button.Glow:Point("TOPLEFT", button, "TOPLEFT", -3, 3)
+	button.Glow:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 3, -3)
+	button.Glow:SetFrameStrata("BACKGROUND")	
+	button.Glow:SetBackdrop{edgeFile = E["media"].blankTex, edgeSize = 3, insets = {left = 0, right = 0, top = 0, bottom = 0}}
+	button.Glow:SetBackdropColor(0, 0, 0, 0)
+	button.Glow:SetBackdropBorderColor(0, 0, 0)
+	
+	local Animation = button:CreateAnimationGroup()
+	Animation:SetLooping("BOUNCE")
+
+	local FadeOut = Animation:CreateAnimation("Alpha")
+	FadeOut:SetChange(-.9)
+	FadeOut:SetDuration(.6)
+	FadeOut:SetSmoothing("IN_OUT")
+
+	button.Animation = Animation
+end
+
+-- update cd, border color, etc on buffs / debuffs
+function H:PostUpdateAura(unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
+	local _, _, _, _, dtype, duration, expirationTime, unitCaster, isStealable = UnitAura(unit, index, icon.filter)
+	if icon then
+		if(icon.filter == "HARMFUL") then
+			if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") then
+				icon.icon:SetDesaturated(true)
+				icon:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			else
+				local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
+				icon.icon:SetDesaturated(false)
+				icon:SetBackdropBorderColor(color.r * 0.8, color.g * 0.8, color.b * 0.8)
+			end
 		else
-			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))		
-		end	
+			if (isStealable or ((E.myclass == "MAGE" or E.myclass == "PRIEST" or E.myclass == "SHAMAN") and dtype == "Magic")) and not UnitIsFriend("player", unit) then
+				if not icon.Animation:IsPlaying() then
+					icon.Animation:Play()
+				end
+			else
+				if icon.Animation:IsPlaying() then
+					icon.Animation:Stop()
+				end
+			end
+		end
+		
+		if duration and duration > 0 then
+			icon.remaining:Show()
+		else
+			icon.remaining:Hide()
+		end
+	 
+		icon.duration = duration
+		icon.timeLeft = expirationTime
+		icon.first = true
+		icon:SetScript("OnUpdate", CreateAuraTimer)
 	end
-	
-	button.duration = duration
-	button.timeLeft = expirationTime
-	button.first = true	
-	
-	local size = button:GetParent().size
-	if size then
-		button:Size(size)
-	end
-	
-	button:SetScript('OnUpdate', UF.UpdateAuraTimer)
 end
 
 local function CheckFilter(type, isFriend)

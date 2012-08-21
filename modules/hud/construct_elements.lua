@@ -604,3 +604,40 @@ function H:ConstructGCD(frame)
 
     return GCD
 end
+
+function H:ConstructDebuffs(frame)
+    self:AddElement(frame,'debuffs')
+    local debuffs = self:ConfigureFrame(frame,'debuffs')
+
+    debuffs.size = 26
+    debuffs.num = 36
+
+    debuffs.spacing = 2
+    debuffs.initialAnchor = "TOPRIGHT"
+    debuffs["growth-y"] = "UP"
+    debuffs["growth-x"] = "LEFT"
+    debuffs.PostCreateIcon = H.PostCreateAura
+    debuffs.PostUpdateIcon = H.PostUpdateAura       
+    
+    -- an option to show only our debuffs on target
+    --[[if unit == "target" then
+        debuffs.onlyShowPlayer = C.unitframes.onlyselfdebuffs
+    end]]
+    return debuffs
+end
+
+function H:ConstructBuffs(frame)
+    self:AddElement(frame,'buffs')
+    local buffs = self:ConfigureFrame(frame,'buffs')
+                        
+    buffs.size = 26
+    buffs.num = 36
+    buffs.numRow = 9
+                            
+    buffs.spacing = 2
+    buffs.initialAnchor = "TOPLEFT"
+    buffs.PostCreateIcon = H.PostCreateAura
+    buffs.PostUpdateIcon = H.PostUpdateAura
+           
+    return buffs
+end 

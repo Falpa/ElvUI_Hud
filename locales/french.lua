@@ -3,7 +3,6 @@ local L = AceLocale:NewLocale("ElvUI", "frFR");
 if not L then return; end
 
 L["ElvUI Hud "] = true
-L["ElvUI Hud by Sortokk"] = true
 L[" is loaded. Thank you for using it and note that I will always support you."] = true
 L["Hud"] = true
 L["Enable the Hud."] = true
@@ -21,7 +20,6 @@ L["Use a horizontal castbar"] = true
 L["Variables"] = true
 L["Set the Alpha of the Hud when out of combat"] = true
 L["Out of Combat Alpha"] = true
-L["Low Threshold"] = true
 L["Start flashing health/power under this percentage"] = true
 L["Raid Icon"] = true
 L["Combat Indicator"] = true
@@ -40,22 +38,30 @@ L['Point To'] = true
 L["Eclipse"] = true
 L["Override"] = true
 L["Override the texture for this element"] = true
-L["ElvUI Hud provides a configurable Heads Up Display for use with ElvUI.\n"] = true
-L["Reset the settings of this addon to their defaults."] = true
-L["Hide Out of Combat"] = true
-L["Hide the Hud when out of Combat"] = true
-L["Enable Mouse"] = true
-L["Enable the mouse to interface with the hud (this option has no effect if ElvUI Unitframes are hidden)"] = true
-L["Horizontal Castbar"] = true
-L["Set the Alpha of the Hud when in combat"] = true
-L["Out of Combat Alpha"] = true
-L["Low Threshold"] = true
-L["Start flashing health/power under this percentage"] = true
-L["Hide the ElvUI Unitframes when the Hud is enabled"] = true
-L["Position on the attached element to anchor to"] = true
+L['ElvUI Hud by Sortokk'] = true
+L['ElvUI Hud provides a configurable Heads Up Display for use with ElvUI.\n'] = true
+L['Reset the settings of this addon to their defaults.'] = true
+L['Hide the ElvUI Unitframes when the Hud is enabled'] = true
+L['Hide the Hud when out of Combat'] = true
+L['Hide Out of Combat'] = true
+L['Enable Mouse'] = true
+L['Enable the mouse to interface with the hud (this option has no effect is ElvUI Unitframes are hidden)'] = true
+L['Set the Alpha of the Hud when in combat'] = true
+L['Position on the attached element to anchor to'] = true
+L['The texture that will be used for statusbars on this element.'] = true
+L['Override the font for this element'] = true
+L['Set the font for this element'] = true
+L['Set the font size for this element'] = true
+L['Spacing'] = true
 L["Texture"] = true
-L["The texture that will be used for statusbars on this element."] = true
-L["Override the font for this element"] = true
-L["Set the font for this element"] = true
-L["Set the font size for this element"] = true
-L["Spacing"] = true
+L["ELVUI_HUD_CREDITS"] = [[Many thanks to the following people:
+
+Tukz whose unitframe code was the basis for the Hud
+Elv for his amazing UI which was the inspiration for version 3
+Hydrazine for inspiration
+Boradan for help with the options
+Sgt.Hydra for suggestions
+Darth Predator for the Russian translation
+
+The Tukui community for being supportive
+]]

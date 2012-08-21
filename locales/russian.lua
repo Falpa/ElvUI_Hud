@@ -54,3 +54,14 @@ L['Set the font for this element'] = "Установить шрифт для э�
 L['Set the font size for this element'] = "Установить размер шрифта этого элемента"
 L['Spacing'] = "Отступ"
 L["Texture"] = "Текстура"
+L["ELVUI_HUD_CREDITS"] = [[Many thanks to the following people:
+
+Tukz whose unitframe code was the basis for the Hud
+Elv for his amazing UI which was the inspiration for version 3
+Hydrazine for inspiration
+Boradan for help with the options
+Sgt.Hydra for suggestions
+Darth Predator for the Russian translation
+
+The Tukui community for being supportive
+]]

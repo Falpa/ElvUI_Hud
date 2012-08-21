@@ -526,6 +526,8 @@ local function pvpOptions(unit) return H:GenerateElementOptionTable(unit,'pvp',1
 local function healcommOptions(unit) return H:GenerateElementOptionTable(unit,'healcomm',1200,'Heal Prediction',false,false,true,false,false,false,false,false) end
 local function mushroomOptions(unit) return H:GenerateElementOptionTable(unit,'mushroom',550,'Wild Mushroom Tracker',true,true,true,false,false,false,false,true) end
 local function gcdOptions(unit) return H:GenerateElementOptionTable(unit,'gcd',1300,'GCD Spark',true,true,false,false,false,false,false,false) end
+local function buffOptions(unit) return H:GenerateElementOptionTable(unit,'buffs',725,'Buffs',true,true,false,false,false,false,false,false) end
+local function debuffOptions(unit) return H:GenerateElementOptionTable(unit,'debuffs',750,'Debuffs',true,true,false,false,false,false,false) end
 
 local elementOptions = {
 	['health'] = healthOptions,
@@ -542,6 +544,8 @@ local elementOptions = {
 	['healcomm'] = healcommOptions,
     ['mushroom'] = mushroomOptions,
     ['gcd'] = gcdOptions,
+    ['buffs'] = buffOptions,
+    ['debuffs'] = debuffOptions,
 }
 
 function H:GenerateUnitOptionTable(unit,name,order,mover,elements)

@@ -12,6 +12,8 @@ function H:ConstructTargetFrame(frame,unit)
     frame.Castbar.SafeZone = nil
     frame.Name = self:ConstructName(frame)
     
+    frame.Buffs = self:ConstructBuffs(frame)
+    frame.Debuffs = self:ConstructDebuffs(frame)
     frame.AuraBars = self:ConstructAuraBarHeader(frame)
 
     if E.myclass == "DRUID" or E.myclass == "ROGUE" then

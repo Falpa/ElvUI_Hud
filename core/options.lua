@@ -82,7 +82,7 @@ E.Options.args.hud = {
                     name = L["Hide Out of Combat"],
                     desc = L["Hide the Hud when out of Combat"],
                     get = function(info) return E.db.hud[ info[#info] ] end,   
-                    set = function(info, value) E.db.hud[ info[#info] ] = value; H:UpdateHideSetting() end,
+                    set = function(info, value) E.db.hud[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
                 },
                 colorHealthByValue = {
                     type = "toggle",
@@ -163,5 +163,23 @@ E.Options.args.hud = {
                 }
             },
         },
+        credits = {
+            order = 10000,
+            type = "group",
+            name = L["Credits"],
+            guiInline = false,
+            args = {
+                creditheader = {
+                    order = 1,
+                    type = "header",
+                    name = L["Credits"],
+                },
+                credits = {
+                    order = 2,
+                    type = "description",
+                    name = L["ELVUI_HUD_CREDITS"],
+                },
+            }
+        }
     }
 }

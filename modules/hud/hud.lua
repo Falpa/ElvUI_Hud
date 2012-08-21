@@ -96,7 +96,9 @@ local elements = {
 	['pvp'] = 'PvPText',
 	['healcomm'] = 'HealPrediction',
 	['mushroom'] = 'WildMushroom',
-	['gcd'] = 'GCD'
+	['gcd'] = 'GCD',
+	['buffs'] = 'Buffs',
+	['debuffs'] = 'Debuffs',
 }
 
 function H:GetElement(element)
@@ -147,6 +149,7 @@ end
 -- This function is only responsible for updating bar sizes for class bar children
 -- textures work normally as does parent size
 function H:UpdateClassBar(frame,element)
+	if not E.db.hud.units[frame.unit] then return end
 	local config = E.db.hud.units[frame.unit].elements[element]
 	local size = config['size']
 	
