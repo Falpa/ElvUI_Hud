@@ -3,66 +3,69 @@ local L = AceLocale:NewLocale("ElvUI", "frFR");
 if not L then return; end
 
 L["ElvUI Hud "] = true
-L[" is loaded. Thank you for using it and note that I will always support you."] = true
+L[" is loaded. Thank you for using it and note that I will always support you."] = " est démarré. Merci d'utiliser cette AddOn, dont le support sera toujours assuré."
 L["Hud"] = true
-L["Enable the Hud."] = true
-L["Reset Settings"] = true
-L['Simple Layout'] = true
-L['Use the simple layout from 2.0'] = true
-L["Hud Options"] = true
-L["Hide ElvUI Unitframes"] = true
+L["Enable the Hud."] = "Activer le hud"
+L["Reset Settings"] = "Réinitialiser les réglages"
+L['Simple Layout'] = "Disposition simple"
+L['Use the simple layout from 2.0'] = "Utiliser la disposition simple de la version 2.0"
+L["Hud Options"] = "Options du hud"
+L["Hide ElvUI Unitframes"] = "Cacher les cadres de joueurs ElvUI"
 L["Flash"] = true
-L["Flash health/power when the low threshold is reached"] = true
-L["Text Warning"] = true
-L["Show a Text Warning when the low threshold is reached"] = true
-L["Horizontal Castbar"] = true
-L["Use a horizontal castbar"] = true
-L["Variables"] = true
-L["Set the Alpha of the Hud when out of combat"] = true
-L["Out of Combat Alpha"] = true
-L["Start flashing health/power under this percentage"] = true
-L["Raid Icon"] = true
-L["Combat Indicator"] = true
-L["PVP Text"] = true
-L["Wild Mushroom Tracker"] = true
-L["GCD Spark"] = true
-L["Player Hud"] = true
-L["Target Hud"] = true
-L["Pet Hud"] = true
-L["Target Target Hud"] = true
-L["Pet Target Hud"] = true
-L["Point From"] = true
-L["Position on the element to anchor"] = true
-L['What to attach this element to.'] = true
-L['Point To'] = true
-L["Eclipse"] = true
-L["Override"] = true
-L["Override the texture for this element"] = true
+L["Flash health/power when the low threshold is reached"] = "Les barres de vie/energie flash lorsqu'elles atteignent la limite minimal fixée"
+L["Text Warning"] = "Texte d'alertes"
+L["Show a Text Warning when the low threshold is reached"] = "Afficher un message d'alerte lorsque la limite minimal est atteinte"
+L["Horizontal Castbar"] = "Barre de sort horizontale"
+L["Use a horizontal castbar"] = "Utiliser la barre de sort horizontale"
+L["Variables"] = "Variables"
+L["Set the Alpha of the Hud when out of combat"] = "Régler la transparence du hud hors combat"
+L["Out of Combat Alpha"] = "Transparence hors combat"
+L["Start flashing health/power under this percentage"] = "Flasher lorsque la vie/energie est en dessous de ce pourcentage"
+L["Raid Icon"] = "Icônes de raid"
+L["Combat Indicator"] = "Indicateur de combat"
+L["PVP Text"] = "Texte JcJ"
+L["Wild Mushroom Tracker"] = "Affichage des Champignons Sauvages"
+L["GCD Spark"] = "Etincelle de GCD"
+L["Player Hud"] = "Hud du Joueur"
+L["Target Hud"] = "Hud de la cible"
+L["Pet Hud"] = "Hud du familier"
+L["Target Target Hud"] = "Hud de la cible de la cible"
+L["Pet Target Hud"] = "Hud de la cible du familier"
+L["Point From"] = "Pointer depuis"
+L["Position on the element to anchor"] = "Position des éléments à ancrer"
+L['What to attach this element to.'] = "Quelles éléments à attacher"
+L['Point To'] = "Pointer vers"
+L["Eclipse"] = "Eclipse"
+L["Override"] = "Substituer"
+L["Override the texture for this element"] = "Substituer la texture de cette élément"
 L['ElvUI Hud by Sortokk'] = true
-L['ElvUI Hud provides a configurable Heads Up Display for use with ElvUI.\n'] = true
-L['Reset the settings of this addon to their defaults.'] = true
-L['Hide the ElvUI Unitframes when the Hud is enabled'] = true
-L['Hide the Hud when out of Combat'] = true
-L['Hide Out of Combat'] = true
-L['Enable Mouse'] = true
-L['Enable the mouse to interface with the hud (this option has no effect is ElvUI Unitframes are hidden)'] = true
-L['Set the Alpha of the Hud when in combat'] = true
-L['Position on the attached element to anchor to'] = true
-L['The texture that will be used for statusbars on this element.'] = true
-L['Override the font for this element'] = true
-L['Set the font for this element'] = true
-L['Set the font size for this element'] = true
-L['Spacing'] = true
-L["Texture"] = true
-L["ELVUI_HUD_CREDITS"] = [[Many thanks to the following people:
+L['ElvUI Hud provides a configurable Heads Up Display for use with ElvUI.\n'] = "Le hud de ElvUI est un affichage tête haute utilisable avec ElvUI.\n"
+L['Reset the settings of this addon to their defaults.'] = "Réinitialiser les réglages de cette addons avec les paramètres par défaut"
+L['Hide the ElvUI Unitframes when the Hud is enabled'] = "Cacher les cadres d'unités d'ElvUI lorsque le hud est activé"
+L['Hide the Hud when out of Combat'] = "Cacher le hud lorsque le joueur est hors combat"
+L['Hide Out of Combat'] = "Cacher hors combat"
+L['Enable Mouse'] = "Activer la souris"
+L['Enable the mouse to interface with the hud (this option has no effect if ElvUI Unitframes are hidden)'] = "Autoriser l'interaction de la souris avec le hud (cette option n'a aucun effet si les cadres d'unités de ElvUI sont cachés"
+L['Set the Alpha of the Hud when in combat'] = "Configurer la transparence du hud en combat"
+L['Position on the attached element to anchor to'] = "Position des éléments attacher à ancrer"
+L['The texture that will be used for statusbars on this element.'] = "Texture qui sera utiliser pour la barre de status de ces éléments"
+L['Override the font for this element'] = "Substituer la police pour cet élément"
+L['Set the font for this element'] = "Définir la police pour cet élément"
+L['Set the font size for this element'] = "Définir la taille de la police pour cet élément"
+L['Spacing'] = "Espacement"
+L["Texture"] = "Textures"
+L["ELVUI_HUD_CREDITS"] = [[Remerciement aux personnes suivantes :
 
-Tukz whose unitframe code was the basis for the Hud
-Elv for his amazing UI which was the inspiration for version 3
-Hydrazine for inspiration
-Boradan for help with the options
-Sgt.Hydra for suggestions
-Darth Predator for the Russian translation
-NOme for the Korean translation
+Tukz pour ces cadres d'unites qui ont été la base de ce hud.
+Elv pour son incroyable UI, base de l'inspiration pour la version 3
+Hydrazine pour son inspiration
+Boradan pour son aide avec les options
+Sgt.Hydra pour ces suggestions
+Darth Predator pour les traductions en Russes
+NOme pour les traductions en Coréen
+BuG pour les traductions en Français
 
-The Tukui community for being supportive
+La communauté de Tukui pour son support
+
 ]]
+

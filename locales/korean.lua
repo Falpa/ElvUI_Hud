@@ -68,6 +68,7 @@ Boradan for help with the options
 Sgt.Hydra for suggestions
 Darth Predator for the Russian translation
 NOme for the Korean translation
+BuG for the French translation
 
 The Tukui community for being supportive
 ]]
