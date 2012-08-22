@@ -533,7 +533,10 @@ function H:ConstructHudFrame(frame,unit)
 	frame:RegisterForClicks("AnyUp")
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
-	
+	frame:HookScript("OnHide",function(self)
+		self:Show()
+		self:SetAlpha(0)
+	end)
 	frame.menu = UF.SpawnMenu
 	frame.db = E.db.hud.units[unit]
 	
