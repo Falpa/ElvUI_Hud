@@ -134,9 +134,9 @@ function H:GetAnchor(frame,anchor)
 end
 
 function H:CheckHealthValue(frame,eclipse)
-	local config = E.db.hud.units.player.elements.health.value
+	local config = E.db.hud.units.player.health.value
 	if config.enabled then
-		if H:IsDefault('units.player.elements.health.value.anchor') then
+		if H:IsDefault('units.player.health.value.anchor') then
         	if eclipse then
         		frame.Health.value:Point('TOPRIGHT',frame.Health,'TOPLEFT',-30,0)
         	else
@@ -150,7 +150,7 @@ end
 -- textures work normally as does parent size
 function H:UpdateClassBar(frame,element)
 	if not E.db.hud.units[frame.unit] then return end
-	local config = E.db.hud.units[frame.unit].elements[element]
+	local config = E.db.hud.units[frame.unit][element]
 	local size = config['size']
 	
 	local spaced = config.spaced
@@ -247,7 +247,7 @@ function H:UpdateClassBar(frame,element)
 end
 
 function H:UpdateClassBarAnchors(frame,element)
-	local config = E.db.hud.units[frame.unit].elements[element]
+	local config = E.db.hud.units[frame.unit][element]
 	
 	local spaced = config.spaced
 	local spacing = config.spacesettings.spacing
@@ -354,10 +354,10 @@ function H:UpdateClassBarAnchors(frame,element)
 end
 
 function H:UpdateElement(frame,element)
-	local config = E.db.hud.units[frame.unit].elements[element]
+	local config = E.db.hud.units[frame.unit][element]
 	local size = config['size']
 	local media = config['media']
-	local e = self.units[frame.unit].elements[element]
+	local e = self.units[frame.unit][element]
 	if size then
 		if e.statusbars then
 			if element == 'castbar' and size['vertical'] ~= nil then
@@ -384,8 +384,8 @@ function H:UpdateElement(frame,element)
 		end
 	end
 	if media then
-		local textureSetting = string.format('units.%s.elements.%s.media.texture',frame.unit,element)
-		local fontSetting = string.format('units.%s.elements.%s.media.font',frame.unit,element)
+		local textureSetting = string.format('units.%s.%s.media.texture',frame.unit,element)
+		local fontSetting = string.format('units.%s.%s.media.font',frame.unit,element)
 		if e.statusbars then
 			for _,statusbar in pairs(e.statusbars) do
 				if media.texture.override or not self:IsDefault(textureSetting) then
@@ -422,7 +422,7 @@ end
 
 function H:UpdateElementAnchor(frame,element)
 	local e = H:GetElement(element)
-	local config = E.db.hud.units[frame.unit].elements[element]
+	local config = E.db.hud.units[frame.unit][element]
 	local enabled = config['enabled']
 	if element == 'healcomm' then
 		if enabled then
@@ -445,7 +445,7 @@ function H:UpdateElementAnchor(frame,element)
 		local WMFrame = CreateFrame('Frame',nil,frame)
 		WMFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
 		WMFrame:SetScript('OnEvent',function(self,event)
-			local config = E.db.hud.units[frame.unit].elements['mushroom']
+			local config = E.db.hud.units[frame.unit]['mushroom']
 			local anchor = config['anchor']
 			local eclipse
 			local spec = GetSpecialization()
@@ -535,6 +535,7 @@ function H:ConstructHudFrame(frame,unit)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
 	
 	frame.menu = UF.SpawnMenu
+	frame.db = E.db.hud.units[unit]
 	
 	local stringTitle = E:StringTitle(unit)
 	if stringTitle:find('target') then
@@ -581,38 +582,42 @@ function H:UpdateAllFrames()
 end
 
 function H:UpdateAllElements(frame)
-	local elements = self.units[frame.unit].elements
+	local elements = self.units[frame.unit]
 	local seenClassbars = false
 	for element,_ in pairs(elements) do
-		self:UpdateElement(frame,element)
+		if self:GetElement(element) then
+			self:UpdateElement(frame,element)
+		end
 	end
 end
 
 function H:UpdateAllElementAnchors(frame)
-	local elements = self.units[frame.unit].elements
+	local elements = self.units[frame.unit]
 	local seenClassbars = false
 
 	for element,_ in pairs(elements) do
-		if element == 'mushroom' then
-			if not seenClassbars then
-				self:UpdateElementAnchor(frame,'classbars')
-				seenClassbars = true
-			end
-			self:UpdateElementAnchor(frame,element)
-		elseif element == 'classbars' then
-			if not seenClassbars then
+		if self:GetElement(element) then
+			if element == 'mushroom' then
+				if not seenClassbars then
+					self:UpdateElementAnchor(frame,'classbars')
+					seenClassbars = true
+				end
 				self:UpdateElementAnchor(frame,element)
-				seenClassbars = true
+			elseif element == 'classbars' then
+				if not seenClassbars then
+					self:UpdateElementAnchor(frame,element)
+					seenClassbars = true
+				end
+			else
+				self:UpdateElementAnchor(frame,element)
 			end
-		else
-			self:UpdateElementAnchor(frame,element)
 		end
 	end
 end
 
 function H:AddElement(frame,element)
-	if not self.units[frame.unit].elements[element] then
-		self.units[frame.unit].elements[element] = { }
+	if not self.units[frame.unit][element] then
+		self.units[frame.unit][element] = { }
 	end
 end
 
@@ -643,11 +648,11 @@ function H:ConfigureStatusBar(frame,element,parent,name)
     bg.multiplier = 0.3 
     sb.bg = bg
 
-    if not self.units[frame.unit].elements[element].statusbars then
-		self.units[frame.unit].elements[element].statusbars =  { }
+    if not self.units[frame.unit][element].statusbars then
+		self.units[frame.unit][element].statusbars =  { }
 	end
 
-    self.units[frame.unit].elements[element].statusbars[name] = sb
+    self.units[frame.unit][element].statusbars[name] = sb
     return sb
 end
 
@@ -655,14 +660,14 @@ function H:ConfigureFontString(frame,element,parent,name)
 	if parent == nil then parent = frame end
 	if name == nil then name = 'value' end
 
-	if not self.units[frame.unit].elements[element].fontstrings then
-		self.units[frame.unit].elements[element].fontstrings=  { }
+	if not self.units[frame.unit][element].fontstrings then
+		self.units[frame.unit][element].fontstrings=  { }
 	end
 
 	local fs = parent:CreateFontString(nil, "THINOUTLINE")
 	-- Dummy font
 	fs:FontTemplate(LSM:Fetch("font", "ElvUI Font"), 12, "THINOUTLINE")
-	self.units[frame.unit].elements[element].fontstrings[name] = fs
+	self.units[frame.unit][element].fontstrings[name] = fs
 
 	return fs
 end
@@ -671,14 +676,14 @@ function H:ConfigureTexture(frame,element,parent,name)
 	if parent == nil then parent = frame end
 	if name == nil then name = 'texture' end
 
-	if not self.units[frame.unit].elements[element].textures then
-		self.units[frame.unit].elements[element].textures =  { }
+	if not self.units[frame.unit][element].textures then
+		self.units[frame.unit][element].textures =  { }
 	end
 
 	local t = parent:CreateTexture(nil, "OVERLAY")
 	-- Dummy texture
 	t:SetTexture(E['media'].blankTex)
-	self.units[frame.unit].elements[element].textures[name] = t
+	self.units[frame.unit][element].textures[name] = t
 	return t
 end
 
@@ -691,7 +696,7 @@ function H:ConfigureFrame(frame,element,visible)
 		f:CreateBackdrop("Default")
 		f:CreateShadow("Default")
 	end]]
-	self.units[frame.unit].elements[element].frame = f
+	self.units[frame.unit][element].frame = f
 	return f
 end
 
@@ -703,10 +708,10 @@ function H:ResetUnitSettings(unit)
 end
 
 function H:UpdateElementSizes(unit,isWidth,newSize)
-	local elements = self.units[unit].elements
+	local elements = self.units[unit]
 	
 	for element,_ in pairs(elements) do
-		local config = E.db.hud.units[unit].elements[element]
+		local config = E.db.hud.units[unit][element]
 		local size = config['size']
 		if size then
 			local config = true
@@ -728,12 +733,14 @@ function H:SimpleLayout()
 	E.db.hud.units.targettarget.enabled = false
 	E.db.hud.units.pet.enabled = false
 	E.db.hud.units.pettarget.enabled = false
-	for element,_ in pairs(E.db.hud.units.player.elements) do
-		E.db.hud.units.player.elements[element].enabled = false
+	for element,_ in pairs(E.db.hud.units.player) do
+		if self:GetElement(element) then
+			E.db.hud.units.player[element].enabled = false
+		end
 	end
-	E.db.hud.units.player.elements.health.enabled = true
-	E.db.hud.units.player.elements.power.enabled = true
-	E.db.hud.units.player.elements.power.anchor.xOffset = 550
-	E.db.hud.units.player.elements.classbars.enabled = true
-	E.db.hud.units.player.elements.cpoints.enabled = true
+	E.db.hud.units.player.health.enabled = true
+	E.db.hud.units.player.power.enabled = true
+	E.db.hud.units.player.power.anchor.xOffset = 550
+	E.db.hud.units.player.classbars.enabled = true
+	E.db.hud.units.player.cpoints.enabled = true
 end

@@ -102,8 +102,18 @@ function H:ConstructCastbar(frame)
 
         castbar.CustomTimeText = H.CustomCastTimeText
         castbar.CustomDelayText = H.CustomCastDelayText
-        castbar.PostCastStart = H.CheckCast
-        castbar.PostChannelStart = H.CheckCast
+        if frame.unit ~= 'player' then
+            castbar.PostCastStart = H.CheckCast
+            castbar.PostChannelStart = H.CheckCast
+        else
+            castbar.PostCastStart = UF.PostCastStart
+            castbar.PostChannelStart = UF.PostCastStart
+            castbar.PostCastStop = UF.PostCastStop
+            castbar.PostChannelStop = UF.PostCastStop
+            castbar.PostChannelUpdate = UF.PostChannelUpdate
+            castbar.PostCastInterruptible = UF.PostCastInterruptible
+            castbar.PostCastNotInterruptible = UF.PostCastNotInterruptible
+        end
 
         castbar.Time = self:ConfigureFontString(frame,'castbar',castbar,'time')
         castbar.Time:SetPoint("RIGHT", castbar, "RIGHT", -4, 0)
@@ -434,7 +444,7 @@ function H:ConstructComboPoints(frame)
 end
 
 function H:ConstructAuraBars()
-    local config = E.db.hud.units.player.elements['aurabars']
+    local config = E.db.hud.units.player['aurabars']
     local media = config.media
     local size = config.size
     local bar = self.statusBar
@@ -442,8 +452,8 @@ function H:ConstructAuraBars()
     self:SetTemplate('Default')
 
     bar:Size(size.width,size.height)
-    local textureSetting = 'units.player.elements.aurabars.media.texture'
-    local fontSetting = 'units.player.elements.aurabars.media.font'
+    local textureSetting = 'units.player.aurabars.media.texture'
+    local fontSetting = 'units.player.aurabars.media.font'
     if not H:IsDefault(textureSetting) then
         bar:SetStatusBarTexture(LSM:Fetch("statusbar", media.texture.statusbar))
     else

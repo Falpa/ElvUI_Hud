@@ -7,7 +7,7 @@ local warningTextShown = false;
 
 function H.PostUpdateHealth(health, unit, min, max)
     if E.db.hud.colorHealthByValue then
-		local dc = health.defaultColor or (E.db.hud.units.player.elements.health.media.color)
+		local dc = health.defaultColor or (E.db.hud.units.player.health.media.color)
 		local r = dc.r
 		local g = dc.g
 		local b = dc.b
@@ -30,15 +30,36 @@ function H.PostUpdateHealth(health, unit, min, max)
 	end
 end
 
+function UF:SetCastTicks(frame, numTicks, extraTickRatio)
+	extraTickRatio = extraTickRatio or 0
+	local color = E.db.hud.units.player['castbar']['tickcolor']
+	UF:HideTicks()
+	if numTicks and numTicks > 0 then
+		local d = frame:GetWidth() / (numTicks + extraTickRatio)
+		for i = 1, numTicks do
+			if not ticks[i] then
+				ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
+				ticks[i]:SetTexture(E["media"].normTex)
+				ticks[i]:SetVertexColor(color.r, color.g, color.b)
+				ticks[i]:SetWidth(1)
+				ticks[i]:SetHeight(frame:GetHeight())
+			end
+			ticks[i]:ClearAllPoints()
+			ticks[i]:SetPoint("CENTER", frame, "LEFT", d * i, 0)
+			ticks[i]:Show()
+		end
+	end
+end
+
 -- used to check if a spell is interruptable
 function H:CheckInterrupt(unit)
 	if unit == "vehicle" then unit = "player" end
-	local config = E.db.hud.units[unit].elements['castbar']
+	local config = E.db.hud.units[unit]['castbar']
 	local media = config.media
 	if self.interrupt and UnitCanAttack("player", unit) then
-		self:SetStatusBarColor(media.interruptcolor)	
+		self:SetStatusBarColor(config.interruptcolor)	
 	else
-		self:SetStatusBarColor(media.color)	
+		self:SetStatusBarColor(config.color)	
 	end
 end
 
