@@ -2,7 +2,7 @@
 local L = AceLocale:NewLocale("ElvUI", "koKR")
 if not L then return end
 
-L["ElvUI Hud "] = "ElvUI Hu";
+L["ElvUI Hud "] = "ElvUI Hud";
 L["ElvUI Hud by Sortokk"] = true
 L[" is loaded. Thank you for using it and note that I will always support you."] = "로드됩니다. ElvUI Hud 이용해 주셔서 감사합니다";
 L["Hud"] = "Hud";

@@ -30,6 +30,7 @@ function H.PostUpdateHealth(health, unit, min, max)
 	end
 end
 
+local ticks = {}
 function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 	extraTickRatio = extraTickRatio or 0
 	local color = E.db.hud.units.player['castbar']['tickcolor']
