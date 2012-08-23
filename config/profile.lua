@@ -129,7 +129,7 @@ P['hud']['units'] = {
                     ['attachTo'] = 'ui',
                     ['pointTo'] = 'CENTER',
                     ['xOffset'] = 0,
-                    ['yOffset'] = -75,
+                    ['yOffset'] = -170,
                 },
                 ['vertical'] = {
                     ['pointFrom'] = 'BOTTOM',
