@@ -534,8 +534,10 @@ function H:ConstructHudFrame(frame,unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
 	frame:HookScript("OnHide",function(self)
-		self:Show()
-		self:SetAlpha(0)
+		if E.db.hud.hideOOC then
+			self:Show()
+			self:SetAlpha(0)
+		end
 	end)
 	frame:HookScript("OnEnter",function(self) if E.db.hud.hideOOC and not InCombatLockdown() and UnitExists(self.unit) then frame:SetAlpha(E.db.hud.alpha) end end)
     frame:HookScript("OnLeave",function(self) if E.db.hud.hideOOC and not InCombatLockdown() and UnitExists(self.unit) then frame:SetAlpha(E.db.hud.alphaOOC) end end)
