@@ -548,6 +548,7 @@ function H:ConstructHudFrame(frame,unit)
 		stringTitle = gsub(stringTitle, 'target', 'Target')
 	end
 	self["Construct"..stringTitle.."Frame"](self, frame, unit)
+	frame:SetParent(ElvUF_Parent)
 	return frame
 end
 
