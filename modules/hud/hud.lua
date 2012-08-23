@@ -537,6 +537,9 @@ function H:ConstructHudFrame(frame,unit)
 		self:Show()
 		self:SetAlpha(0)
 	end)
+	frame:HookScript("OnEnter",function(self) if E.db.hud.hideOOC and not InCombatLockdown() and UnitExists(self.unit) then frame:SetAlpha(E.db.hud.alpha) end end)
+    frame:HookScript("OnLeave",function(self) if E.db.hud.hideOOC and not InCombatLockdown() and UnitExists(self.unit) then frame:SetAlpha(E.db.hud.alphaOOC) end end)
+    frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alphaOOC) end end)
 	frame.menu = UF.SpawnMenu
 	frame.db = E.db.hud.units[unit]
 	

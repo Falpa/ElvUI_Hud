@@ -76,9 +76,6 @@ function H:HideOOC(frame)
 		hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
 		hud_hider:SetScript("OnEvent", function(self,event) H:Hide(frame,event) end)
 		frame.hud_hider = hud_hider
-        frame:HookScript("OnEnter",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alpha) end end)
-        frame:HookScript("OnLeave",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alphaOOC) end end)
-        frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alphaOOC) end end)
 	end
     tinsert(frames,frame)
 end
@@ -100,9 +97,6 @@ function H:UpdateHideSetting()
             hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
             hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
             hud_hider:SetScript("OnEvent", function(self,event) H:Hide(f,event) end)
-            frame:HookScript("OnEnter",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alpha) end end)
-            frame:HookScript("OnLeave",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alphaOOC) end end)
-            frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alphaOOC) end end)
             f.hud_hider = hud_hider
             local alpha = E.db.hud[InCombatLockdown() and 'alpha' or 'alphaOOC']
             f:SetAlpha(alpha)
@@ -165,9 +159,6 @@ function H:Enable()
                 hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
                 hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
                 hud_hider:SetScript("OnEvent", function(self,event) H:Hide(f,event) end)
-                frame:HookScript("OnEnter",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alpha) end end)
-                frame:HookScript("OnLeave",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alphaOOC) end end)
-                frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alphaOOC) end end)
                 f.hud_hider = hud_hider
                 H:Hide(f,"PLAYER_REGEN_ENABLED")
             else
