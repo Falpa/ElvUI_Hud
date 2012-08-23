@@ -534,7 +534,7 @@ function H:ConstructHudFrame(frame,unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
 	frame:HookScript("OnHide",function(self)
-		if E.db.hud.hideOOC then
+		if E.db.hud.hideOOC and not InCombatLockdown() then
 			self:Show()
 			self:SetAlpha(0)
 		end
