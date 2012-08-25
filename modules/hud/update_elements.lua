@@ -434,7 +434,7 @@ end
 -- used to check if a spell is interruptable
 function H:CheckInterrupt(unit)
 	if unit == "vehicle" then unit = "player" end
-	local config = self.db.units[unit]['castbar']
+	local config = E.db.hud.units[unit]['castbar']
 	local media = config.media
 	if self.interrupt and UnitCanAttack("player", unit) then
 		self:SetStatusBarColor(config.interruptcolor)	
