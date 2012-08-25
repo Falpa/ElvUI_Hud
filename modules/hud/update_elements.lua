@@ -385,8 +385,8 @@ function H:UpdateElementAnchor(frame,element)
 end
 
 function H.PostUpdateHealth(health, unit, min, max)
-    if self.db.colorHealthByValue then
-		local dc = health.defaultColor or (self.db.units.player.health.media.color)
+    if E.db.hud.colorHealthByValue then
+		local dc = health.defaultColor or (E.db.hud.units.player.health.media.color)
 		local r = dc.r
 		local g = dc.g
 		local b = dc.b
@@ -397,9 +397,9 @@ function H.PostUpdateHealth(health, unit, min, max)
 
     -- Flash health below threshold %
     if max == 0 then return end
-	if (min / max * 100) < (self.db.lowThreshold) then
+	if (min / max * 100) < (E.db.hud.lowThreshold) then
 		H.Flash(health, 0.6)
-		if (not warningTextShown and unit == "player") and self.db.warningText then
+		if (not warningTextShown and unit == "player") and E.db.hud.warningText then
 			ElvUIHudWarning:AddMessage("|cffff0000LOW HEALTH")
 			warningTextShown = true
 		else
@@ -472,7 +472,7 @@ function H.PostUpdatePowerHud(power, unit, min, max)
 
 	-- Flash mana below threshold %
 	local powerMana, _ = UnitPowerType(unit)
-	if (min / max * 100) < (self.db.lowThreshold) and (powerMana == SPELL_POWER_MANA) and self.db.flash then
+	if (min / max * 100) < (E.db.hud.lowThreshold) and (powerMana == SPELL_POWER_MANA) and self.db.flash then
 		H.Flash(power, 0.4)
 		if self.db.warningText then
 			if not warningTextShown and unit == "player" then
