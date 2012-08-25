@@ -13,7 +13,7 @@ function H:ConstructPetFrame(frame,unit)
     frame.Castbar.SafeZone = nil
     frame.RaidIcon = self:ConstructRaidIcon(frame)
 
-    frame:SetAlpha(E.db.hud.alpha)
+    frame:SetAlpha(self.db.alpha)
     H:HideOOC(frame)
     frame:Point("BOTTOMRIGHT", ElvUF_PlayerHud, "BOTTOMLEFT", -110, 0)
     E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Hud Frame', nil, nil, nil, 'ALL,SOLO')

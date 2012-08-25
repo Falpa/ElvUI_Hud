@@ -10,7 +10,7 @@ function H:ConstructPetTargetFrame(frame,unit)
     frame.Power = self:ConstructPower(frame)
 	frame.RaidIcon = self:ConstructRaidIcon(frame)
     
-    frame:SetAlpha(E.db.hud.alpha)
+    frame:SetAlpha(self.db.alpha)
     H:HideOOC(frame)
     frame:Point("BOTTOMRIGHT", ElvUF_PetHud, "BOTTOMLEFT", -110, 0)
     E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Target Hud Frame', nil, nil, nil, 'ALL,SOLO')

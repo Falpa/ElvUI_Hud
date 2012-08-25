@@ -58,7 +58,7 @@ function H:ConstructPlayerFrame(frame,unit)
 	frame.PvPText = self:ConstructPvPIndicator(frame)
 	frame.HealPrediction = self:ConstructHealComm(frame)
 	frame.GCD = self:ConstructGCD(frame)
-	frame:SetAlpha(E.db.hud.alpha)
+	frame:SetAlpha(self.db.alpha)
 
     H:HideOOC(frame)
     frame:Point("RIGHT", E.UIParent, "CENTER", -275, 0) --Set to default position 

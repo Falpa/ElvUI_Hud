@@ -5,9 +5,388 @@ local UF = E:GetModule('UnitFrames');
 
 local warningTextShown = false;
 
+-- This function is only responsible for updating bar sizes for class bar children
+-- textures work normally as does parent size
+function H:UpdateClassBar(frame,element)
+	if not self.db.units[frame.unit] then return end
+	local config = self.db.units[frame.unit][element]
+	local size = config['size']
+	
+	local spaced = config.spaced
+	if element == 'mushroom' then
+		local numPoints = 3
+		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
+		for i = 1, numPoints do
+			frame.WildMushroom[i]:Size(size.width,(size.height - (spaced and totalspacing or 2))/3)
+		end
+	end
+
+	if element == "cpoints" then
+		local numPoints = 5
+		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
+		for i = 1, numPoints do
+			frame.CPoints[i]:Size(size.width,(size.height - (spaced and totalspacing or 4))/5)
+		end
+	end
+
+	if element == 'classbars' then
+		local numPoints
+		local maxPoints
+		if E.myclass == "DRUID" then
+			frame.EclipseBar.LunarBar:Size(frame.EclipseBar:GetSize())
+			frame.EclipseBar.SolarBar:Size(frame.EclipseBar:GetSize())
+			frame.EclipseBar:ForceUpdate()
+			return
+		end
+
+		if E.myclass == "WARLOCK" then
+			local spec = GetSpecialization()
+			if spec == SPEC_WARLOCK_DESTRUCTION then
+				numPoints = UnitPowerMax('player',SPELL_POWER_BURNING_EMBERS)
+				maxPoints = 4
+			elseif spec == SPEC_WARLOCK_DEMONOLOGY then
+				numPoints = 1
+				maxPoints = 1
+			else
+				numPoints = UnitPowerMax('player',SPELL_POWER_SOUL_SHARDS)
+				maxPoints = 4
+			end
+			if not frame.WarlockSpecBars.PostUpdate then
+				frame.WarlockSpecBars.PostUpdate = function(self)
+					H:UpdateClassBar(frame,element)
+				end
+			end
+		end
+
+		if E.myclass == "PALADIN" then
+			numPoints = UnitPowerMax('player',SPELL_POWER_HOLY_POWER)
+			maxPoints = 5
+		end
+
+		if E.myclass == "DEATHKNIGHT" then
+			numPoints = 6
+			maxPoints = 6
+		end
+
+		if E.myclass == "SHAMAN" then
+			numPoints = 4
+			maxPoints = 4
+		end
+
+		if E.myclass == "MONK" then
+			numPoints = UnitPowerMax('player',SPELL_POWER_LIGHT_FORCE)
+			maxPoints = 5
+			if not frame.HarmonyBar.PostUpdate then
+				frame.HarmonyBar.PostUpdate = function(self)
+					H:UpdateClassBar(frame,element)
+				end
+			end
+		end
+
+		if E.myclass == "PRIEST" then
+			numPoints = 3
+			maxPoints = 3
+		end
+
+		if E.myclass == "MAGE" then
+			numPoints = 6
+			maxPoints = 6
+		end
+
+		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
+		local e = H:GetElement(element)
+		for i = 1, maxPoints do
+			frame[e][i]:SetAlpha(0)
+		end
+		for i = 1, numPoints do
+			frame[e][i]:Size(size.width,(size.height - (spaced and totalspacing or 2)) / numPoints)
+			frame[e][i]:SetAlpha(1)
+		end
+	end
+end
+
+function H:UpdateClassBarAnchors(frame,element)
+	local config = self.db.units[frame.unit][element]
+	
+	local spaced = config.spaced
+	local spacing = config.spacesettings.spacing
+	if not spaced then
+		spacing = 1
+	end
+
+	if element == 'mushroom' then
+		for i = 1,3 do
+			if i == 1 then
+	            frame.WildMushroom[i]:Point("BOTTOM",frame.WildMushroom)
+	        else
+	            frame.WildMushroom[i]:Point("BOTTOM",frame.WildMushroom[i-1], "TOP", 0, spacing)
+	        end
+		end
+	end
+
+	if element == "cpoints" then
+		for i=1,5 do
+			if i == 1 then
+	            frame.CPoints[i]:Point("BOTTOM",frame.CPoints)
+	        else
+	            frame.CPoints[i]:Point("BOTTOM",frame.CPoints[i-1], "TOP", 0, spacing)
+	        end
+		end
+	end
+
+	if element == 'classbars' then
+		if E.myclass == "DRUID" then
+			frame.EclipseBar.LunarBar:SetPoint('LEFT', frame.EclipseBar, 'LEFT', 0, 0)
+			frame.EclipseBar.SolarBar:SetPoint('LEFT', frame.EclipseBar, 'LEFT', 0, 0)
+		end
+
+		if E.myclass == "WARLOCK" then
+			for i=1,4 do
+				if i == 1 then
+		            frame.WarlockSpecBars[i]:Point("BOTTOM",frame.WarlockSpecBars)
+		        else
+		            frame.WarlockSpecBars[i]:Point("BOTTOM",frame.WarlockSpecBars[i-1], "TOP", 0, spacing)
+		        end
+			end
+		end
+
+		if E.myclass == "PALADIN" then
+			for i=1,5 do
+				if i == 1 then
+		            frame.HolyPower[i]:Point("BOTTOM",frame.HolyPower)
+		        else
+		            frame.HolyPower[i]:Point("BOTTOM",frame.HolyPower[i-1], "TOP", 0, spacing)
+		        end
+			end
+		end
+
+		if E.myclass == "DEATHKNIGHT" then
+			for i=1,6 do
+				if i == 1 then
+		            frame.Runes[i]:Point("BOTTOM",frame.Runes)
+		        else
+		            frame.Runes[i]:Point("BOTTOM",frame.Runes[i-1], "TOP", 0, spacing)
+		        end
+			end
+		end
+
+		if E.myclass == "SHAMAN" then
+			for i=1,4 do
+				if i == 1 then
+		            frame.TotemBar[i]:Point("BOTTOM",frame.TotemBar)
+		        else
+		            frame.TotemBar[i]:Point("BOTTOM",frame.TotemBar[i-1], "TOP", 0, spacing)
+		        end
+			end
+		end
+
+		if E.myclass == "MONK" then
+			for i=1,5 do
+				if i == 1 then
+		            frame.HarmonyBar[i]:Point("BOTTOM",frame.HarmonyBar)
+		        else
+		            frame.HarmonyBar[i]:Point("BOTTOM",frame.HarmonyBar[i-1], "TOP", 0, spacing)
+		        end
+			end
+		end
+
+		if E.myclass == "PRIEST" then
+			for i=1,3 do
+				if i == 1 then
+		            frame.ShadowOrbsBar[i]:Point("BOTTOM",frame.ShadowOrbsBar)
+		        else
+		            frame.ShadowOrbsBar[i]:Point("BOTTOM",frame.ShadowOrbsBar[i-1], "TOP", 0, spacing)
+		        end
+			end
+		end
+
+		if E.myclass == "MAGE" then
+			for i=1,6 do
+				if i == 1 then
+		            frame.ArcaneChargeBar[i]:Point("BOTTOM",frame.ArcaneChargeBar)
+		        else
+		            frame.ArcaneChargeBar[i]:Point("BOTTOM",frame.ArcaneChargeBar[i-1], "TOP", 0, spacing)
+		        end
+			end
+		end
+	end
+end
+
+function H:UpdateElement(frame,element)
+	local config = self.db.units[frame.unit][element]
+	local size = config['size']
+	local media = config['media']
+	local e = self.units[frame.unit][element]
+	if size then
+		if e.statusbars then
+			if element == 'castbar' and size['vertical'] ~= nil then
+				if not self.db.horizCastbar then
+					size = size['vertical']
+				else
+					size = size['horizontal']
+				end
+			end
+			
+			for _,statusbar in pairs(e.statusbars) do
+				statusbar:Size(size.width,size.height)
+			end			
+		end
+		if e.frame then
+			local height = size.height
+			if element == 'classbars' or element == 'cpoints' or element == 'mushroom' then
+				if config['spaced'] then height = (height + 2) - (config['spacesettings'].offset*2) end
+			end
+			e.frame:Size(size.width,height)
+			if element == 'classbars' or element == 'cpoints' or element == 'mushroom' then
+				self:UpdateClassBar(frame,element)
+			end
+		end
+	end
+	if media then
+		local textureSetting = string.format('units.%s.%s.media.texture',frame.unit,element)
+		local fontSetting = string.format('units.%s.%s.media.font',frame.unit,element)
+		if e.statusbars then
+			for _,statusbar in pairs(e.statusbars) do
+				if media.texture.override or not self:IsDefault(textureSetting) then
+					statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", media.texture.statusbar))
+				else
+					statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+				end
+				if media.color and element ~= "castbar" then
+					statusbar.defaultColor = media.color
+					statusbar:SetStatusBarColor(media.color)
+				end
+			end
+		end
+		if e.textures then
+			for _,texture in pairs(e.textures) do
+				if media.texture.override or not self:IsDefault(textureSetting) then
+					texture:SetTexture(LSM:Fetch("statusbar", media.texture.statusbar))
+				else
+					texture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
+				end
+			end
+		end
+		if e.fontstrings then
+			for n,fs in pairs(e.fontstrings) do
+				if media.font.override or not self:IsDefault(fontSetting) then
+					fs:FontTemplate(LSM:Fetch("font", media.font.font), media.font.fontsize, "THINOUTLINE")
+				else
+					fs:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontsize, "THINOUTLINE")
+				end
+			end
+		end
+	end
+end
+
+function H:UpdateElementAnchor(frame,element)
+	local e = H:GetElement(element)
+	local config = self.db.units[frame.unit][element]
+	local enabled = config['enabled']
+	if element == 'healcomm' then
+		if enabled then
+			frame:EnableElement(e)
+		else
+			frame:DisableElement(e)
+		end
+		return
+	end
+ 	local anchor = config['anchor']
+	if element == 'cpoints' and not (E.myclass == "ROGUE" or E.myclass == "DRUID") then return end;
+	if element == 'castbar' and anchor['vertical'] ~= nil then
+		if not self.db.horizCastbar then
+			anchor = anchor['vertical']
+		else
+			anchor = anchor['horizontal']
+		end
+	end
+	if element == 'mushroom' then
+		local WMFrame = CreateFrame('Frame',nil,frame)
+		WMFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
+		WMFrame:SetScript('OnEvent',function(self,event)
+			local config = self.db.units[frame.unit]['mushroom']
+			local anchor = config['anchor']
+			local eclipse
+			local spec = GetSpecialization()
+			if spec == 1 then
+				anchor = anchor['eclipse']
+				eclipse = true
+			else
+				anchor = anchor['default']
+				eclipse = false
+			end
+			local pointFrom = anchor['pointFrom']
+			local attachTo = H:GetAnchor(frame,anchor['attachTo'])
+			local pointTo = anchor['pointTo']
+			local xOffset = anchor['xOffset']
+			local yOffset = anchor['yOffset']
+			if config['spaced'] then yOffset = yOffset + config['spacesettings'].offset end
+			frame.WildMushroom:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
+			H:CheckHealthValue(frame,eclipse)
+		end)
+		local spec = GetSpecialization()
+		if spec == 1 then
+			anchor = anchor['eclipse']
+		else
+			anchor = anchor['default']
+		end
+	end
+	local pointFrom = anchor['pointFrom']
+	local attachTo = H:GetAnchor(frame,anchor['attachTo'])
+	local pointTo = anchor['pointTo']
+	local xOffset = anchor['xOffset']
+	local yOffset = anchor['yOffset']
+	if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
+		if config['spaced'] then yOffset = yOffset + config['spacesettings'].offset end
+	end
+	frame[e]:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
+	if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
+		self:UpdateClassBarAnchors(frame,element)
+	end
+	if config['tag'] then
+		frame:Tag(frame[e], config['tag'])
+	end
+	if config['value'] and frame[e].value then
+		local venable = config['value']['enabled']
+		local vanchor = config['value']['anchor']
+		local vpointFrom = vanchor['pointFrom']
+		local vattachTo = H:GetAnchor(frame,vanchor['attachTo'])
+		local vpointTo = vanchor['pointTo']
+		local vxOffset = vanchor['xOffset']
+		local vyOffset = vanchor['yOffset']
+		frame[e].value:SetPoint(vpointFrom, vattachTo, vpointTo, vxOffset, vyOffset)
+		if config['value']['tag'] then
+			frame:Tag(frame[e].value,config['value']['tag'])
+		end
+		if venable then
+			frame[e].value:Show()
+		else
+			frame[e].value:Hide()
+		end
+	end
+
+	if enabled then
+		frame:EnableElement(e)
+		if config['value'] and frame[e].value then
+			if config['value']['enabled'] then
+				frame[e].value:Show()
+			else
+				frame[e].value:Hide()
+			end
+		end
+		if element ~= 'raidicon' then frame[e]:Show() end
+	else
+		frame:DisableElement(e)
+		if config['value'] then
+			frame[e].value:Hide()
+		end
+		frame[e]:Hide()
+	end
+end
+
 function H.PostUpdateHealth(health, unit, min, max)
-    if E.db.hud.colorHealthByValue then
-		local dc = health.defaultColor or (E.db.hud.units.player.health.media.color)
+    if self.db.colorHealthByValue then
+		local dc = health.defaultColor or (self.db.units.player.health.media.color)
 		local r = dc.r
 		local g = dc.g
 		local b = dc.b
@@ -18,9 +397,9 @@ function H.PostUpdateHealth(health, unit, min, max)
 
     -- Flash health below threshold %
     if max == 0 then return end
-	if (min / max * 100) < (E.db.hud.lowThreshold) then
+	if (min / max * 100) < (self.db.lowThreshold) then
 		H.Flash(health, 0.6)
-		if (not warningTextShown and unit == "player") and E.db.hud.warningText then
+		if (not warningTextShown and unit == "player") and self.db.warningText then
 			ElvUIHudWarning:AddMessage("|cffff0000LOW HEALTH")
 			warningTextShown = true
 		else
@@ -55,7 +434,7 @@ end
 -- used to check if a spell is interruptable
 function H:CheckInterrupt(unit)
 	if unit == "vehicle" then unit = "player" end
-	local config = E.db.hud.units[unit]['castbar']
+	local config = self.db.units[unit]['castbar']
 	local media = config.media
 	if self.interrupt and UnitCanAttack("player", unit) then
 		self:SetStatusBarColor(config.interruptcolor)	
@@ -93,9 +472,9 @@ function H.PostUpdatePowerHud(power, unit, min, max)
 
 	-- Flash mana below threshold %
 	local powerMana, _ = UnitPowerType(unit)
-	if (min / max * 100) < (E.db.hud.lowThreshold) and (powerMana == SPELL_POWER_MANA) and E.db.hud.flash then
+	if (min / max * 100) < (self.db.lowThreshold) and (powerMana == SPELL_POWER_MANA) and self.db.flash then
 		H.Flash(power, 0.4)
-		if E.db.hud.warningText then
+		if self.db.warningText then
 			if not warningTextShown and unit == "player" then
 				ElvUIHudWarning:AddMessage("|cff00ffffLOW MANA")
 				warningTextShown = true

@@ -10,7 +10,7 @@ function H:ConstructTargetTargetFrame(frame,unit)
     frame.Power = self:ConstructPower(frame)
     frame.RaidIcon = self:ConstructRaidIcon(frame)
     
-    frame:SetAlpha(E.db.hud.alpha)
+    frame:SetAlpha(self.db.alpha)
     H:HideOOC(frame)
     frame:Point("BOTTOMLEFT", ElvUF_TargetHud, "BOTTOMRIGHT", 110, 0)
     E:CreateMover(frame, frame:GetName()..'Mover', 'Target Target Hud Frame', nil, nil, nil, 'ALL,SOLO')
