@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, Profi
 
 P['hud'] = {
     ['enabled'] = true,
+    ['install_complete'] = 0,
     ['hideElv'] = true,
     ['horizCastbar'] = true,
     ['unicolor'] = true,

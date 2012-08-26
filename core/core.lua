@@ -178,12 +178,27 @@ function H:UpdateMouseSetting()
     end
 end
 
+function H:ResetSettings()
+    local oldSettings = {}
+    local sl = self.db.simpleLayout
+    E:CopyTable(oldSettings,self.db)
+    E:CopyTable(self.db,P.hud)
+    for k,_ in pairs(oldSettings) do
+        if self.db[k] then
+            self.db[k] = oldSettings[k]
+        end
+    end
+    self.db['install_complete'] = 3
+    return sl
+end
+
 function H:Initialize()
     if self.db then return end;
     self.db = E.db.hud
 
-    H:CreateWarningFrame()
-
+    self:CreateWarningFrame()
+    local sl = false 
+    if self.db['install_complete'] < 3 then sl = self:ResetSettings() end
 
     ElvUF:RegisterStyle('ElvUI_Hud',function(frame,unit)
         H:ConstructHudFrame(frame,unit)
@@ -199,12 +214,13 @@ function H:Initialize()
         ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
     end
 
-    H:GenerateOptionTables()
-    H:UpdateAllFrames()
-    H:UpdateMouseSetting()
-    H:UpdateHideSetting()
+    if sl then self:simpleLayout() end
+    self:GenerateOptionTables()
+    self:UpdateAllFrames()
+    self:UpdateMouseSetting()
+    self:UpdateHideSetting()
     
-    H:UpdateElvUFSetting(false,true)
+    self:UpdateElvUFSetting(false,true)
 
     local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
 
@@ -219,7 +235,7 @@ function H:Initialize()
     ElvUF_Player:Show()
 
     if not self.db.enabled then
-        H:Enable()
+        self:Enable()
     end
 
     self.version = GetAddOnMetadata(addon,'Version')
