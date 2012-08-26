@@ -68,3 +68,10 @@ BuG за французский перевод
 
 Сообщество Tuku за поддержку.
 ]]
+
+L["Thank you for using ElvUI Hud!"] = "Спасибо за использование ElvUI Hud!"
+L["Here you can choose between the simple layout (only player health and power) or the default layout for the hud"] = "Здесь вы можете выбрать между упрощенным видом (только здоровье и ресурс игрока) или видом по умолчанию"
+L["Simple Layout"] = "Простой вид"
+L["Default Layout"] = "Вид по умолчанию"
+L["Simple Layout Set"] = "Простой вид установлен"
+L["Default Layout Set"] = "Вид по умолчанию установлен"
