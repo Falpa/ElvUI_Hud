@@ -1,7 +1,7 @@
 ## Interface: 50001
 ## Title: |cff1784d1ElvUI |rHud
 ## Author: Sortokk
-## Version: 3.03
+## Version: 3.04
 ## Notes: Hud frames for ElvUI
 ## RequiredDeps: ElvUI
 
