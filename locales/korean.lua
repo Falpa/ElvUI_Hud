@@ -59,6 +59,7 @@ L["Override the font for this element"] = "이 요소에 대한 글꼴을 무시
 L["Set the font for this element"] = "이 요소에 대한 글꼴을 설정합니다";
 L["Set the font size for this element"] = "이 요소에 대한 글꼴 크기를 설정";
 L["Spacing"] = true
+L['Tick Color'] = true
 L["ELVUI_HUD_CREDITS"] = [[Many thanks to the following people:
 
 Tukz whose unitframe code was the basis for the Hud
