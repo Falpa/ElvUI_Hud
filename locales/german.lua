@@ -69,3 +69,9 @@ BuG for the French translation
 
 The Tukui community for being supportive
 ]]
+
+L["Thank you for using ElvUI Hud!"] = true
+L["Here you can choose between the simple layout (only player health and power) or the default layout for the hud"] = true
+L["Simple Layout"] = true
+L["Default Layout"] = true
+L["Simple Layout Set"] = true
