@@ -70,12 +70,7 @@ local frames = { }
 
 function H:HideOOC(frame)
 	if self.db.hideOOC == true then
-		local hud_hider = CreateFrame("Frame", nil, UIParent)
-		hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
-		hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
-		hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
-		hud_hider:SetScript("OnEvent", function(self,event) H:Hide(frame,event) end)
-		frame.hud_hider = hud_hider
+		self:EnableHide(frame)
 	end
     tinsert(frames,frame)
 end
@@ -83,21 +78,12 @@ end
 function H:UpdateHideSetting()
     if not self.db.hideOOC then
         for _,f in pairs(frames) do
-            local hud_hider = f.hud_hider
-            if not hud_hider then return end
-            hud_hider:UnregisterEvent("PLAYER_REGEN_DISABLED")
-            hud_hider:UnregisterEvent("PLAYER_REGEN_ENABLED")
-            hud_hider:UnregisterEvent("PLAYER_ENTERING_WORLD")
-            H:Hide(f,"PLAYER_REGEN_DISABLED")
+            self:DisableHide(f)
+            f:SetAlpha(self.db['alpha'])
         end
     else
         for _,f in pairs(frames) do
-            local hud_hider = f.hud_hider or CreateFrame("Frame",nil,UIParent)
-            hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
-            hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
-            hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
-            hud_hider:SetScript("OnEvent", function(self,event) H:Hide(f,event) end)
-            f.hud_hider = hud_hider
+            self:EnableHide(f)
             local alpha = self.db[InCombatLockdown() and 'alpha' or 'alphaOOC']
             f:SetAlpha(alpha)
         end
@@ -139,27 +125,39 @@ function H:UpdateElvUFSetting(enableChanged,init)
     ElvUF_Player:Show()
 end
 
+function H:EnableHide(frame)
+    local hider = frame.hud_hider
+    if not hider then
+        hider = CreateFrame("Frame",nil,UIParent)
+        frame.hud_hider = hider
+    end
+    hider:RegisterEvent("PLAYER_REGEN_DISABLED")
+    hider:RegisterEvent("PLAYER_REGEN_ENABLED")
+    hider:RegisterEvent("PLAYER_ENTERING_WORLD")
+    hider:SetScript("OnEvent", function(self,event) H:Hide(frame,event) end)
+end
+
+function H:DisableHide(frame)
+    local hider = frame.hud_hider
+    if not hider then return end
+    hider:UnregisterEvent("PLAYER_REGEN_DISABLED")
+    hider:UnregisterEvent("PLAYER_REGEN_ENABLED")
+    hider:UnregisterEvent("PLAYER_ENTERING_WORLD")
+    hider:SetScript("OnEvent", nil)
+end
+
 function H:Enable()
     self:UpdateElvUFSetting(true)
     for _,f in pairs(frames) do
         f:SetScript("OnEvent", function(self,event) __CheckEnabled(f) end)
         if not self.db.enabled then
             if self.db.hideOOC then
-                local hud_hider = f.hud_hider
-                hud_hider:UnregisterEvent("PLAYER_REGEN_DISABLED")
-                hud_hider:UnregisterEvent("PLAYER_REGEN_ENABLED")
-                hud_hider:UnregisterEvent("PLAYER_ENTERING_WORLD")
-                hud_hider:SetScript("OnEvent", nil)
+                self:DisableHide(f)
             end
             H:DisableFrame(f)
         else
             if self.db.hideOOC then            
-                local hud_hider = f.hud_hider or CreateFrame("Frame",nil,UIParent)
-                hud_hider:RegisterEvent("PLAYER_REGEN_DISABLED")
-                hud_hider:RegisterEvent("PLAYER_REGEN_ENABLED")
-                hud_hider:RegisterEvent("PLAYER_ENTERING_WORLD")
-                hud_hider:SetScript("OnEvent", function(self,event) H:Hide(f,event) end)
-                f.hud_hider = hud_hider
+                self:EnableHide(f)
                 H:Hide(f,"PLAYER_REGEN_ENABLED")
             else
                 H:EnableFrame(f,self.db.alpha,self.db.enableMouse)
