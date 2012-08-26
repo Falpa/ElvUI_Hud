@@ -23,7 +23,7 @@ function H:SetUpAnimGroup()
 end
 
 function H:Flash(duration)
-    if not self.db.flash then return end
+    if not E.db.hud.flash then return end
     if not self.anim then
         H.SetUpAnimGroup(self)
     end
