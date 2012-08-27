@@ -82,7 +82,7 @@ E.Options.args.hud = {
                     name = L["Hide Out of Combat"],
                     desc = L["Hide the Hud when out of Combat"],
                     get = function(info) return E.db.hud[ info[#info] ] end,   
-                    set = function(info, value) E.db.hud[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+                    set = function(info, value) E.db.hud[ info[#info] ] = value; H:UpdateHideSetting() end,
                 },
                 colorHealthByValue = {
                     type = "toggle",

@@ -374,6 +374,7 @@ function H:UpdateElementAnchor(frame,element)
 			end
 		end
 		if element ~= 'raidicon' then frame[e]:Show() end
+		if frame[e].ForceUpdate then frame[e]:ForceUpdate() end
 	else
 		frame:DisableElement(e)
 		if config['value'] then
