@@ -181,7 +181,7 @@ function H:UpdateFrame(unit)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	if self.db.units[frame.unit].enabled then
-		frame:EnableMouse(self.db.enableMouse)
+		frame:EnableMouse(self.db.hideElv or self.db.enableMouse)
 		frame:SetAlpha(self.db.alpha)
 		frame:Show()
 		local event
