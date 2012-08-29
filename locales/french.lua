@@ -54,7 +54,7 @@ L['Set the font for this element'] = "Définir la police pour cet élément"
 L['Set the font size for this element'] = "Définir la taille de la police pour cet élément"
 L['Spacing'] = "Espacement"
 L["Texture"] = "Textures"
-L['Tick Color'] = 
+L['Tick Color'] = true
 L['Value'] = true
 L["ELVUI_HUD_CREDITS"] = [[Remerciement aux personnes suivantes :
 
