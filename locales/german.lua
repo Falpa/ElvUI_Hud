@@ -56,6 +56,7 @@ L['Set the font size for this element'] = true
 L['Spacing'] = true
 L["Texture"] = true
 L['Tick Color'] = true
+L['Value'] = true
 L["ELVUI_HUD_CREDITS"] = [[Many thanks to the following people:
 
 Tukz whose unitframe code was the basis for the Hud

@@ -33,7 +33,6 @@ local Init = function()
 	end
 
 	if spellid == nil then
-		print("Invalid spell reference")
 		return
 	end
 	
