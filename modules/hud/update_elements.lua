@@ -234,6 +234,13 @@ function H:UpdateElement(frame,element)
 			for _,statusbar in pairs(e.statusbars) do
 				statusbar:Size(size.width,size.height)
 			end			
+			if element == 'castbar' then
+				if not self.db.horizCastbar then
+					frame.Castbar.Spark:Width(frame.Castbar:GetWidth()*2)
+				else
+					frame.Castbar.Spark:Height(frame.Castbar:GetHeight()*2)
+				end
+			end
 		end
 		if e.frame then
 			local height = size.height
