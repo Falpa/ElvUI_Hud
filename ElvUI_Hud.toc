@@ -4,9 +4,10 @@
 ## Version: 3.13
 ## Notes: Hud frames for ElvUI
 ## RequiredDeps: ElvUI
+## X-oUF: ElvUF
 
 locales\load_locales.xml
-libs\load_libs.xml
 core\load_core.xml
+libs\load_libs.xml
 config\load_config.xml
 modules\load_modules.xml

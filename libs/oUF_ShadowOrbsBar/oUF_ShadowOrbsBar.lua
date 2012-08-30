@@ -2,7 +2,7 @@ local T, C, L, G = unpack(select(2, ...))
 if select(2, UnitClass('player')) ~= "PRIEST" then return end
 
 local _, ns = ...
-local oUF = ElvUF
+local oUF = ns.oUF or oUF
 assert(oUF, 'oUF_ShadowOrbsBar was unable to locate oUF install')
 
 local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL

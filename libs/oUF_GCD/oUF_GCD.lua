@@ -1,5 +1,5 @@
 local _, ns = ...
-local oUF = ElvUF
+local oUF = ns.oUF or oUF
 
 if not oUF then return end
 
@@ -51,7 +51,7 @@ local OnUpdateGCD = function(self)
 end
 
 local OnHideGCD = function(self)
- 	self:SetScript("OnUpdate", nil)
+	self:SetScript("OnUpdate", nil)
 end
 
 local OnShowGCD = function(self)
@@ -83,7 +83,7 @@ local Update = function(self, event, unit)
 	end
 end
 
-local Enable = function(self)
+local function Enable(self,unit)
 	if (self.GCD) then
 		self.GCD:Hide()
 		self.GCD.Spark:Hide()
@@ -97,7 +97,7 @@ local Enable = function(self)
 	end
 end
 
-local Disable = function(self)
+local function Disable(self)
 	if (self.GCD) then
 		self:UnregisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
 		self.GCD:Hide()  

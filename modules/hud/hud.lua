@@ -1,3 +1,5 @@
+local addon, ns = ...
+local oUF = ns.oUF
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 local UF = E:GetModule('UnitFrames');
@@ -155,7 +157,7 @@ function H:ConstructHudFrame(frame,unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
 	frame:HookScript("OnHide",function(self)
-		if E.db.hud.hideOOC and not InCombatLockdown() then
+		if E.db.hud.enabled and E.db.hud.hideOOC and not InCombatLockdown() then
 			self:Show()
 			self:SetAlpha(0)
 		end
@@ -180,10 +182,10 @@ function H:UpdateFrame(unit)
 	frame:Size(self.db.units[frame.unit].width,self.db.units[frame.unit].height)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
-	if self.db.units[frame.unit].enabled then
+	if E.db.hud.enabled and self.db.units[frame.unit].enabled then
+		frame:Enable()
 		frame:EnableMouse(self.db.hideElv or self.db.enableMouse)
 		frame:SetAlpha(self.db.alpha)
-		frame:Show()
 		local event
 		if InCombatLockdown() then
 			event = "PLAYER_REGEN_DISABLED"
@@ -199,9 +201,7 @@ function H:UpdateFrame(unit)
 			self:CheckHealthValue(frame,spec==1)
 		end
 	else
-		frame:EnableMouse(false)
-		frame:SetAlpha(0)
-		frame:Hide()
+		frame:Disable()
 	end
 end
 

@@ -1,3 +1,5 @@
+local addon, ns = ...
+local oUF = ns.oUF
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:GetModule('HUD');
 local LSM = LibStub("LibSharedMedia-3.0");
@@ -216,6 +218,9 @@ function H:UpdateElement(frame,element)
 	local size = config['size']
 	local media = config['media']
 	local e = self.units[frame.unit][element]
+	if element == 'gcd' then
+		if not frame.GCD then frame.GCD = self:ConstructGCD(frame) end
+	end
 	if size then
 		if e.statusbars then
 			if element == 'castbar' and size['vertical'] ~= nil then
@@ -289,6 +294,10 @@ function H:UpdateElementAnchor(frame,element)
 			frame:DisableElement(e)
 		end
 		return
+	end
+	if element == 'aurabars' then
+		local growthDirection = config.growthDirection
+		frame.AuraBars.down = growthDirection == "DOWN"
 	end
  	local anchor = config['anchor']
 	if element == 'cpoints' and not (E.myclass == "ROGUE" or E.myclass == "DRUID") then return end;
@@ -377,10 +386,16 @@ function H:UpdateElementAnchor(frame,element)
 		if frame[e].ForceUpdate then frame[e]:ForceUpdate() end
 	else
 		frame:DisableElement(e)
+		if element == 'gcd' then
+			frame.GCD:Hide()
+			frame.GCD = nil -- Ugh fuck this don't know why it won't disable
+		end
 		if config['value'] then
 			frame[e].value:Hide()
 		end
-		frame[e]:Hide()
+		if element ~= 'gcd' then
+			frame[e]:Hide()
+		end
 	end
 end
 
@@ -390,7 +405,7 @@ function H.PostUpdateHealth(health, unit, min, max)
 		local r = dc.r
 		local g = dc.g
 		local b = dc.b
-		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
+		local newr, newg, newb = oUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
 		health:SetStatusBarColor(newr, newg, newb)
 	end
@@ -461,7 +476,7 @@ end
 function H.PreUpdatePowerHud(power, unit)
     local _, pType = UnitPowerType(unit)
 
-    local color = ElvUF["colors"].power[pType]
+    local color = oUF["colors"].power[pType]
     if color then
         power:SetStatusBarColor(color[1], color[2], color[3])
     end

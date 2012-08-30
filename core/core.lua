@@ -1,4 +1,6 @@
 local addon, ns = ...
+ns.oUF = ElvUF
+local oUF = ns.oUF
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:NewModule('HUD','AceTimer-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
@@ -198,18 +200,18 @@ function H:Initialize()
     local sl = false 
     if self.db['install_complete'] < 3 then sl = self:ResetSettings() end
 
-    ElvUF:RegisterStyle('ElvUI_Hud',function(frame,unit)
+    oUF:RegisterStyle('ElvUI_Hud',function(frame,unit)
         H:ConstructHudFrame(frame,unit)
     end)
 
-    ElvUF:SetActiveStyle('ElvUI_Hud')
+    oUF:SetActiveStyle('ElvUI_Hud')
     local units = { 'player', 'target', 'pet', 'targettarget', 'pettarget' }
     for _,unit in pairs(units) do
         local stringTitle = E:StringTitle(unit)
         if stringTitle:find('target') then
             stringTitle = gsub(stringTitle, 'target', 'Target')
         end
-        ElvUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
+        oUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
     end
 
     if sl then self:simpleLayout() end

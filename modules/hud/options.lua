@@ -14,6 +14,11 @@ local positionValues = {
     BOTTOM = 'BOTTOM',
 };
 
+local growthValues = {
+    UP = L['Up'],
+    DOWN = L['Down']
+}
+
 function H:GenerateValidAnchors(unit,element,value)
     local anchors = { self = "self", ui = "ui"}
 
@@ -545,6 +550,15 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     },
                 },  
             },
+        }
+    end
+
+    if element == 'aurabars' then
+        options.args.growthDirection = {
+            type = "select",
+            order = 2,
+            name = L["Growth Direction"],
+            values = growthValues
         }
     end
 

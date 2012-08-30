@@ -1,5 +1,5 @@
 local _, ns = ...
-local oUF = ElvUF
+local oUF = ns.oUF or oUF
 assert(oUF, 'oUF_HarmonyBar was unable to locate oUF install')
 
 if select(2, UnitClass('player')) ~= "MONK" then return end

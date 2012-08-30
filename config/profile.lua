@@ -282,7 +282,8 @@ P['hud']['units'] = {
                     ['font'] = "ElvUI Font",
                     ['fontsize'] = 12,
                 },
-            }
+            },
+            ['growthDirection'] = 'DOWN',
         },
         ['raidicon'] = {
             ['enabled'] = true,
@@ -541,7 +542,8 @@ P['hud']['units'] = {
                     ['font'] = "ElvUI Font",
                     ['fontsize'] = 12,
                 },
-            }
+            },
+            ['growthDirection'] = 'DOWN'
         },
         ['buffs'] = {
             ['enabled'] = true,
