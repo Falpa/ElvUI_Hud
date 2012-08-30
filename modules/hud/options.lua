@@ -292,7 +292,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         name = L['Vertical'],
                         guiInline = true,
                         get = function(info) return E.db.hud.units[unit][element].size.vertical[ info[#info] ] end,
-                        set = function(info,value) E.db.hud.units[unit][element].size.verticalal[ info[#info] ] = value; H:UpdateAllFrames() end,
+                        set = function(info,value) E.db.hud.units[unit][element].size.vertical[ info[#info] ] = value; H:UpdateAllFrames() end,
                         args = {
                             width = {
                                 order = 4,
