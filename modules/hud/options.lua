@@ -390,7 +390,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     set = function(info, r, g, b)
                         local t = E.db.hud.units[unit][element].media[ info[#info] ]
                         t.r, t.g, t.b = r, g, b
-                        H:UpdateAllFrames()
+                        E.db.hud.units[unit][element][ info[#info] ] = t
                     end,
                 }
 	        else
@@ -405,7 +405,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     set = function(info, r, g, b)
                         local t = E.db.hud.units[unit][element][ info[#info] ]
                         t.r, t.g, t.b = r, g, b
-                        H:UpdateAllFrames()
+                        E.db.hud.units[unit][element][ info[#info] ] = t
                     end,
                 }
                 options.args.media.args.interruptcolor = {
@@ -419,7 +419,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     set = function(info, r, g, b)
                         local t = E.db.hud.units[unit][element][ info[#info] ]
                         t.r, t.g, t.b = r, g, b
-                        H:UpdateAllFrames()
+                        E.db.hud.units[unit][element][ info[#info] ] = t
                     end,
                 }
                 if unit == "player" then
@@ -442,6 +442,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                         set = function(info, r, g, b)
                             local t = E.db.hud.units[unit][element][ info[#info] ]
                             t.r, t.g, t.b = r, g, b
+                            E.db.hud.units[unit][element][ info[#info] ] = t
                         end,
                     }
                 end

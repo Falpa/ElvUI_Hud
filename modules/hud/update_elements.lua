@@ -450,11 +450,12 @@ end
 function H:CheckInterrupt(unit)
 	if unit == "vehicle" then unit = "player" end
 	local config = E.db.hud.units[unit]['castbar']
-	local media = config.media
 	if self.interrupt and UnitCanAttack("player", unit) then
-		self:SetStatusBarColor(config.interruptcolor)	
+		local c = config.interruptcolor
+		self:SetStatusBarColor(c.r,c.g,c.b)	
 	else
-		self:SetStatusBarColor(config.color)	
+		local c = config.color
+		self:SetStatusBarColor(c.r,c.g,c.b)	
 	end
 end
 
