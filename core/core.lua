@@ -132,6 +132,7 @@ function H:PLAYER_REGEN_ENABLED()
     self:Enable()
     ElvUF_Player:Hide()
     ElvUF_Player:Show()
+    self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 end
 
 function H:EnableHide(frame)
