@@ -123,6 +123,13 @@ function H:UpdateElvUFSetting(enableChanged,init)
             H.updateElvFunction = function(self) H:EnableFrame(self) end
         end
     end
+    if InCombatLockdown() then self:RegisterEvent("PLAYER_REGEN_ENABLED"); return end
+    ElvUF_Player:Hide()
+    ElvUF_Player:Show()
+end
+
+function H:PLAYER_REGEN_ENABLED()
+    self:Enable()
     ElvUF_Player:Hide()
     ElvUF_Player:Show()
 end
@@ -219,24 +226,17 @@ function H:Initialize()
     self:UpdateAllFrames()
     self:UpdateMouseSetting()
     self:UpdateHideSetting()
-    
-    self:UpdateElvUFSetting(false,true)
 
     local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
 
     ElvUF_Player:HookScript("OnShow", function(self,event) for _,f in pairs(elv_frames) do
-            if f then 
+            if f and not InCombatLockdown() then 
                 H.updateElvFunction(f)
             end
         end 
     end)
 
-    ElvUF_Player:Hide()
-    ElvUF_Player:Show()
-
-    if not self.db.enabled then
-        self:Enable()
-    end
+    if UnitAffectingCombat("player") then self:RegisterEvent("PLAYER_REGEN_ENABLED") else self:Enable() end
 
     self.version = GetAddOnMetadata(addon,'Version')
     print(L["ElvUI Hud "]..format("v|cff33ffff%s|r",self.version)..L[" is loaded. Thank you for using it and note that I will always support you."])

@@ -254,9 +254,10 @@ end
 function H:ConfigureStatusBar(frame,element,parent,name)
 	if parent == nil then parent = frame end
 	if name == nil then name = "statusbar" end
+	local sbname = frame.unit..'_hud_'..element..'_'..name
 
 	-- Create the status bar
-	local sb = CreateFrame('StatusBar', nil, parent)
+	local sb = CreateFrame('StatusBar', sbname, parent)
 	sb:SetTemplate('Transparent')
 	sb:CreateBackdrop("Default")
 	sb:CreateShadow("Default")
@@ -289,12 +290,13 @@ end
 function H:ConfigureFontString(frame,element,parent,name)
 	if parent == nil then parent = frame end
 	if name == nil then name = 'value' end
+	local fsname = frame.unit..'_hud_'..element..'_'..name
 
 	if not self.units[frame.unit][element].fontstrings then
 		self.units[frame.unit][element].fontstrings=  { }
 	end
 
-	local fs = parent:CreateFontString(nil, "THINOUTLINE")
+	local fs = parent:CreateFontString(fsname, "THINOUTLINE")
 	-- Dummy font
 	fs:FontTemplate(LSM:Fetch("font", "ElvUI Font"), 12, "THINOUTLINE")
 	self.units[frame.unit][element].fontstrings[name] = fs
@@ -305,12 +307,12 @@ end
 function H:ConfigureTexture(frame,element,parent,name)
 	if parent == nil then parent = frame end
 	if name == nil then name = 'texture' end
-
+	local texname = frame.unit..'_hud_'..element..'_'..name
 	if not self.units[frame.unit][element].textures then
 		self.units[frame.unit][element].textures =  { }
 	end
 
-	local t = parent:CreateTexture(nil, "OVERLAY")
+	local t = parent:CreateTexture(texname, "OVERLAY")
 	-- Dummy texture
 	t:SetTexture(E['media'].blankTex)
 	self.units[frame.unit][element].textures[name] = t
@@ -319,7 +321,8 @@ end
 
 function H:ConfigureFrame(frame,element,visible)
 	if visible == nil then visible = false end
-	local f = CreateFrame('Frame',nil,frame)
+	local name = frame.unit..'_hud_'..element
+	local f = CreateFrame('Frame',name,frame)
 	f.visible = visible
 	--[[if visible then
 		f:SetTemplate("Default")

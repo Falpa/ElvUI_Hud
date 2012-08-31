@@ -346,17 +346,35 @@ function H:UpdateElementAnchor(frame,element)
 			anchor = anchor['default']
 		end
 	end
-	local pointFrom = anchor['pointFrom']
-	local attachTo = H:GetAnchor(frame,anchor['attachTo'])
-	local pointTo = anchor['pointTo']
-	local xOffset = anchor['xOffset']
-	local yOffset = anchor['yOffset']
-	if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
-		if config['spaced'] then yOffset = yOffset + config['spacesettings'].offset end
-	end
-	frame[e]:SetPoint(pointFrom, attachTo, pointTo, xOffset, yOffset)
-	if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
-		self:UpdateClassBarAnchors(frame,element)
+	if element ~= 'health' and element ~= 'aurabars' then
+		local pointFrom = anchor['pointFrom']
+		local attachTo = H:GetAnchor(frame,anchor['attachTo'])
+		local pointTo = anchor['pointTo']
+		local xOffset = anchor['xOffset']
+		local yOffset = anchor['yOffset']
+		if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
+			if config['spaced'] then yOffset = yOffset + config['spacesettings'].offset end
+		end
+		frame[e]:Point(pointFrom, attachTo, pointTo, xOffset, yOffset)
+		if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
+			self:UpdateClassBarAnchors(frame,element)
+		end
+	elseif element == 'aurabars' then
+	    local auraBar = frame.AuraBars
+	    local stringTitle = E:StringTitle(frame.unit)
+    	if stringTitle:find('target') then
+    	   stringTitle = gsub(stringTitle, 'target', 'Target')
+    	end
+    	local name = stringTitle..' Hud AuraBar Mover'
+    	if E.db.movers and not E.db.movers[name] then
+			local holder = CreateFrame('Frame', nil, auraBar)
+			holder:Size(auraBar:GetWidth(),auraBar:GetHeight())
+		    holder:Point("TOP", frame.Health, "BOTTOM", 0, -60) --Set to default position 
+		    auraBar:SetPoint("BOTTOM", holder, "TOP", 0, 0)
+		    auraBar.Holder = holder
+
+		    E:CreateMover(auraBar.Holder, frame:GetName()..'AuraBar Mover', name, nil, nil, nil, 'ALL,SOLO')
+		end
 	end
 	if config['tag'] then
 		frame:Tag(frame[e], config['tag'])

@@ -26,13 +26,6 @@ P['hud']['units'] = {
         ['width'] = 39,
         ['health'] = {
             ['enabled'] = true,
-            ['anchor'] = {
-                ['pointFrom'] = 'LEFT',
-                ['attachTo'] = 'self',
-                ['pointTo'] = 'LEFT',
-                ['xOffset'] = 0,
-                ['yOffset'] = 0,
-            },
             ['size'] = {
                 ['height'] = 150,
                 ['width'] = 15,
@@ -261,13 +254,6 @@ P['hud']['units'] = {
         },
         ['aurabars'] = {
             ['enabled'] = true,
-            ['anchor'] = {
-                ['pointFrom'] = 'TOP',
-                ['attachTo'] = 'health',
-                ['pointTo'] = 'BOTTOM',
-                ['xOffset'] = 9,
-                ['yOffset'] = -60,
-            },
             ['size'] = {
                 ['height'] = 30,
                 ['width'] = 225,
@@ -363,13 +349,6 @@ P['hud']['units'] = {
         ['width'] = 27,
         ['health'] = {
             ['enabled'] = true,
-            ['anchor'] = {
-                ['pointFrom'] = 'RIGHT',
-                ['attachTo'] = 'self',
-                ['pointTo'] = 'RIGHT',
-                ['xOffset'] = 0,
-                ['yOffset'] = 0,
-            },
             ['size'] = {
                 ['height'] = 150,
                 ['width'] = 15,
@@ -521,13 +500,6 @@ P['hud']['units'] = {
         },
         ['aurabars'] = {
             ['enabled'] = true,
-            ['anchor'] = {
-                ['pointFrom'] = 'TOP',
-                ['attachTo'] = 'health',
-                ['pointTo'] = 'BOTTOM',
-                ['xOffset'] = 9,
-                ['yOffset'] = -60,
-            },
             ['size'] = {
                 ['height'] = 30,
                 ['width'] = 225,
@@ -590,13 +562,6 @@ P['hud']['units'] = {
         ['width'] = 27,
         ['health'] = {
             ['enabled'] = true,
-            ['anchor'] = {
-                ['pointFrom'] = 'LEFT',
-                ['attachTo'] = 'self',
-                ['pointTo'] = 'LEFT',
-                ['xOffset'] = 0,
-                ['yOffset'] = 0,
-            },
             ['size'] = {
                 ['height'] = 112,
                 ['width'] = 15,
@@ -722,13 +687,6 @@ P['hud']['units'] = {
         ['width'] = 27,
         ['health'] = {
             ['enabled'] = true,
-            ['anchor'] = {
-                ['pointFrom'] = 'RIGHT',
-                ['attachTo'] = 'self',
-                ['pointTo'] = 'RIGHT',
-                ['xOffset'] = 0,
-                ['yOffset'] = 0,
-            },
             ['size'] = {
                 ['height'] = 112,
                 ['width'] = 15,
@@ -828,13 +786,6 @@ P['hud']['units'] = {
         ['width'] = 27,
         ['health'] = {
             ['enabled'] = true,
-            ['anchor'] = {
-                ['pointFrom'] = 'LEFT',
-                ['attachTo'] = 'self',
-                ['pointTo'] = 'LEFT',
-                ['xOffset'] = 0,
-                ['yOffset'] = 0,
-            },
             ['size'] = {
                 ['height'] = 112,
                 ['width'] = 15,

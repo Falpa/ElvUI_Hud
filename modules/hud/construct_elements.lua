@@ -10,7 +10,7 @@ function H:ConstructHealth(frame)
     local health = self:ConfigureStatusBar(frame,'health')
     health:SetOrientation("VERTICAL")
     health:SetFrameLevel(frame:GetFrameLevel() + 5)
-    
+    health:Point("LEFT",frame,"LEFT")
 	health.value = self:ConfigureFontString(frame,'health',health)		
 	health.PostUpdate = H.PostUpdateHealth
     health.frequentUpdates = true
@@ -505,6 +505,7 @@ function H:ConstructAuraBarHeader(frame)
     self:AddElement(frame,'aurabars')
     local auraBar = self:ConfigureFrame(frame,'aurabars')
     auraBar.PostCreateBar = H.ConstructAuraBars
+    auraBar.PostUpdate = UF.ColorizeAuraBars
     auraBar.gap = 1
     auraBar.spacing = 1
     auraBar.spark = true
@@ -527,7 +528,7 @@ function H:ConstructAuraBarHeader(frame)
     auraBar.enemyAuraType = 'HARMFUL'
     auraBar.buffColor = {healthColor.r, healthColor.b, healthColor.g}
     auraBar.down = true
-
+    
     return auraBar
 end
 

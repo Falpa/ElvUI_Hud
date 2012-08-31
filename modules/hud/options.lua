@@ -572,7 +572,7 @@ local function castbarOptions(unit) return H:GenerateElementOptionTable(unit,'ca
 local function nameOptions(unit) return H:GenerateElementOptionTable(unit,'name',400,'Name',true,false,false,true,false,false,true,false) end
 local function classbarOptions(unit) return H:GenerateElementOptionTable(unit,'classbars',500,'Classbar',true,true,true,true,false,true,true,true) end
 local function cpointOptions(unit) return H:GenerateElementOptionTable(unit,'cpoints',600,'Combobar',true,true,true,false,false,false,false,true) end
-local function aurabarOptions(unit) return H:GenerateElementOptionTable(unit,'aurabars',700,'Aura Bars',true,true,true,true,false,false,false,false) end
+local function aurabarOptions(unit) return H:GenerateElementOptionTable(unit,'aurabars',700,'Aura Bars',false,true,true,true,false,false,false,false) end
 local function raidIconOptions(unit) return H:GenerateElementOptionTable(unit,'raidicon',800,'Raid Icon',true,false,false,false,false,false,false,false) end
 local function restingOptions(unit) return H:GenerateElementOptionTable(unit,'resting',900,'Rest Icon',true,false,false,false,false,false,false,false) end
 local function combatOptions(unit) return H:GenerateElementOptionTable(unit,'combat',1000,'Combat Indicator',true,false,false,false,false,false,false,false) end
@@ -602,6 +602,35 @@ local elementOptions = {
     ['debuffs'] = debuffOptions,
 }
 
+local nameMap = {
+    ['player'] = {
+        ['name'] = 'Player Hud',
+        ['mover'] = 'Player Hud Frame'
+    },
+    ['target'] = {
+        ['name'] = 'Target Hud',
+        ['mover'] = 'Target Hud Frame'
+    },
+    ['pet'] = {
+        ['name'] = 'Pet Hud',
+        ['mover'] = 'Pet Hud Frame'
+    },
+    ['targettarget'] = {
+        ['name'] = 'Target Target Hud',
+        ['mover'] = 'Target Target Hud Frame'
+    },
+    ['pettarget'] = {
+        ['name'] = 'Pet Target Hud',
+        ['mover'] = 'Pet Target Hud Frame'
+    },
+    ['playeraurabar'] = {
+        ['mover'] = 'Player Hud AuraBar Header'
+    },
+    ['targetaurabar'] = {
+        ['mover']  = 'Target Hud AuraBar Header'
+    }
+}
+
 function H:GenerateUnitOptionTable(unit,name,order,mover,elements)
 	local options = {
         name = L[name],
@@ -620,7 +649,12 @@ function H:GenerateUnitOptionTable(unit,name,order,mover,elements)
                 type='execute',
                 order = 2,
                 name = L['Restore Defaults'],
-                func = function(info,value) H:ResetUnitSettings(unit); E:ResetMovers(mover); end,
+                func = function(info,value) H:ResetUnitSettings(unit); E:ResetMovers(mover); 
+                    if unit == "player" or unit == "target" then 
+                        local aurabarMover = nameMap[unit..'aurabar'].mover
+                        E:ResetMovers(aurabarMover)
+                    end
+                end,
             },
             width = {
                 order = 4,
@@ -656,29 +690,6 @@ function H:GenerateUnitOptionTable(unit,name,order,mover,elements)
 
     return options
 end
-
-local nameMap = {
-    ['player'] = {
-        ['name'] = 'Player Hud',
-        ['mover'] = 'Player Hud Frame'
-    },
-    ['target'] = {
-        ['name'] = 'Target Hud',
-        ['mover'] = 'Target Hud Frame'
-    },
-    ['pet'] = {
-        ['name'] = 'Pet Hud',
-        ['mover'] = 'Pet Hud Frame'
-    },
-    ['targettarget'] = {
-        ['name'] = 'Target Target Hud',
-        ['mover'] = 'Target Target Hud Frame'
-    },
-    ['pettarget'] = {
-        ['name'] = 'Pet Target Hud',
-        ['mover'] = 'Pet Target Hud Frame'
-    },
-}
 
 function H:GenerateOptionTables()
     local order = 200
