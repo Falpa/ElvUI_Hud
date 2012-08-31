@@ -3,6 +3,7 @@ ns.oUF = ElvUF
 local oUF = ns.oUF
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local H = E:NewModule('HUD','AceTimer-3.0', 'AceEvent-3.0');
+local UF = E:GetModule('UnitFrames');
 local LSM = LibStub("LibSharedMedia-3.0");
 H.frames = {}
 
@@ -159,18 +160,16 @@ end
 function H:Enable()
     self:UpdateElvUFSetting(true)
     for _,f in pairs(frames) do
-        f:SetScript("OnEvent", function(self,event) __CheckEnabled(f) end)
         if not self.db.enabled then
             if self.db.hideOOC then
                 self:DisableHide(f)
             end
             H:DisableFrame(f)
         else
+            H:EnableFrame(f,self.db.alpha,self.db.enableMouse)
             if self.db.hideOOC then            
                 self:EnableHide(f)
                 H:Hide(f,"PLAYER_REGEN_ENABLED")
-            else
-                H:EnableFrame(f,self.db.alpha,self.db.enableMouse)
             end
         end
     end
@@ -206,7 +205,7 @@ function H:Initialize()
 
     self:CreateWarningFrame()
     local sl = false 
-    if self.db['install_complete'] < 3 then sl = self:ResetSettings() end
+    if not self.db['install_complete'] or self.db['install_complete'] and self.db['install_complete'] < 3 then sl = self:ResetSettings() end
 
     oUF:RegisterStyle('ElvUI_Hud',function(frame,unit)
         H:ConstructHudFrame(frame,unit)
@@ -227,6 +226,8 @@ function H:Initialize()
     self:UpdateAllFrames()
     self:UpdateMouseSetting()
     self:UpdateHideSetting()
+
+    hooksecurefunc(UF,"Update_AllFrames",function(self) H:UpdateAllFrames() end)
 
     local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
 

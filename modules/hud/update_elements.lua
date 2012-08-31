@@ -288,6 +288,13 @@ function H:UpdateElement(frame,element)
 			end
 		end
 	end
+	if element == 'aurabars' then
+		local buffColor = UF.db.colors.auraBarBuff
+		local debuffColor = UF.db.colors.auraBarDebuff
+		local aurabars = frame.AuraBars
+		aurabars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
+		aurabars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+	end
 end
 
 function H:UpdateElementAnchor(frame,element)
@@ -369,7 +376,7 @@ function H:UpdateElementAnchor(frame,element)
     	if E.db.movers and not E.db.movers[name] then
 			local holder = CreateFrame('Frame', nil, auraBar)
 			holder:Size(auraBar:GetWidth(),auraBar:GetHeight())
-		    holder:Point("TOP", frame.Health, "BOTTOM", 0, -60) --Set to default position 
+		    holder:Point("TOP", frame.Health, "BOTTOM", 9, -60) --Set to default position 
 		    auraBar:SetPoint("BOTTOM", holder, "TOP", 0, 0)
 		    auraBar.Holder = holder
 
