@@ -118,20 +118,11 @@ P['hud']['units'] = {
                 },
             },
             ['anchor'] = {
-                ['horizontal'] = {
-                    ['pointFrom'] = 'CENTER',
-                    ['attachTo'] = 'ui',
-                    ['pointTo'] = 'CENTER',
-                    ['xOffset'] = 0,
-                    ['yOffset'] = -170,
-                },
-                ['vertical'] = {
-                    ['pointFrom'] = 'BOTTOM',
-                    ['attachTo'] = 'power',
-                    ['pointTo'] = 'BOTTOM',
-                    ['xOffset'] = 0,
-                    ['yOffset'] = 0,
-                },
+                ['pointFrom'] = 'BOTTOM',
+                ['attachTo'] = 'power',
+                ['pointTo'] = 'BOTTOM',
+                ['xOffset'] = 0,
+                ['yOffset'] = 0,
             },
         },
         ['name'] = {
@@ -416,20 +407,11 @@ P['hud']['units'] = {
         ['castbar'] = {
             ['enabled'] = true,
             ['anchor'] = {
-                ['horizontal'] = {
-                    ['pointFrom'] = 'TOP',
-                    ['attachTo'] = 'player:castbar',
-                    ['pointTo'] = 'BOTTOM',
-                    ['xOffset'] = 0,
-                    ['yOffset'] = -4,
-                },
-                ['vertical'] = {
-                    ['pointFrom'] = 'BOTTOM',
-                    ['attachTo'] = 'power',
-                    ['pointTo'] = 'BOTTOM',
-                    ['xOffset'] = 0,
-                    ['yOffset'] = 0,
-                },
+                ['pointFrom'] = 'BOTTOM',
+                ['attachTo'] = 'power',
+                ['pointTo'] = 'BOTTOM',
+                ['xOffset'] = 0,
+                ['yOffset'] = 0,
             },
             ['media'] = {
                 ['texture'] = {

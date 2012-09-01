@@ -315,13 +315,6 @@ function H:UpdateElementAnchor(frame,element)
 	end
  	local anchor = config['anchor']
 	if element == 'cpoints' and not (E.myclass == "ROGUE" or E.myclass == "DRUID") then return end;
-	if element == 'castbar' and anchor['vertical'] ~= nil then
-		if not self.db.horizCastbar then
-			anchor = anchor['vertical']
-		else
-			anchor = anchor['horizontal']
-		end
-	end
 	if element == 'mushroom' then
 		local WMFrame = CreateFrame('Frame',nil,frame)
 		WMFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
@@ -353,7 +346,15 @@ function H:UpdateElementAnchor(frame,element)
 			anchor = anchor['default']
 		end
 	end
-	if element ~= 'health' and element ~= 'aurabars' then
+	local hasAnchor = anchor ~= nil
+	if element == 'castbar' then
+		if frame.unit == 'player' or frame.unit == 'target' then
+			if self.db.horizCastbar then
+				hasAnchor = false
+			end
+		end
+	end
+	if hasAnchor then
 		local pointFrom = anchor['pointFrom']
 		local attachTo = H:GetAnchor(frame,anchor['attachTo'])
 		local pointTo = anchor['pointTo']
@@ -366,21 +367,42 @@ function H:UpdateElementAnchor(frame,element)
 		if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
 			self:UpdateClassBarAnchors(frame,element)
 		end
-	elseif element == 'aurabars' then
-	    local auraBar = frame.AuraBars
+	elseif element == 'aurabars' or element == 'castbar' then
+		local f,format,moverFormat
+		if element == 'aurabars' then
+			f = frame.AuraBars
+			format = '%s Hud AuraBar Header'
+			moverFormat = '%s AuraBar Mover'
+		else
+			f = frame.Castbar
+			format = '%s Hud Castbar'
+			moverFormat = '%s Castbar Mover'
+		end
 	    local stringTitle = E:StringTitle(frame.unit)
     	if stringTitle:find('target') then
     	   stringTitle = gsub(stringTitle, 'target', 'Target')
     	end
-    	local name = stringTitle..' Hud AuraBar Mover'
-    	if E.db.movers and not E.db.movers[name] then
+    	local name = string.format(format,stringTitle)
+    	if not self.moversCreated then self.moversCreated = {} end
+    	if not self.moversCreated[frame.unit] then self.moversCreated[frame.unit] = {} end
+    	if not self.moversCreated[frame.unit][element] then
 			local holder = CreateFrame('Frame', nil, auraBar)
-			holder:Size(auraBar:GetWidth(),auraBar:GetHeight())
-		    holder:Point("TOP", frame.Health, "BOTTOM", 9, -60) --Set to default position 
-		    auraBar:SetPoint("BOTTOM", holder, "TOP", 0, 0)
-		    auraBar.Holder = holder
+			holder:Size(f:GetWidth(),f:GetHeight())
+			if element == 'aurabars' then
+		    	holder:Point("TOP", frame.Health, "BOTTOM", 9, -60) --Set to default position
+		    else
+		    	if frame.unit == 'player' then
+		    		holder:Point("CENTER", E.UIParent, "CENTER", 0, -170)
+		    	else
+		    		holder:Point("CENTER", E.UIParent, "CENTER", 0, -200)
+		    	end
+		    end
+		    f:SetPoint("BOTTOM", holder, "TOP", 0, 0)
+		    f.Holder = holder
 
-		    E:CreateMover(auraBar.Holder, frame:GetName()..'AuraBar Mover', name, nil, nil, nil, 'ALL,SOLO')
+		    print('Creating',string.format(moverFormat,frame:GetName()))
+		    E:CreateMover(f.Holder, string.format(moverFormat,frame:GetName()), name, nil, nil, nil, 'ALL,SOLO')
+		    self.moversCreated[frame.unit][element] = true
 		end
 	end
 	if config['tag'] then

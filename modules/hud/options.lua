@@ -61,7 +61,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 		}
 	}
 	if hasAnchor then
-		if not ((unit == 'player' or unit == 'target') and element == 'castbar') and element ~= 'mushroom' then
+		if element ~= 'mushroom' then
 			options.args.anchor = {
 				order = 2,
 	            type = "group",
@@ -160,76 +160,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
                     },    
                 }    
             }
-        else
-			options.args.anchor = {
-                order = 2,
-                type = "group",
-                name = L["Anchor"],
-                guiInline = true,
-                get = function(info) return E.db.hud.units[unit][element].anchor[ info[#info] ] end,
-                set = function(info,value) E.db.hud.units[unit][element].anchor[ info[#info] ] = value; H:UpdateAllFrames() end,
-                args = {
-                    horizontal = {
-                        order = 2,
-                        type = "group",
-                        name = L["Horizontal"],
-                        guiInline = true,
-                        get = function(info) return E.db.hud.units[unit][element].anchor.horizontal[ info[#info] ] end,
-                        set = function(info,value) E.db.hud.units[unit][element].anchor.horizontal[ info[#info] ] = value; H:UpdateAllFrames() end,
-                        args = {
-                            attachTo = {
-                                type = 'select',
-                                name = L['Attach To'],
-                                desc = L['What to attach this element to.'],
-                                order = 3,
-                                values = self:GenerateValidAnchors(unit,element)
-                            },
-                            xOffset = {
-                                order = 5,
-                                name = L['X Offset'],
-                                type = 'range',
-                                min = -1000, max = 1000, step = 1,
-                            },
-                            yOffset = {
-                                order = 6,
-                                name = L['Y Offset'],
-                                type = 'range',
-                                min = -1000, max = 1000, step = 1,
-                            },
-                        },
-                    },
-                    vertical = {
-                        order = 2,
-                        type = "group",
-                        name = L["Vertical"],
-                        guiInline = true,
-                        get = function(info) return E.db.hud.units[unit][element].anchor.vertical[ info[#info] ] end,
-                        set = function(info,value) E.db.hud.units[unit][element].anchor.vertical[ info[#info] ] = value; H:UpdateAllFrames() end,
-                        args = {
-                            attachTo = {
-                                type = 'select',
-                                name = L['Attach To'],
-                                desc = L['What to attach this element to.'],
-                                order = 3,
-                                values = self:GenerateValidAnchors(unit,element)
-                            },
-                            xOffset = {
-                                order = 5,
-                                name = L['X Offset'],
-                                type = 'range',
-                                min = -1000, max = 1000, step = 1,
-                            },
-                            yOffset = {
-                                order = 6,
-                                name = L['Y Offset'],
-                                type = 'range',
-                                min = -1000, max = 1000, step = 1,
-                            },
-                        }
-                    },    
-                }    
-            }
-		end
+        end
 	end
 	if hasSize then
 		if not ((unit == 'player' or unit == 'target') and element == 'castbar') then
@@ -628,6 +559,12 @@ local nameMap = {
     },
     ['targetaurabar'] = {
         ['mover']  = 'Target Hud AuraBar Header'
+    },
+    ['playercastbar'] = {
+        ['mover'] = 'Player Hud Castbar'
+    },
+    ['targetcastbar'] = {
+        ['mover']  = 'Target Hud Castbar'
     }
 }
 
@@ -652,7 +589,9 @@ function H:GenerateUnitOptionTable(unit,name,order,mover,elements)
                 func = function(info,value) H:ResetUnitSettings(unit); E:ResetMovers(mover); 
                     if unit == "player" or unit == "target" then 
                         local aurabarMover = nameMap[unit..'aurabar'].mover
+                        local castbarMover = nameMap[unit..'castbar'].mover
                         E:ResetMovers(aurabarMover)
+                        E:ResetMovers(castbarMover)
                     end
                 end,
             },
