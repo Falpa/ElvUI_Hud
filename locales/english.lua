@@ -1,7 +1,7 @@
 -- English localization file for enUS and enGB.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
 local L = AceLocale:NewLocale("ElvUI", "enUS", true);
-if not L then print('No L!'); return; end
+if not L then return; end
 
 L["ElvUI Hud "] = true
 L[" is loaded. Thank you for using it and note that I will always support you."] = true

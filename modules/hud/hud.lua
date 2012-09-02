@@ -39,6 +39,10 @@ function H:IsDefault(settingstring)
 	for _,setting in pairs(settings) do
 		options = options[setting]
 		profile = profile[setting]
+		if not profile then -- this only happens for customTexts
+			profile = {}
+			E:CopyTable(profile,P.hud.customtext)
+		end
 	end
 	return IsDefaultHelper(options,profile)
 end
@@ -103,14 +107,59 @@ local elements = {
 	['debuffs'] = 'Debuffs',
 }
 
+H.Elements = elements
+
 function H:GetElement(element)
 	if element == 'classbars' then
 		return H:GetClassBarName()
 	else
-		if elements[element] then return elements[element] else return nil end
+		if self.Elements[element] then return self.Elements[element] else return nil end
 	end
 end
-	
+
+function H:AddCustomText(unit,name)
+	local real_name = string.format('customtext_%s',name)
+	local frame = self.units[unit]
+	if frame[real_name] then return end
+	self:AddElement(frame,name)
+	if not self.Elements[name] then
+		self.Elements[name] = real_name
+	end
+	frame[real_name] = self:ConfigureFontString(frame,name)
+	if not E.db.hud.units[unit][name] then
+		E.db.hud.units[unit][name] = {}
+		E:CopyTable(E.db.hud.units[unit][name],P.hud.customtext)
+		if not E.db.hud.units[unit].customTexts then E.db.hud.units[unit].customTexts = {} end
+		E.db.hud.units[unit].customTexts[name] = true
+	end
+	if E.Options.args.hud.args[unit] then
+		E.Options.args.hud.args[unit].args[name] = H:GenerateElementOptionTable(unit,name,4000,E:StringTitle(name),true,false,false,true,false,false,true,false)
+		E.Options.args.hud.args[unit].args[name].args['delete'] = {
+			type = 'execute',
+			order = 1,
+			name = DELETE,
+			func = function() 
+				E.db.hud.units[unit].customTexts[name] = nil;
+				E.db.hud.units[unit][name] = nil;
+				E.Options.args.hud.args[unit].args[name] = nil;
+				frame:Tag(frame[real_name],'')
+				frame[real_name]:Hide()
+				frame[real_name] = nil
+			end,	
+		}
+	end
+	frame[real_name]:Show()
+end
+
+function H:SetUpCustomTexts(frame)
+	local unit = frame.unit
+	if E.db.hud.units[unit].customTexts then
+		for textName,_ in pairs(E.db.hud.units[unit].customTexts) do
+			self:AddCustomText(unit,textName)
+		end
+	end
+end
+
 function H:GetAnchor(frame,anchor)
 	if anchor == 'self' then
 		return frame

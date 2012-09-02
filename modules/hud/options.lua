@@ -619,6 +619,24 @@ function H:GenerateUnitOptionTable(unit,name,order,mover,elements)
                     H:UpdateAllFrames() 
                 end
             },
+            customText = {
+                order = 50,
+                name = L['Custom Texts'],
+                type = 'input',
+                width = 'full',
+                desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+                get = function() return '' end,
+                set = function(info, textName)
+                    for object, _ in pairs(E.db.hud.units[unit]) do
+                        if object:lower() == textName:lower() then
+                            E:Print(L['The name you have selected is already in use by another element.'])
+                            return
+                        end
+                    end
+
+                    H:AddCustomText(unit,textName)
+                end,
+            },
         }
     }
     for element,_ in pairs(elements) do
@@ -635,6 +653,7 @@ function H:GenerateOptionTables()
     local step = 200
     for unit,_ in pairs(self.units) do
         E.Options.args.hud.args[unit] = self:GenerateUnitOptionTable(unit,nameMap[unit].name,order,nameMap[unit].mover,self.units[unit])
+        self:SetUpCustomTexts(self.units[unit])
         order = order + step
     end
 end

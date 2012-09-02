@@ -17,6 +17,24 @@ P['hud'] = {
     ['fontsize'] = 12,
     ['alpha'] = 1,
     ['alphaOOC'] = 0,
+    ['customtext'] = {
+        ['enabled'] = true,
+        ['anchor'] = {
+            ['pointFrom'] = 'TOPRIGHT',
+            ['attachTo'] = 'health',
+            ['pointTo'] = 'TOPLEFT',
+            ['xOffset'] = -20,
+            ['yOffset'] = 20,
+        },
+        ['media'] = {
+            ['font'] = {
+                ['override'] = false,
+                ['font'] = "ElvUI Font",
+                ['fontsize'] = 12,
+            },
+        },
+        ['tag'] = ''
+    }
 }
 
 P['hud']['units'] = {

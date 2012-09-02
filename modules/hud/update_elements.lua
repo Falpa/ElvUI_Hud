@@ -400,7 +400,6 @@ function H:UpdateElementAnchor(frame,element)
 		    f:SetPoint("BOTTOM", holder, "TOP", 0, 0)
 		    f.Holder = holder
 
-		    print('Creating',string.format(moverFormat,frame:GetName()))
 		    E:CreateMover(f.Holder, string.format(moverFormat,frame:GetName()), name, nil, nil, nil, 'ALL,SOLO')
 		    self.moversCreated[frame.unit][element] = true
 		end
@@ -479,7 +478,7 @@ function H.PostUpdateHealth(health, unit, min, max)
 end
 
 local ticks = {}
-function UF:SetCastTicks(frame, numTicks, extraTickRatio)
+hooksecurefunc(UF,'SetCastTicks',function(self,frame,numTicks,extraTickRation)
 	extraTickRatio = extraTickRatio or 0
 	local color = E.db.hud.units.player['castbar']['tickcolor']
 	UF:HideTicks()
@@ -498,7 +497,7 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 			ticks[i]:Show()
 		end
 	end
-end
+end)
 
 -- used to check if a spell is interruptable
 function H:CheckInterrupt(unit)
