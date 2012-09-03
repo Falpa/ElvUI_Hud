@@ -61,6 +61,7 @@ L["Set the font size for this element"] = "이 요소에 대한 글꼴 크기를
 L["Spacing"] = true
 L['Tick Color'] = true
 L['Value'] = true
+L['Default'] = true
 L["ELVUI_HUD_CREDITS"] = [[Many thanks to the following people:
 
 Tukz whose unitframe code was the basis for the Hud

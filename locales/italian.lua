@@ -1,7 +1,6 @@
-﻿-- 繁體中文版由 elmush 翻譯
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "zhTW")
-if not L then return end
+local AceLocale = LibStub:GetLibrary("AceLocale-3.0");
+local L = AceLocale:NewLocale("ElvUI", "itIT", true);
+if not L then return; end
 
 L["ElvUI Hud "] = true
 L[" is loaded. Thank you for using it and note that I will always support you."] = true

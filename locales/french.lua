@@ -56,6 +56,7 @@ L['Spacing'] = "Espacement"
 L["Texture"] = "Textures"
 L['Tick Color'] = true
 L['Value'] = true
+L['Default'] = true
 L["ELVUI_HUD_CREDITS"] = [[Remerciement aux personnes suivantes :
 
 Tukz pour ces cadres d'unites qui ont été la base de ce hud.
