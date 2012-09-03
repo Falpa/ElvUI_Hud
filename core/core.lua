@@ -109,24 +109,13 @@ end
 
 H.updateElvFunction = nil
 
+local elv_units = { 'player', 'target', 'pet', 'pettarget', 'targettarget' }
 function H:UpdateElvUFSetting(enableChanged,init)
-    if enableChanged then
-        local e = self.db.enabled
-        if not e or not self.db.hideElv then
-            H.updateElvFunction = function(self) H:EnableFrame(self) end
-        else
-            H.updateElvFunction = function(self) H:DisableFrame(self) end
-        end
-    else
-        if self.db.hideElv then
-            H.updateElvFunction = function(self) H:DisableFrame(self) end
-        else
-            H.updateElvFunction = function(self) H:EnableFrame(self) end
-        end
+    local value
+    if E.db.hud.enabled then value = not E.db.hud.hideElv else value = true end
+    for _,unit in pairs(elv_units) do
+        E.db.unitframe.units[unit]['enable'] = value; UF:CreateAndUpdateUF(unit)
     end
-    if InCombatLockdown() then self:RegisterEvent("PLAYER_REGEN_ENABLED"); return end
-    ElvUF_Player:Hide()
-    ElvUF_Player:Show()
 end
 
 function H:PLAYER_REGEN_ENABLED()
@@ -228,15 +217,6 @@ function H:Initialize()
     self:UpdateHideSetting()
 
     hooksecurefunc(UF,"Update_AllFrames",function(self) H:UpdateAllFrames() end)
-
-    local elv_frames = { ElvUF_Player, ElvUF_Pet, ElvUF_Target, ElvUF_TargetTarget, ElvUF_PetTarget }
-
-    ElvUF_Player:HookScript("OnShow", function(self,event) for _,f in pairs(elv_frames) do
-            if f and not InCombatLockdown() then 
-                H.updateElvFunction(f)
-            end
-        end 
-    end)
 
     if UnitAffectingCombat("player") then self:RegisterEvent("PLAYER_REGEN_ENABLED") else self:Enable() end
 

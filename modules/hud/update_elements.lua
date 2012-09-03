@@ -319,7 +319,7 @@ function H:UpdateElementAnchor(frame,element)
 		local WMFrame = CreateFrame('Frame',nil,frame)
 		WMFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
 		WMFrame:SetScript('OnEvent',function(self,event)
-			local config = self.db.units[frame.unit]['mushroom']
+			local config = E.db.hud.units[frame.unit]['mushroom']
 			local anchor = config['anchor']
 			local eclipse
 			local spec = GetSpecialization()
@@ -443,7 +443,7 @@ function H:UpdateElementAnchor(frame,element)
 			frame.GCD:Hide()
 			frame.GCD = nil -- Ugh fuck this don't know why it won't disable
 		end
-		if config['value'] then
+		if config['value'] and frame[e].value then
 			frame[e].value:Hide()
 		end
 		if element ~= 'gcd' then
@@ -454,7 +454,7 @@ end
 
 function H.PostUpdateHealth(health, unit, min, max)
     if E.db.hud.colorHealthByValue then
-		local dc = health.defaultColor or (E.db.hud.units.player.health.media.color)
+		local dc = E.db.hud.units[unit].health.media.color
 		local r = dc.r
 		local g = dc.g
 		local b = dc.b
@@ -864,7 +864,7 @@ local function CheckFilter(type, isFriend)
 end
 
 function H:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
-	local db = ElvUF_Player.db.aurabar
+	local db = E.db.unitframe.units[unit].aurabar
 	if not db then return; end
 		
 	local isPlayer, isFriend
