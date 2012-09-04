@@ -505,9 +505,11 @@ function H:CheckInterrupt(unit)
 	local config = E.db.hud.units[unit]['castbar']
 	if self.interrupt and UnitCanAttack("player", unit) then
 		local c = config.interruptcolor
+		if not c then return end
 		self:SetStatusBarColor(c.r,c.g,c.b)	
 	else
 		local c = config.color
+		if not c then return end
 		self:SetStatusBarColor(c.r,c.g,c.b)	
 	end
 end
