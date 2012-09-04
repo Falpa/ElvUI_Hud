@@ -453,6 +453,7 @@ function H:UpdateElementAnchor(frame,element)
 end
 
 function H.PostUpdateHealth(health, unit, min, max)
+	if not E.db.hud.units[unit] then return end
     if E.db.hud.colorHealthByValue then
 		local dc = E.db.hud.units[unit].health.media.color
 		local r = dc.r
