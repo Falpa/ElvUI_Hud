@@ -98,6 +98,7 @@ function H:UpdateClassBar(frame,element)
 		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
 		local e = H:GetElement(element)
 		for i = numPoints+1, maxPoints do
+			frame[e][i]:Hide()
 			frame[e][i]:SetAlpha(0)
 		end
 		for i = 1, numPoints do
