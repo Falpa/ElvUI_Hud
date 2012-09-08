@@ -107,8 +107,6 @@ function H:EnableFrame(f,a,m)
     f:SetAlpha(a)
 end
 
-H.updateElvFunction = nil
-
 local elv_units = { 'player', 'target', 'pet', 'pettarget', 'targettarget' }
 function H:UpdateElvUFSetting(enableChanged,init)
     local value

@@ -387,7 +387,7 @@ function H:UpdateElementAnchor(frame,element)
     	if not self.moversCreated then self.moversCreated = {} end
     	if not self.moversCreated[frame.unit] then self.moversCreated[frame.unit] = {} end
     	if not self.moversCreated[frame.unit][element] then
-			local holder = CreateFrame('Frame', nil, auraBar)
+			local holder = CreateFrame('Frame', nil, f)
 			holder:Size(f:GetWidth(),f:GetHeight())
 			if element == 'aurabars' then
 		    	holder:Point("TOP", frame.Health, "BOTTOM", 9, -60) --Set to default position
@@ -398,7 +398,7 @@ function H:UpdateElementAnchor(frame,element)
 		    		holder:Point("CENTER", E.UIParent, "CENTER", 0, -200)
 		    	end
 		    end
-		    f:SetPoint("BOTTOM", holder, "TOP", 0, 0)
+		    f:SetPoint("TOP", holder, "TOP", 0, 0)
 		    f.Holder = holder
 
 		    E:CreateMover(f.Holder, string.format(moverFormat,frame:GetName()), name, nil, nil, nil, 'ALL,SOLO')
@@ -868,6 +868,7 @@ local function CheckFilter(type, isFriend)
 end
 
 function H:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
+	if not E.db.unitframe.units[unit] then return end
 	local db = E.db.unitframe.units[unit].aurabar
 	if not db then return; end
 		
