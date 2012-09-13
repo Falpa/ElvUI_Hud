@@ -205,15 +205,17 @@ function H:ConstructHudFrame(frame,unit)
 	frame:RegisterForClicks("AnyUp")
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
-	frame:HookScript("OnHide",function(self)
-		if E.db.hud.enabled and E.db.hud.hideOOC and not InCombatLockdown() then
-			self:Show()
-			self:SetAlpha(0)
-		end
-	end)
-	frame:HookScript("OnEnter",function(self) if E.db.hud.hideOOC and not InCombatLockdown() and UnitExists(self.unit) then frame:SetAlpha(E.db.hud.alpha) end end)
-    frame:HookScript("OnLeave",function(self) if E.db.hud.hideOOC and not InCombatLockdown() and UnitExists(self.unit) then frame:SetAlpha(E.db.hud.alphaOOC) end end)
-    frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alphaOOC) end end)
+	if frame.unit ~= 'target' then
+		frame:HookScript("OnHide",function(self)
+			if E.db.hud.enabled and E.db.hud.hideOOC and not InCombatLockdown() then
+				self:Show()
+				self:SetAlpha(0)
+			end
+		end)
+		frame:HookScript("OnEnter",function(self) if E.db.hud.hideOOC and not InCombatLockdown() and UnitExists(self.unit) then frame:SetAlpha(E.db.hud.alpha) end end)
+	    frame:HookScript("OnLeave",function(self) if E.db.hud.hideOOC and not InCombatLockdown() and UnitExists(self.unit) then frame:SetAlpha(E.db.hud.alphaOOC) end end)
+	    frame:HookScript("OnShow",function(self) if E.db.hud.hideOOC and not InCombatLockdown() then frame:SetAlpha(E.db.hud.alphaOOC) end end)
+	end
 	frame.menu = UF.SpawnMenu
 	frame.db = self.db.units[unit]
 	

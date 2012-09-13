@@ -72,7 +72,7 @@ end
 local frames = { }
 
 function H:HideOOC(frame)
-	if self.db.hideOOC == true then
+	if self.db.hideOOC == true and frame.unit ~= 'target' then
 		self:EnableHide(frame)
 	end
     tinsert(frames,frame)
@@ -124,6 +124,7 @@ function H:PLAYER_REGEN_ENABLED()
 end
 
 function H:EnableHide(frame)
+    if frame.unit == 'target' then return end
     local hider = frame.hud_hider
     if not hider then
         hider = CreateFrame("Frame",nil,UIParent)
@@ -136,6 +137,7 @@ function H:EnableHide(frame)
 end
 
 function H:DisableHide(frame)
+    if frame.unit == 'target' then return end
     local hider = frame.hud_hider
     if not hider then return end
     hider:UnregisterEvent("PLAYER_REGEN_DISABLED")
