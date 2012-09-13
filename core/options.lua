@@ -76,14 +76,6 @@ E.Options.args.hud = {
                     name = L["Text Warning"],
                     desc = L["Show a Text Warning when the low threshold is reached"],
                 },
-                hideOOC  = {
-                    type = "toggle",
-                    order = 17,
-                    name = L["Hide Out of Combat"],
-                    desc = L["Hide the Hud when out of Combat"],
-                    get = function(info) return E.db.hud[ info[#info] ] end,   
-                    set = function(info, value) E.db.hud[ info[#info] ] = value; H:UpdateHideSetting() end,
-                },
                 colorHealthByValue = {
                     type = "toggle",
                     order = 18,
