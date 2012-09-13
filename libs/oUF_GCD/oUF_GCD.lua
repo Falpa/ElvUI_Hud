@@ -3,6 +3,7 @@ local oUF = ns.oUF or oUF
 
 if not oUF then return end
 
+
 local referenceSpells = {
 	47541,			-- Death Coil (Death Knight)
 	66215,			-- Blood Strike (Death Knight)
@@ -11,7 +12,7 @@ local referenceSpells = {
 	19740,			-- Blessing of Might (Paladin)
 	172,			-- Corruption (Warlock)
 	42955,			-- Conjure Refreshment (Mage)
-	78,			    -- Heroic Strike (Warrior)
+	34428,			-- Victory Rush (Warrior)
 	403,			-- Lightning Bolt (Shaman)
 	1752,			-- Sinister Strike (Rogue)
 	5176,			-- Wrath (Druid)
