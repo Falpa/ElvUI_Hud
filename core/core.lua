@@ -190,7 +190,6 @@ function H:Initialize()
     if self.db then return end;
     self.db = E.db.hud
 
-    if self.db.hideOOC then self.db.hideOOC = false end -- Forcing it off until a proper fix can be found
     self:CreateWarningFrame()
     local sl = false 
     if not self.db['install_complete'] or self.db['install_complete'] and self.db['install_complete'] < 3 then sl = self:ResetSettings() end
