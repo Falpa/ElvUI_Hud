@@ -236,7 +236,7 @@ function H:UpdateElement(frame,element)
 				statusbar:Size(size.width,size.height)
 			end			
 			if element == 'castbar' then
-				if not self.db.horizCastbar then
+				if not self.db.horizCastbar or (frame.unit ~= 'player' and frame.unit ~= 'target') then
 					frame.Castbar.Spark:Width(frame.Castbar:GetWidth()*2)
 				else
 					frame.Castbar.Spark:Height(frame.Castbar:GetHeight()*2)
