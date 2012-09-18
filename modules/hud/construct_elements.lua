@@ -147,9 +147,11 @@ function H:ConstructCastbar(frame)
         castbar.SafeZone = castbar.LatencyTexture
     end
 
-    castbar:HookScript("OnShow", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_DISABLED") end end)
-    castbar:HookScript("OnHide", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_ENABLED") end end)
-
+    if frame.unit ~= 'target' then
+        castbar:HookScript("OnShow", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_DISABLED") end end)
+        castbar:HookScript("OnHide", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_ENABLED") end end)
+    end
+    
     return castbar
 end
 
@@ -512,15 +514,6 @@ function H:ConstructAuraBarHeader(frame)
     auraBar.sort = true
     auraBar.debuffColor = {0.8, 0.1, 0.1}
     auraBar.filter = H.AuraBarFilter
-
-    hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)
-        if self.auraBarLine and self.numLines ~= self:NumLines() then
-            self:AddLine(L['Hold shift + right click to blacklist this aura.'])
-            if not self.numLines then
-                self.numLines = self:NumLines()
-            end
-        end
-    end)
     
     local healthColor = UF.db.colors.health
 

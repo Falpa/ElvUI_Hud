@@ -230,6 +230,7 @@ end
 
 function H:UpdateFrame(unit)
 	frame = self.units[unit]
+	if not self.db.units[frame.unit] then return end
 	frame:Size(self.db.units[frame.unit].width,self.db.units[frame.unit].height)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
