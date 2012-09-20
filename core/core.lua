@@ -108,11 +108,14 @@ function H:EnableFrame(f,a,m)
 end
 
 local elv_units = { 'player', 'target', 'pet', 'pettarget', 'targettarget' }
+local old_settings = {}
+
 function H:UpdateElvUFSetting(enableChanged,init)
     local value
     if E.db.hud.enabled then value = not E.db.hud.hideElv else value = true end
     for _,unit in pairs(elv_units) do
-        E.db.unitframe.units[unit]['enable'] = value; UF:CreateAndUpdateUF(unit)
+        if not value and not old_settings[unit] then old_settings[unit] = E.db.unitframe.units[unit]['enable'] end
+        E.db.unitframe.units[unit]['enable'] = (value and old_settings[unit] or value) or value; UF:CreateAndUpdateUF(unit)
     end
 end
 
@@ -217,6 +220,13 @@ function H:Initialize()
     self:UpdateHideSetting()
 
     hooksecurefunc(UF,"Update_AllFrames",function(self) H:UpdateAllFrames() end)
+
+    local f = CreateFrame('Frame', nil, UIParent); 
+    f:SetAllPoints();
+    f.t = f:CreateTexture(nil, 'ARTWORK'); 
+    f.t:SetTexture([[Interface\FullScreenTextures\LowHealth]]); 
+    f.t:SetBlendMode("ADD")
+    self.lowHealthFlash = f
 
     if UnitAffectingCombat("player") then self:RegisterEvent("PLAYER_REGEN_ENABLED") else self:Enable() end
 

@@ -476,6 +476,15 @@ function H.PostUpdateHealth(health, unit, min, max)
 			ElvUIHudWarning:Clear()
 			warningTextShown = false
 		end
+		if unit == "player" and E.db.hud.screenflash then
+			local f = H.lowHealthFlash
+			if not f then return end
+			f.t:Show()
+		end
+	else
+		local f = H.lowHealthFlash
+		if not f then return end
+		f.t:Hide()
 	end
 end
 
