@@ -21,6 +21,11 @@ function H:UpdateClassBar(frame,element)
 		for i = 1, numPoints do
 			frame.WildMushroom[i]:Size(size.width,(size.height - (spaced and totalspacing or 2))/3)
 		end
+		if spaced then
+			frame.WildMushroom:SetAlpha(0)
+		else
+			frame.WildMushroom:SetAlpha(1)
+		end
 	end
 
 	if element == "cpoints" then
@@ -28,6 +33,11 @@ function H:UpdateClassBar(frame,element)
 		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
 		for i = 1, numPoints do
 			frame.CPoints[i]:Size(size.width,(size.height - (spaced and totalspacing or 4))/5)
+		end
+		if spaced then
+			frame.CPoints:SetAlpha(0)
+		else
+			frame.CPoints:SetAlpha(1)
 		end
 	end
 
@@ -97,12 +107,18 @@ function H:UpdateClassBar(frame,element)
 
 		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
 		local e = H:GetElement(element)
-		for i = numPoints+1, maxPoints do
-			frame[e][i]:Hide()
-			frame[e][i]:SetAlpha(0)
+		if spaced then
+			frame[e]:SetAlpha(0)
+		else
+			frame[e]:SetAlpha(1)
 		end
 		for i = 1, numPoints do
 			frame[e][i]:Size(size.width,(size.height - (spaced and totalspacing or 2)) / numPoints)
+			if spaced then
+				frame[e][i].backdrop:Show()
+			else
+				frame[e][i].backdrop:Hide()
+			end
 		end
 	end
 end

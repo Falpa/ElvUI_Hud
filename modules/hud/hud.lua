@@ -230,7 +230,7 @@ end
 
 function H:UpdateFrame(unit)
 	frame = self.units[unit]
-	if not self.db.units[frame.unit] then return end
+	if not self.db or not self.db.units then self.db = E.db.hud end
 	frame:Size(self.db.units[frame.unit].width,self.db.units[frame.unit].height)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
@@ -310,9 +310,8 @@ function H:ConfigureStatusBar(frame,element,parent,name)
 
 	-- Create the status bar
 	local sb = CreateFrame('StatusBar', sbname, parent)
-	sb:SetTemplate('Transparent')
+	sb:SetTemplate("Default")
 	sb:CreateBackdrop("Default")
-	sb:CreateShadow("Default")
 
 	-- Dummy texture so we can set colors
 	sb:SetStatusBarTexture(E['media'].blankTex)
@@ -320,7 +319,7 @@ function H:ConfigureStatusBar(frame,element,parent,name)
  
 	-- Frame strata/level
 	sb:SetFrameStrata(parent:GetFrameStrata())
-	sb:SetFrameLevel(parent:GetFrameLevel())
+	sb:SetFrameLevel(parent:GetFrameLevel() + 5)
 
 	-- Create the status bar background
     local bg = sb:CreateTexture(nil, 'BORDER')
@@ -331,7 +330,15 @@ function H:ConfigureStatusBar(frame,element,parent,name)
     bg.multiplier = 0.3 
     sb.bg = bg
 
-    if not self.units[frame.unit][element].statusbars then
+    -- statusbar frame border
+	local sbframe = CreateFrame("Frame", nil, sb)
+	sbframe:SetPoint("TOPLEFT", sb, "TOPLEFT", E:Scale(-2), E:Scale(2))
+	sbframe:SetPoint("BOTTOMRIGHT", sb, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+	sbframe:SetFrameLevel(frame:GetFrameLevel() + 4)
+
+	sbframe:SetTemplate("Default")
+	sb.FrameBorder = sbframe
+	if not self.units[frame.unit][element].statusbars then
 		self.units[frame.unit][element].statusbars =  { }
 	end
 
@@ -375,12 +382,6 @@ function H:ConfigureFrame(frame,element,visible)
 	if visible == nil then visible = false end
 	local name = frame.unit..'_hud_'..element
 	local f = CreateFrame('Frame',name,frame)
-	f.visible = visible
-	--[[if visible then
-		f:SetTemplate("Default")
-		f:CreateBackdrop("Default")
-		f:CreateShadow("Default")
-	end]]
 	self.units[frame.unit][element].frame = f
 	return f
 end

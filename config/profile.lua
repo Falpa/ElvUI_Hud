@@ -168,7 +168,7 @@ P['hud']['units'] = {
                 ['pointFrom'] = 'BOTTOMRIGHT',
                 ['attachTo'] = 'health',
                 ['pointTo'] = 'BOTTOMLEFT',
-                ['xOffset'] = -1,
+                ['xOffset'] = 0,
                 ['yOffset'] = 0,
             },
             ['spaced'] = true,

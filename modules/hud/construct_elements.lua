@@ -85,7 +85,7 @@ function H:ConstructCastbar(frame)
         castbar.SafeZone = castbar.LatencyTexture
         
         local button = CreateFrame("Frame", nil, castbar)
-        button:SetTemplate("Transparent")
+        button:SetTemplate("Default")
         
         button:Point("BOTTOM", castbar, "BOTTOM", 0, 0)
         
@@ -122,7 +122,7 @@ function H:ConstructCastbar(frame)
         
         castbar.button = CreateFrame("Frame", nil, castbar)
         castbar.button:Size(26)
-        castbar.button:SetTemplate("Transparent")
+        castbar.button:SetTemplate("Default")
         castbar.button:CreateShadow("Default")
 
         castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
@@ -168,24 +168,24 @@ function H:ConstructEclipseBar(frame)
 
     local eclipseBar = self:ConfigureFrame(frame,'classbars', true)
     eclipseBar:SetFrameStrata("MEDIUM")
-    eclipseBar:SetTemplate('Transparent')
+    eclipseBar:SetTemplate("Default")
     eclipseBar:SetFrameLevel(8)
-    eclipseBar:SetTemplate("Transparent")
+    eclipseBar:SetTemplate("Default")
     eclipseBar:SetBackdropBorderColor(0,0,0,0)
                     
-    local lunarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'lunarbar')
+    local lunarBar = self:ConfigureStatusBar(frame,'classbars',frame,'lunarbar')
     lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
     lunarBar:SetStatusBarColor(.30, .52, .90)
     lunarBar:SetOrientation('VERTICAL')
     eclipseBar.LunarBar = lunarBar
 
-    local solarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'solarbar')
+    local solarBar = self:ConfigureStatusBar(frame,'classbars',frame,'solarbar')
     solarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
     solarBar:SetStatusBarColor(.30, .52, .90)
     solarBar:SetOrientation('VERTICAL')
     eclipseBar.SolarBar = solarBar
     
-    local eclipseBarText = self:ConfigureFontString(frame,'classbars',eclipsebar,'text')
+    local eclipseBarText = self:ConfigureFontString(frame,'classbars',frame,'text')
     eclipseBarText:SetPoint("LEFT", eclipseBar, "RIGHT", E:Scale(10), 0)
     
     eclipseBar.PostUpdatePower = H.EclipseDirection
@@ -199,11 +199,11 @@ function H:ConstructWildMushroomBar(frame)
     self:AddElement(frame,'mushroom')
     local wb = self:ConfigureFrame(frame,'mushroom', true)
     wb:SetFrameLevel(frame:GetFrameLevel() + 5)
-    wb:SetTemplate("Transparent")
+    wb:SetTemplate("Default")
     wb:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 3 do
-        wb[i] = self:ConfigureStatusBar(frame,'mushroom',wb,'wildmushroom'..i)
+        wb[i] = self:ConfigureStatusBar(frame,'mushroom',frame,'wildmushroom'..i)
         
         if i == 1 then
             wb[i]:SetPoint("BOTTOM",wb)
@@ -222,11 +222,11 @@ function H:ConstructWarlockSpecBars(frame)
     self:AddElement(frame,'classbars')
     local wb = self:ConfigureFrame(frame,'classbars', true)
     wb:SetFrameLevel(frame:GetFrameLevel() + 5)
-    wb:SetTemplate("Transparent")
+    wb:SetTemplate("Default")
     wb:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 4 do
-        wb[i] = self:ConfigureStatusBar(frame,'classbars',wb,'warlockspecbar'..i)
+        wb[i] = self:ConfigureStatusBar(frame,'classbars',frame,'warlockspecbar'..i)
         
         if i == 1 then
             wb[i]:SetPoint("BOTTOM",wb)
@@ -236,7 +236,7 @@ function H:ConstructWarlockSpecBars(frame)
      
         wb[i]:SetOrientation('VERTICAL')
     end
-    wb.value = self:ConfigureFontString(frame,'classbars',wb)                
+    wb.value = self:ConfigureFontString(frame,'classbars',frame)                
     wb.value:Hide()
     
     return wb
@@ -247,11 +247,11 @@ function H:ConstructHolyPower(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-    bars:SetTemplate("Transparent")
+    bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 5 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'holypower'..i)
+        bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'holypower'..i)
 
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
         bars[i].bg:SetTexture(228/255,225/255,16/255)
@@ -267,7 +267,7 @@ function H:ConstructHolyPower(frame)
         bars[i].bg:SetAlpha(.15)
     end
     
-    bars.value = self:ConfigureFontString(frame,'classbars',wb)                
+    bars.value = self:ConfigureFontString(frame,'classbars',frame)                
     bars.value:Hide()
     bars.Override = H.UpdateHoly
 
@@ -279,11 +279,11 @@ function H:ConstructRunes(frame)
     self:AddElement(frame,'classbars')
     local Runes = self:ConfigureFrame(frame,'classbars', true)
     Runes:SetFrameLevel(frame:GetFrameLevel() + 5)
-    Runes:SetTemplate("Transparent")
+    Runes:SetTemplate("Default")
     Runes:SetBackdropBorderColor(0,0,0,0)
 
     for i = 1, 6 do
-        Runes[i] = self:ConfigureStatusBar(frame,'classbars',Runes,'rune'..i)
+        Runes[i] = self:ConfigureStatusBar(frame,'classbars',frame,'rune'..i)
 
         if (i == 1) then
             Runes[i]:SetPoint("BOTTOM", Runes)
@@ -304,7 +304,7 @@ function H:ConstructTotems(frame)
     TotemBar:SetFrameLevel(frame:GetFrameLevel() + 5)
 
     for i = 1, 4 do
-        TotemBar[i] = self:ConfigureStatusBar(frame,'classbars',TotemBar,'totem'..i)
+        TotemBar[i] = self:ConfigureStatusBar(frame,'classbars',frame,'totem'..i)
 
         if (i == 1) then
             TotemBar[i]:SetPoint("BOTTOM",TotemBar)
@@ -325,11 +325,11 @@ function H:ConstructHarmonyBar(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-    bars:SetTemplate("Transparent")
+    bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 5 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'harmony'..i)
+        bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'harmony'..i)
         
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
         
@@ -344,7 +344,7 @@ function H:ConstructHarmonyBar(frame)
         bars[i].bg:SetAlpha(.15)
     end
 
-    bars.value = self:ConfigureFontString(frame,'classbars',bars)                
+    bars.value = self:ConfigureFontString(frame,'classbars',frame)                
     bars.value:Hide()
 
    return bars 
@@ -355,11 +355,11 @@ function H:ConstructShadowOrbBar(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-    bars:SetTemplate("Transparent")
+    bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 3 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'shadoworb'..i)
+        bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'shadoworb'..i)
         
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
         
@@ -374,7 +374,7 @@ function H:ConstructShadowOrbBar(frame)
         bars[i].bg:SetAlpha(.15)
     end
 
-    bars.value = self:ConfigureFontString(frame,'classbars',wb)                
+    bars.value = self:ConfigureFontString(frame,'classbars',frame)                
     bars.value:Hide()
     return bars 
 end
@@ -384,11 +384,11 @@ function H:ConstructArcaneBar(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-    bars:SetTemplate("Transparent")
+    bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 6 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'classbars',bars,'arcanecharge'..i)
+        bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'arcanecharge'..i)
         
         bars[i]:SetStatusBarColor(0, 157/255, 255/255)
 
@@ -403,7 +403,7 @@ function H:ConstructArcaneBar(frame)
         bars[i].bg:SetAlpha(.15)
     end
 
-    bars.value = self:ConfigureFontString(frame,'classbars',wb)                
+    bars.value = self:ConfigureFontString(frame,'classbars',frame)                
     bars.value:Hide()
     
     return bars 
@@ -414,11 +414,11 @@ function H:ConstructComboPoints(frame)
     self:AddElement(frame,'cpoints')
     local bars = self:ConfigureFrame(frame,'cpoints', true)
     bars:SetFrameLevel(frame:GetFrameLevel() + 5)
-    bars:SetTemplate("Transparent")
+    bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 5 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'cpoints',bars,'combopoint'..i)
+        bars[i]=self:ConfigureStatusBar(frame,'cpoints',frame,'combopoint'..i)
         
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
 
