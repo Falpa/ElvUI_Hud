@@ -198,13 +198,15 @@ end
 function H:ConstructWildMushroomBar(frame)
     self:AddElement(frame,'mushroom')
     local wb = self:ConfigureFrame(frame,'mushroom', true)
-    wb:SetFrameLevel(frame:GetFrameLevel() + 5)
+    wb:SetFrameLevel(frame:GetFrameLevel() + 35)
     wb:SetTemplate("Default")
     wb:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 3 do
         wb[i] = self:ConfigureStatusBar(frame,'mushroom',frame,'wildmushroom'..i)
-        
+        wb[i]:SetFrameStrata("HIGH")
+        wb[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
+
         if i == 1 then
             wb[i]:SetPoint("BOTTOM",wb)
         else
@@ -221,13 +223,15 @@ end
 function H:ConstructWarlockSpecBars(frame)
     self:AddElement(frame,'classbars')
     local wb = self:ConfigureFrame(frame,'classbars', true)
-    wb:SetFrameLevel(frame:GetFrameLevel() + 5)
+    wb:SetFrameLevel(frame:GetFrameLevel() + 35)
     wb:SetTemplate("Default")
     wb:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 4 do
         wb[i] = self:ConfigureStatusBar(frame,'classbars',frame,'warlockspecbar'..i)
-        
+        wb[i]:SetFrameStrata("HIGH")
+        wb[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
+
         if i == 1 then
             wb[i]:SetPoint("BOTTOM",wb)
         else
@@ -246,12 +250,14 @@ end
 function H:ConstructHolyPower(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+    bars:SetFrameLevel(frame:GetFrameLevel() + 7)
     bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 5 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'holypower'..i)
+        bars[i]:SetFrameStrata("HIGH")
+        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
 
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
         bars[i].bg:SetTexture(228/255,225/255,16/255)
@@ -278,12 +284,14 @@ end
 function H:ConstructRunes(frame)
     self:AddElement(frame,'classbars')
     local Runes = self:ConfigureFrame(frame,'classbars', true)
-    Runes:SetFrameLevel(frame:GetFrameLevel() + 5)
+    Runes:SetFrameLevel(frame:GetFrameLevel() + 35)
     Runes:SetTemplate("Default")
     Runes:SetBackdropBorderColor(0,0,0,0)
 
     for i = 1, 6 do
         Runes[i] = self:ConfigureStatusBar(frame,'classbars',frame,'rune'..i)
+        Runes[i]:SetFrameStrata("HIGH")
+        Runes[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
 
         if (i == 1) then
             Runes[i]:SetPoint("BOTTOM", Runes)
@@ -301,10 +309,12 @@ function H:ConstructTotems(frame)
     self:AddElement(frame,'classbars')
     local TotemBar = self:ConfigureFrame(frame,'classbars',true)
     TotemBar.Destroy = true
-    TotemBar:SetFrameLevel(frame:GetFrameLevel() + 5)
+    TotemBar:SetFrameLevel(frame:GetFrameLevel() + 35)
 
     for i = 1, 4 do
         TotemBar[i] = self:ConfigureStatusBar(frame,'classbars',frame,'totem'..i)
+        TotemBar[i]:SetFrameStrata("HIGH")
+        TotemBar[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
 
         if (i == 1) then
             TotemBar[i]:SetPoint("BOTTOM",TotemBar)
@@ -324,13 +334,15 @@ end
 function H:ConstructHarmonyBar(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+    bars:SetFrameLevel(frame:GetFrameLevel() + 35)
     bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 5 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'harmony'..i)
-        
+        bars[i]:SetFrameStrata("HIGH")
+        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
+
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
         
         if i == 1 then
@@ -354,13 +366,15 @@ end
 function H:ConstructShadowOrbBar(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+    bars:SetFrameLevel(frame:GetFrameLevel() + 35)
     bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 3 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'shadoworb'..i)
-        
+        bars[i]:SetFrameStrata("HIGH")
+        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
+
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
         
         if i == 1 then
@@ -383,13 +397,15 @@ end
 function H:ConstructArcaneBar(frame)
     self:AddElement(frame,'classbars')
     local bars = self:ConfigureFrame(frame,'classbars', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+    bars:SetFrameLevel(frame:GetFrameLevel() + 35)
     bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 6 do                 
         bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'arcanecharge'..i)
-        
+        bars[i]:SetFrameStrata("HIGH")
+        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
+
         bars[i]:SetStatusBarColor(0, 157/255, 255/255)
 
         if i == 1 then
@@ -413,13 +429,15 @@ end
 function H:ConstructComboPoints(frame)
     self:AddElement(frame,'cpoints')
     local bars = self:ConfigureFrame(frame,'cpoints', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+    bars:SetFrameLevel(frame:GetFrameLevel() + 35)
     bars:SetTemplate("Default")
     bars:SetBackdropBorderColor(0,0,0,0)
     
     for i = 1, 5 do                 
         bars[i]=self:ConfigureStatusBar(frame,'cpoints',frame,'combopoint'..i)
-        
+        bars[i]:SetFrameStrata("HIGH")
+        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
+
         bars[i]:SetStatusBarColor(228/255,225/255,16/255)
 
         if i == 1 then
