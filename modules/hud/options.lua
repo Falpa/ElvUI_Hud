@@ -164,28 +164,53 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
 	end
 	if hasSize then
 		if not ((unit == 'player' or unit == 'target') and element == 'castbar') then
-			options.args.size = {
-				order = 3,
-	            type = 'group',
-	            name = L['Size'],
-	            guiInline = true,
-	            get = function(info) return E.db.hud.units[unit][element].size[ info[#info] ] end,
-	            set = function(info,value) E.db.hud.units[unit][element].size[ info[#info] ] = value; H:UpdateAllFrames() end,
-	            args = {
-	                width = {
-	                    order = 4,
-	                    name = L['Width'],
-	                    type = 'range',
-	                    min = 7, max = 50, step = 1,
-	                },
-	                height = {
-	                    order = 4,
-	                    name = L['Height'],
-	                    type = 'range',
-	                    min = 20, max = 600, step = 1,
-	                },
-	            },
-			}
+            if element ~= 'aurabars' then
+    			options.args.size = {
+    				order = 3,
+    	            type = 'group',
+    	            name = L['Size'],
+    	            guiInline = true,
+    	            get = function(info) return E.db.hud.units[unit][element].size[ info[#info] ] end,
+    	            set = function(info,value) E.db.hud.units[unit][element].size[ info[#info] ] = value; H:UpdateAllFrames() end,
+    	            args = {
+    	                width = {
+    	                    order = 4,
+    	                    name = L['Width'],
+    	                    type = 'range',
+    	                    min = 7, max = 50, step = 1,
+    	                },
+    	                height = {
+    	                    order = 4,
+    	                    name = L['Height'],
+    	                    type = 'range',
+    	                    min = 20, max = 600, step = 1,
+    	                },
+    	            },
+    			}
+            else
+                options.args.size = {
+                    order = 3,
+                    type = 'group',
+                    name = L['Size'],
+                    guiInline = true,
+                    get = function(info) return E.db.hud.units[unit][element].size[ info[#info] ] end,
+                    set = function(info,value) E.db.hud.units[unit][element].size[ info[#info] ] = value; H:UpdateAllFrames() end,
+                    args = {
+                        width = {
+                            order = 4,
+                            name = L['Width'],
+                            type = 'range',
+                            min = 100, max = 500, step = 1,
+                        },
+                        height = {
+                            order = 4,
+                            name = L['Height'],
+                            type = 'range',
+                            min = 20, max = 80, step = 1,
+                        },
+                    },
+                }
+            end
 		else
 			options.args.size = {
                 order = 3,
