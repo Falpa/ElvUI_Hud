@@ -107,6 +107,7 @@ function H:UpdateClassBar(frame,element)
 
 		local totalspacing = (config['spacesettings'].offset * 2) + (config['spacesettings'].spacing * numPoints) - numPoints
 		local e = H:GetElement(element)
+		if not frame[e] then return end
 		if spaced then
 			frame[e]:SetAlpha(0)
 		else
@@ -309,6 +310,7 @@ function H:UpdateElement(frame,element)
 		local buffColor = UF.db.colors.auraBarBuff
 		local debuffColor = UF.db.colors.auraBarDebuff
 		local aurabars = frame.AuraBars
+		if not aurabars then return end
 		aurabars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 		aurabars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
 	end
@@ -328,6 +330,7 @@ function H:UpdateElementAnchor(frame,element)
 	end
 	if element == 'aurabars' then
 		local growthDirection = config.growthDirection
+		if not frame.AuraBars then return end
 		frame.AuraBars.down = growthDirection == "DOWN"
 	end
  	local anchor = config['anchor']
@@ -380,6 +383,7 @@ function H:UpdateElementAnchor(frame,element)
 		if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
 			if config['spaced'] then yOffset = yOffset + config['spacesettings'].offset end
 		end
+		if not frame[e] then return end
 		frame[e]:Point(pointFrom, attachTo, pointTo, xOffset, yOffset)
 		if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
 			self:UpdateClassBarAnchors(frame,element)
