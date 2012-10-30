@@ -194,262 +194,79 @@ function H:ConstructEclipseBar(frame)
     return eclipseBar
 end
 
--- Wild Mushroom Bar for Druids
-function H:ConstructWildMushroomBar(frame)
-    self:AddElement(frame,'mushroom')
-    local wb = self:ConfigureFrame(frame,'mushroom', true)
-    wb:SetFrameLevel(frame:GetFrameLevel() + 35)
-    wb:SetTemplate("Default")
-    wb:SetBackdropBorderColor(0,0,0,0)
-    
-    for i = 1, 3 do
-        wb[i] = self:ConfigureStatusBar(frame,'mushroom',frame,'wildmushroom'..i)
-        wb[i]:SetFrameStrata("HIGH")
-        wb[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
+function H:ConstructSubBars(frame,element,name,num)
+    self:AddElement(frame,element)
+
+    local bars = self:ConfigureFrame(frame,element,true)
+    bars:SetFrameLevel(frame:GetFrameLevel() + 30)
+    bars:SetTemplate("Default")
+    bars:SetBackdropBorderColor(0,0,0,0)
+
+    for i = 1, num do
+        bars[i] = self:ConfigureStatusBar(frame,element,frame,name..i)
+        bars[i]:SetFrameStrata("MEDIUM")
+        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
 
         if i == 1 then
-            wb[i]:SetPoint("BOTTOM",wb)
+            bars[i]:SetPoint("BOTTOM", bars)
         else
-            wb[i]:SetPoint("BOTTOM", wb[i-1], "TOP", 0, E:Scale(1))
+            bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
         end
      
-        wb[i]:SetOrientation('VERTICAL')
+        bars[i]:SetOrientation('VERTICAL')
     end
-    
-    return wb
+
+    if element == 'classbars' then
+        bars.value = self:ConfigureFontString(frame,element,frame)                
+        bars.value:Hide()
+    end
+
+    return bars
+end
+
+-- Wild Mushroom Bar for Druids
+function H:ConstructWildMushroomBar(frame)
+    return self:ConstructSubBars(frame,'mushroom','wildmushroom',3)
 end
 
 -- Warlock spec bars
 function H:ConstructWarlockSpecBars(frame)
-    self:AddElement(frame,'classbars')
-    local wb = self:ConfigureFrame(frame,'classbars', true)
-    wb:SetFrameLevel(frame:GetFrameLevel() + 35)
-    wb:SetTemplate("Default")
-    wb:SetBackdropBorderColor(0,0,0,0)
-    
-    for i = 1, 4 do
-        wb[i] = self:ConfigureStatusBar(frame,'classbars',frame,'warlockspecbar'..i)
-        wb[i]:SetFrameStrata("HIGH")
-        wb[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
-
-        if i == 1 then
-            wb[i]:SetPoint("BOTTOM",wb)
-        else
-            wb[i]:SetPoint("BOTTOM", wb[i-1], "TOP", 0, E:Scale(1))
-        end
-     
-        wb[i]:SetOrientation('VERTICAL')
-    end
-    wb.value = self:ConfigureFontString(frame,'classbars',frame)                
-    wb.value:Hide()
-    
-    return wb
+    return self:ConstructSubBars(frame,'classbars','warlockspecbar',4)
 end
 
 -- Construct holy power for paladins
 function H:ConstructHolyPower(frame)
-    self:AddElement(frame,'classbars')
-    local bars = self:ConfigureFrame(frame,'classbars', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 7)
-    bars:SetTemplate("Default")
-    bars:SetBackdropBorderColor(0,0,0,0)
-    
-    for i = 1, 5 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'holypower'..i)
-        bars[i]:SetFrameStrata("HIGH")
-        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
-
-        bars[i]:SetStatusBarColor(228/255,225/255,16/255)
-        bars[i].bg:SetTexture(228/255,225/255,16/255)
-        
-        if i == 1 then
-            bars[i]:SetPoint("BOTTOM", bars)
-        else
-            bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
-        end
-        
-        bars[i]:SetOrientation('VERTICAL')
-                        
-        bars[i].bg:SetAlpha(.15)
-    end
-    
-    bars.value = self:ConfigureFontString(frame,'classbars',frame)                
-    bars.value:Hide()
-    bars.Override = H.UpdateHoly
-
-    return bars 
+    return self:ConstructSubBars(frame,'classbars','holypower',5)
 end
 
 -- Runes for death knights
 function H:ConstructRunes(frame)
-    self:AddElement(frame,'classbars')
-    local Runes = self:ConfigureFrame(frame,'classbars', true)
-    Runes:SetFrameLevel(frame:GetFrameLevel() + 35)
-    Runes:SetTemplate("Default")
-    Runes:SetBackdropBorderColor(0,0,0,0)
-
-    for i = 1, 6 do
-        Runes[i] = self:ConfigureStatusBar(frame,'classbars',frame,'rune'..i)
-        Runes[i]:SetFrameStrata("HIGH")
-        Runes[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
-
-        if (i == 1) then
-            Runes[i]:SetPoint("BOTTOM", Runes)
-        else
-            Runes[i]:SetPoint("BOTTOM", Runes[i-1], "TOP", 0, E:Scale(1))
-        end
-        Runes[i]:SetOrientation('VERTICAL')
-    end
-
-    return Runes
+    return self:ConstructSubBars(frame,'classbars','rune',6)
 end
 
 -- Totems for shamans
 function H:ConstructTotems(frame)
-    self:AddElement(frame,'classbars')
-    local TotemBar = self:ConfigureFrame(frame,'classbars',true)
-    TotemBar.Destroy = true
-    TotemBar:SetFrameLevel(frame:GetFrameLevel() + 35)
-
-    for i = 1, 4 do
-        TotemBar[i] = self:ConfigureStatusBar(frame,'classbars',frame,'totem'..i)
-        TotemBar[i]:SetFrameStrata("HIGH")
-        TotemBar[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
-
-        if (i == 1) then
-            TotemBar[i]:SetPoint("BOTTOM",TotemBar)
-        else
-            TotemBar[i]:SetPoint("BOTTOM", TotemBar[i-1], "TOP", 0, E:Scale(1))
-        end
-
-        TotemBar[i]:SetOrientation('VERTICAL')
-        TotemBar[i]:SetMinMaxValues(0, 1)
-    end
-
-
-    return TotemBar
+    return self:ConstructSubBars(frame,'classbars','totem',4)
 end
 
 -- Construct harmony bar for monks
 function H:ConstructHarmonyBar(frame)
-    self:AddElement(frame,'classbars')
-    local bars = self:ConfigureFrame(frame,'classbars', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 35)
-    bars:SetTemplate("Default")
-    bars:SetBackdropBorderColor(0,0,0,0)
-    
-    for i = 1, 5 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'harmony'..i)
-        bars[i]:SetFrameStrata("HIGH")
-        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
-
-        bars[i]:SetStatusBarColor(228/255,225/255,16/255)
-        
-        if i == 1 then
-            bars[i]:SetPoint("BOTTOM", bars)
-        else
-            bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
-        end
-        
-        bars[i]:SetOrientation('VERTICAL')
-        
-        bars[i].bg:SetAlpha(.15)
-    end
-
-    bars.value = self:ConfigureFontString(frame,'classbars',frame)                
-    bars.value:Hide()
-
-   return bars 
+   return self:ConstructSubBars(frame,'classbars','harmony',5) 
 end
  
 -- Construct shadow orb bar for priests
 function H:ConstructShadowOrbBar(frame)
-    self:AddElement(frame,'classbars')
-    local bars = self:ConfigureFrame(frame,'classbars', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 35)
-    bars:SetTemplate("Default")
-    bars:SetBackdropBorderColor(0,0,0,0)
-    
-    for i = 1, 3 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'shadoworb'..i)
-        bars[i]:SetFrameStrata("HIGH")
-        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
-
-        bars[i]:SetStatusBarColor(228/255,225/255,16/255)
-        
-        if i == 1 then
-            bars[i]:SetPoint("BOTTOM", bars)
-        else
-            bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
-        end
-        
-        bars[i]:SetOrientation('VERTICAL')
-        
-        bars[i].bg:SetAlpha(.15)
-    end
-
-    bars.value = self:ConfigureFontString(frame,'classbars',frame)                
-    bars.value:Hide()
-    return bars 
+    return self:ConstructSubBars(frame,'classbars','shadoworb',3)
 end
 
 -- Construct arcane bar for mages
 function H:ConstructArcaneBar(frame)
-    self:AddElement(frame,'classbars')
-    local bars = self:ConfigureFrame(frame,'classbars', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 35)
-    bars:SetTemplate("Default")
-    bars:SetBackdropBorderColor(0,0,0,0)
-    
-    for i = 1, 6 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'classbars',frame,'arcanecharge'..i)
-        bars[i]:SetFrameStrata("HIGH")
-        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
-
-        bars[i]:SetStatusBarColor(0, 157/255, 255/255)
-
-        if i == 1 then
-            bars[i]:SetPoint("BOTTOM", bars)
-        else
-            bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
-        end
-        
-        bars[i]:SetOrientation('VERTICAL')
-        
-        bars[i].bg:SetAlpha(.15)
-    end
-
-    bars.value = self:ConfigureFontString(frame,'classbars',frame)                
-    bars.value:Hide()
-    
-    return bars 
+    return self:ConstructSubBars(frame,'classbars','arcanecharge',6) 
 end
 
 -- Combo points for rogues and druids
 function H:ConstructComboPoints(frame)
-    self:AddElement(frame,'cpoints')
-    local bars = self:ConfigureFrame(frame,'cpoints', true)
-    bars:SetFrameLevel(frame:GetFrameLevel() + 35)
-    bars:SetTemplate("Default")
-    bars:SetBackdropBorderColor(0,0,0,0)
-    
-    for i = 1, 5 do                 
-        bars[i]=self:ConfigureStatusBar(frame,'cpoints',frame,'combopoint'..i)
-        bars[i]:SetFrameStrata("HIGH")
-        bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
-
-        bars[i]:SetStatusBarColor(228/255,225/255,16/255)
-
-        if i == 1 then
-            bars[i]:SetPoint("BOTTOM", bars)
-        else
-            bars[i]:SetPoint("BOTTOM", bars[i-1], "TOP", 0, E:Scale(1))
-        end
-        
-        bars[i]:SetOrientation('VERTICAL')
-        
-        bars[i].bg:SetAlpha(.15)
-    end
+    local bars = self:ConstructSubBars(frame,'cpoints','combopoint',5)
     
     bars[1]:SetStatusBarColor(0.69, 0.31, 0.31)     
     bars[2]:SetStatusBarColor(0.69, 0.31, 0.31)

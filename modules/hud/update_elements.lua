@@ -509,7 +509,7 @@ function H.PostUpdateHealth(health, unit, min, max)
 end
 
 local ticks = {}
-hooksecurefunc(UF,'SetCastTicks',function(self,frame,numTicks,extraTickRation)
+hooksecurefunc(UF,'SetCastTicks',function(self,frame,numTicks,extraTickRatio)
 	extraTickRatio = extraTickRatio or 0
 	local color = E.db.hud.units.player['castbar']['tickcolor']
 	UF:HideTicks()

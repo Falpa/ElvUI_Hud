@@ -115,7 +115,7 @@ function H:UpdateElvUFSetting(enableChanged,init)
     if E.db.hud.enabled then value = not E.db.hud.hideElv else value = true end
     for _,unit in pairs(elv_units) do
         if not value and not old_settings[unit] then old_settings[unit] = E.db.unitframe.units[unit]['enable'] end
-        E.db.unitframe.units[unit]['enable'] = (value and old_settings[unit] or value) or value; UF:CreateAndUpdateUF(unit)
+        E.db.unitframe.units[unit]['enable'] = (value and old_settings[unit] or (E.db.hud.units[unit]['enabled'] and value)) or value; UF:CreateAndUpdateUF(unit)
     end
 end
 
