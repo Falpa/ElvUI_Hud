@@ -300,7 +300,6 @@ function H:UpdateAllElementAnchors(frame)
 end
 
 function H:AddElement(frame,element)
-	print(element)
 	if not self.units[frame.unit][element] then
 		self.units[frame.unit][element] = { }
 	end
