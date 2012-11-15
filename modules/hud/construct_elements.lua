@@ -348,7 +348,7 @@ function H:ConstructAuraBarHeader(frame)
     auraBar.spark = true
     auraBar.sort = true
     auraBar.debuffColor = {0.8, 0.1, 0.1}
-    auraBar.filter = H.AuraBarFilter
+    auraBar.filter = self.AuraBarFilter
     
     local healthColor = UF.db.colors.health
 
@@ -455,9 +455,11 @@ function H:ConstructDebuffs(frame)
     debuffs.initialAnchor = "TOPRIGHT"
     debuffs["growth-y"] = "UP"
     debuffs["growth-x"] = "LEFT"
-    debuffs.PostCreateIcon = H.PostCreateAura
-    debuffs.PostUpdateIcon = H.PostUpdateAura       
-    
+    debuffs.PostCreateIcon = self.PostCreateAura
+    debuffs.PostUpdateIcon = self.PostUpdateAura       
+    debuffs.CustomFilter = self.AuraFilter
+    debuffs.type = 'debuffs'
+
     -- an option to show only our debuffs on target
     --[[if unit == "target" then
         debuffs.onlyShowPlayer = C.unitframes.onlyselfdebuffs
@@ -477,6 +479,8 @@ function H:ConstructBuffs(frame)
     buffs.initialAnchor = "TOPLEFT"
     buffs.PostCreateIcon = H.PostCreateAura
     buffs.PostUpdateIcon = H.PostUpdateAura
-           
+    buffs.CustomFilter = self.AuraFilter
+    buffs.type = 'buffs'
+
     return buffs
 end 

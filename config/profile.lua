@@ -281,6 +281,34 @@ P['hud']['units'] = {
             },
             ['growthDirection'] = 'DOWN',
         },
+        ['buffs'] = {
+            ['enabled'] = false,
+            ['anchor'] = {
+                ['pointFrom'] = 'BOTTOM',
+                ['attachTo'] = 'health',
+                ['pointTo'] = 'TOP',
+                ['xOffset'] = 9,
+                ['yOffset'] = 40,
+            },
+            ['size'] = {
+                ['height'] = 26,
+                ['width'] = 252,
+            },
+        },
+        ['debuffs'] = {
+            ['enabled'] = false,
+            ['anchor'] = {
+                ['pointFrom'] = 'TOP',
+                ['attachTo'] = 'buffs',
+                ['pointTo'] = 'BOTTOM',
+                ['xOffset'] = 9,
+                ['yOffset'] = 6,
+            },
+            ['size'] = {
+                ['height'] = 26,
+                ['width'] = 252,
+            },
+        },
         ['raidicon'] = {
             ['enabled'] = true,
             ['anchor'] = {

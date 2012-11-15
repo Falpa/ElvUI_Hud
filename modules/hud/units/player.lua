@@ -51,7 +51,9 @@ function H:ConstructPlayerFrame(frame,unit)
 	if E.myclass == "ROGUE" or E.myclass == "DRUID" then
 		frame.CPoints = self:ConstructComboPoints(frame)
 	end
-
+	
+	frame.Buffs = self:ConstructBuffs(frame)
+    frame.Debuffs = self:ConstructDebuffs(frame)
 	frame.RaidIcon = self:ConstructRaidIcon(frame)
 	frame.Resting = self:ConstructRestingIndicator(frame)
 	frame.Combat = self:ConstructCombatIndicator(frame)

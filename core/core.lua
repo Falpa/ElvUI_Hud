@@ -7,6 +7,9 @@ local UF = E:GetModule('UnitFrames');
 local LSM = LibStub("LibSharedMedia-3.0");
 H.frames = {}
 
+
+E.Hud = H
+
 function H:updateAllElements(frame)
     for _, v in ipairs(frame.__elements) do
         v(frame, "UpdateElement", frame.unit)
@@ -121,8 +124,6 @@ end
 
 function H:PLAYER_REGEN_ENABLED()
     self:Enable()
-    ElvUF_Player:Hide()
-    ElvUF_Player:Show()
     self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 end
 

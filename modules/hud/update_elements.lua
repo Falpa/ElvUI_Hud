@@ -907,6 +907,108 @@ local function CheckFilter(filterType, isFriend)
 	return false
 end
 
+function H:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
+	if E.global.unitframe.InvalidSpells[spellID] then
+		return false;
+	end
+
+	local isPlayer, isFriend
+
+	if not E.db.unitframe.units[unit] then return end
+	local db = E.db.unitframe.units[unit]
+	if not db or not db[self.type] then return; end
+	
+	db = db[self.type]
+
+	local returnValue = true;
+	local returnValueChanged = false;
+	if caster == 'player' or caster == 'vehicle' then isPlayer = true end
+	if UnitIsFriend('player', unit) then isFriend = true end
+	
+	icon.isPlayer = isPlayer
+	icon.owner = caster
+	icon.name = name
+	
+	--This should be sorted as least priority checked first
+	--most priority last
+	
+	if CheckFilter(db.playerOnly, isFriend) then
+		if isPlayer then
+			returnValue = true;
+		elseif not returnValueChanged then
+			returnValue = false;
+		end
+		returnValueChanged = true;
+	end
+	
+	if CheckFilter(db.onlyDispellable, isFriend) then
+		if (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and dtype and E:IsDispellableByMe(dtype)) then
+			returnValue = true;
+		elseif not returnValueChanged then
+			returnValue = false;
+		end
+		returnValueChanged = true;
+	end
+	
+	if CheckFilter(db.noConsolidated, isFriend) then
+		if shouldConsolidate == 1 then
+			returnValue = false;
+		elseif not returnValueChanged then
+			returnValue = true;
+		end
+		
+		returnValueChanged = true;
+	end
+	
+	if CheckFilter(db.noDuration, isFriend) then
+		if (duration == 0 or not duration) then
+			returnValue = false;
+		elseif not returnValueChanged then
+			returnValue = true;
+		end
+		
+		returnValueChanged = true;
+	end
+	
+	if CheckFilter(db.useBlacklist, isFriend) then
+		if E.global['unitframe']['aurafilters']['Blacklist'].spells[name] and E.global['unitframe']['aurafilters']['Blacklist'].spells[name].enable then
+			returnValue = false;
+		elseif not returnValueChanged then
+			returnValue = true;
+		end
+		
+		returnValueChanged = true;
+	end
+	
+	if CheckFilter(db.useWhitelist, isFriend) then
+		if E.global['unitframe']['aurafilters']['Whitelist'].spells[name] and E.global['unitframe']['aurafilters']['Whitelist'].spells[name].enable then
+			returnValue = true;
+		elseif not returnValueChanged then
+			returnValue = false;
+		end
+		
+		returnValueChanged = true;
+	end	
+
+	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
+		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
+		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
+
+		if type == 'Whitelist' then
+			if spellList[name] and spellList[name].enable then
+				returnValue = true	
+			elseif not returnValueChanged then
+				returnValue = false
+			end
+
+		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
+			returnValue = false				
+		end
+	end		
+
+	return returnValue	
+end
+
 function H:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate)
 	if not E.db.unitframe.units[unit] then return end
 	local db = E.db.unitframe.units[unit].aurabar
