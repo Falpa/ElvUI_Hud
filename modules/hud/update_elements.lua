@@ -63,9 +63,14 @@ function H:UpdateClassBar(frame,element)
 				numPoints = UnitPowerMax('player',SPELL_POWER_SOUL_SHARDS)
 				maxPoints = 4
 			end
+			if not config['enabled'] then numPoints = 4; maxPoints = 4 end
 			if not frame.WarlockSpecBars.PostUpdate then
 				frame.WarlockSpecBars.PostUpdate = function(self)
-					H:UpdateClassBar(frame,element)
+					if config['enabled'] then
+						H:UpdateClassBar(frame,element)
+					else
+						self:Hide()
+					end
 				end
 			end
 		end
@@ -115,10 +120,19 @@ function H:UpdateClassBar(frame,element)
 		end
 		for i = 1, numPoints do
 			frame[e][i]:Size(size.width,(size.height - (spaced and totalspacing or 2)) / numPoints)
-			if spaced then
-				frame[e][i].backdrop:Show()
+			if not frame[e][i].SetAlpha_ then frame[e][i].SetAlpha_ = frame[e][i].SetAlpha; frame[e][i].SetAlpha = function(self,alpha) self:SetAlpha_(self.alpha) end end
+			if config['enabled'] then
+				frame[e][i].alpha = 1
+				frame[e][i]:SetAlpha(1)
+				if spaced then
+					frame[e][i].backdrop:Show()
+				else
+					frame[e][i].backdrop:Hide()
+				end
 			else
 				frame[e][i].backdrop:Hide()
+				frame[e][i].alpha = 0
+				frame[e][i]:SetAlpha(0)
 			end
 		end
 	end
@@ -449,6 +463,7 @@ function H:UpdateElementAnchor(frame,element)
 
 	if enabled then
 		frame:EnableElement(e)
+		frame[e]:SetAlpha(1)
 		if config['value'] and frame[e].value then
 			if config['value']['enabled'] then
 				frame[e].value:Show()
@@ -460,6 +475,7 @@ function H:UpdateElementAnchor(frame,element)
 		if frame[e].ForceUpdate then frame[e]:ForceUpdate() end
 	else
 		frame:DisableElement(e)
+		frame[e]:SetAlpha(0)
 		if element == 'gcd' then
 			frame.GCD:Hide()
 			frame.GCD = nil -- Ugh fuck this don't know why it won't disable
