@@ -186,6 +186,7 @@ function H:GetAnchor(frame,anchor)
 end
 
 function H:CheckHealthValue(frame,eclipse)
+	if not frame or not frame.Health then return end
 	local config = self.db.units.player.health.value
 	if config.enabled then
 		if H:IsDefault('units.player.health.value.anchor') then
