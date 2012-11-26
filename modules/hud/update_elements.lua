@@ -120,8 +120,9 @@ function H:UpdateClassBar(frame,element)
 		end
 		for i = 1, numPoints do
 			frame[e][i]:Size(size.width,(size.height - (spaced and totalspacing or 2)) / numPoints)
-			if not frame[e][i].SetAlpha_ then frame[e][i].SetAlpha_ = frame[e][i].SetAlpha; frame[e][i].SetAlpha = function(self,alpha) self:SetAlpha_(self.alpha) end end
+			if not frame[e][i].SetAlpha_ then frame[e][i].SetAlpha_ = frame[e][i].SetAlpha; frame[e][i].SetAlpha = function(self,alpha) self:SetAlpha_(self.enabled and alpha or self.alpha) end end
 			if config['enabled'] then
+				frame[e][i].enabled = true
 				frame[e][i].alpha = 1
 				frame[e][i]:SetAlpha(1)
 				if spaced then
@@ -130,6 +131,7 @@ function H:UpdateClassBar(frame,element)
 					frame[e][i].backdrop:Hide()
 				end
 			else
+				frame[e][i].enabled = false
 				frame[e][i].backdrop:Hide()
 				frame[e][i].alpha = 0
 				frame[e][i]:SetAlpha(0)
