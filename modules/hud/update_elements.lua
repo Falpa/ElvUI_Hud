@@ -91,7 +91,7 @@ function H:UpdateClassBar(frame,element)
 		end
 
 		if E.myclass == "MONK" then
-			numPoints = UnitPowerMax('player',SPELL_POWER_LIGHT_FORCE)
+			numPoints = UnitPowerMax('player',SPELL_POWER_CHI)
 			maxPoints = 5
 			if not frame.HarmonyBar.PostUpdate then
 				frame.HarmonyBar.PostUpdate = function(self)
