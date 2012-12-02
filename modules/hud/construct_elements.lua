@@ -366,7 +366,7 @@ function H:ConstructRaidIcon(frame)
     f:SetFrameLevel(20)
     
     local tex = f:CreateTexture(nil, "OVERLAY")
-    tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp")
+    tex:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
     tex:Size(12)
 
     return tex
