@@ -1,5 +1,4 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="oUF_HarmonyBar\oUF_HarmonyBar.lua"/>
 	<Script file="oUF_ShadowOrbsBar\oUF_ShadowOrbsBar.lua"/>
 	<Script file="oUF_WarlockSpecBars\oUF_WarlockSpecBars.lua"/>
 	<Script file="oUF_WeakenedSoul\oUF_WeakenedSoul.lua"/>

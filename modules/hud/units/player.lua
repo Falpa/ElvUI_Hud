@@ -37,7 +37,7 @@ function H:ConstructPlayerFrame(frame,unit)
 	end
 
 	if E.myclass == "MONK" then
-		frame.HarmonyBar = self:ConstructHarmonyBar(frame)
+		frame.Harmony = self:ConstructHarmony(frame)
 	end
 
 	if E.myclass == "PRIEST" then

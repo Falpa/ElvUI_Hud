@@ -93,8 +93,8 @@ function H:UpdateClassBar(frame,element)
 		if E.myclass == "MONK" then
 			numPoints = UnitPowerMax('player',SPELL_POWER_CHI)
 			maxPoints = 5
-			if not frame.HarmonyBar.PostUpdate then
-				frame.HarmonyBar.PostUpdate = function(self)
+			if not frame.Harmony.PostUpdate then
+				frame.Harmony.PostUpdate = function(self)
 					H:UpdateClassBar(frame,element)
 				end
 			end
@@ -218,9 +218,9 @@ function H:UpdateClassBarAnchors(frame,element)
 		if E.myclass == "MONK" then
 			for i=1,5 do
 				if i == 1 then
-		            frame.HarmonyBar[i]:Point("BOTTOM",frame.HarmonyBar)
+		            frame.Harmony[i]:Point("BOTTOM",frame.Harmony)
 		        else
-		            frame.HarmonyBar[i]:Point("BOTTOM",frame.HarmonyBar[i-1], "TOP", 0, spacing)
+		            frame.Harmony[i]:Point("BOTTOM",frame.Harmony[i-1], "TOP", 0, spacing)
 		        end
 			end
 		end

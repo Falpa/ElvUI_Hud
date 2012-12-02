@@ -77,7 +77,7 @@ function H:GetClassBarName()
 	end
 
 	if E.myclass == "MONK" then
-		return 'HarmonyBar'
+		return 'Harmony'
 	end
 
 	if E.myclass == "PRIEST" then
