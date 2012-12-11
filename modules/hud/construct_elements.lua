@@ -250,8 +250,8 @@ function H:ConstructTotems(frame)
 end
 
 -- Construct harmony bar for monks
-function H:ConstructHarmonyBar(frame)
-   return self:ConstructSubBars(frame,'classbars','harmony',5) 
+function H:ConstructHarmony(frame)
+   return self:ConstructSubBars(frame,'classbars','harmony',5)
 end
  
 -- Construct shadow orb bar for priests

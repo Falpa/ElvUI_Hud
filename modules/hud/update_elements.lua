@@ -44,6 +44,7 @@ function H:UpdateClassBar(frame,element)
 	if element == 'classbars' then
 		local numPoints
 		local maxPoints
+		local curPoints
 		if E.myclass == "DRUID" then
 			frame.EclipseBar.LunarBar:Size(frame.EclipseBar:GetSize())
 			frame.EclipseBar.SolarBar:Size(frame.EclipseBar:GetSize())
@@ -54,12 +55,15 @@ function H:UpdateClassBar(frame,element)
 		if E.myclass == "WARLOCK" then
 			local spec = GetSpecialization()
 			if spec == SPEC_WARLOCK_DESTRUCTION then
+				curPoints = UnitPower('player',SPELL_POWER_BURNING_EMBERS)
 				numPoints = UnitPowerMax('player',SPELL_POWER_BURNING_EMBERS)
 				maxPoints = 4
 			elseif spec == SPEC_WARLOCK_DEMONOLOGY then
+				curPoints = 1
 				numPoints = 1
 				maxPoints = 1
 			else
+				curPoints = UnitPower('player',SPELL_POWER_SOUL_SHARDS)
 				numPoints = UnitPowerMax('player',SPELL_POWER_SOUL_SHARDS)
 				maxPoints = 4
 			end
@@ -76,21 +80,25 @@ function H:UpdateClassBar(frame,element)
 		end
 
 		if E.myclass == "PALADIN" then
+			curPoints = UnitPower('player',SPELL_POWER_HOLY_POWER)
 			numPoints = UnitPowerMax('player',SPELL_POWER_HOLY_POWER)
 			maxPoints = 5
 		end
 
 		if E.myclass == "DEATHKNIGHT" then
+			curPoints = 6
 			numPoints = 6
 			maxPoints = 6
 		end
 
 		if E.myclass == "SHAMAN" then
+			curPoints = 4
 			numPoints = 4
 			maxPoints = 4
 		end
 
 		if E.myclass == "MONK" then
+			curPoints = UnitPower('player',SPELL_POWER_CHI)
 			numPoints = UnitPowerMax('player',SPELL_POWER_CHI)
 			maxPoints = 5
 			if not frame.Harmony.PostUpdate then
@@ -101,11 +109,13 @@ function H:UpdateClassBar(frame,element)
 		end
 
 		if E.myclass == "PRIEST" then
+			curPoints = 3
 			numPoints = 3
 			maxPoints = 3
 		end
 
 		if E.myclass == "MAGE" then
+			curPoints = 6
 			numPoints = 6
 			maxPoints = 6
 		end
@@ -118,13 +128,13 @@ function H:UpdateClassBar(frame,element)
 		else
 			frame[e]:SetAlpha(1)
 		end
-		for i = 1, numPoints do
+		for i = 1, maxPoints do
 			frame[e][i]:Size(size.width,(size.height - (spaced and totalspacing or 2)) / numPoints)
 			if not frame[e][i].SetAlpha_ then frame[e][i].SetAlpha_ = frame[e][i].SetAlpha; frame[e][i].SetAlpha = function(self,alpha) self:SetAlpha_(self.enabled and alpha or self.alpha) end end
-			if config['enabled'] then
+			if config['enabled'] and i <= numPoints then
 				frame[e][i].enabled = true
 				frame[e][i].alpha = 1
-				frame[e][i]:SetAlpha(1)
+				frame[e][i]:SetAlpha(i <= curPoints and 1 or .2)
 				if spaced then
 					frame[e][i].backdrop:Show()
 				else
