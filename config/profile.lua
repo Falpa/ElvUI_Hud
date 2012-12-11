@@ -146,7 +146,7 @@ P['hud']['units'] = {
         },
         ['name'] = {
             ['enabled'] = true,
-            ['tag'] = '[difficultycolor][smartlevel] [shortclassification] [namecolor][name:medium]',
+            ['tag'] = '[smartlevel] [shortclassification] [namecolor][name:medium]',
             ['anchor'] = {
                 ['pointFrom'] = 'BOTTOM',
                 ['attachTo'] = 'health',
