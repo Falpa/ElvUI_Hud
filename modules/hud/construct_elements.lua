@@ -170,17 +170,15 @@ function H:ConstructEclipseBar(frame)
     eclipseBar:SetFrameStrata("MEDIUM")
     eclipseBar:SetTemplate("Default")
     eclipseBar:SetFrameLevel(8)
-    eclipseBar:SetTemplate("Default")
     eclipseBar:SetBackdropBorderColor(0,0,0,0)
                     
-    local lunarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'lunarbar')
+    local lunarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'lunarbar',true)
     lunarBar:SetPoint('BOTTOM', eclipseBar)
-    lunarBar:SetStatusBarColor(.30, .52, .90)
     lunarBar:SetOrientation('VERTICAL')
     eclipseBar.LunarBar = lunarBar
 
-    local solarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'solarbar')
-    solarBar:SetPoint('BOTTOM', lunarBar, 'TOP')
+    local solarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'solarbar',true)
+    solarBar:SetPoint('BOTTOM', lunarBar:GetStatusBarTexture(), 'TOP')
     solarBar:SetStatusBarColor(.30, .52, .90)
     solarBar:SetOrientation('VERTICAL')
     eclipseBar.SolarBar = solarBar

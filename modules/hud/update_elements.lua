@@ -178,11 +178,6 @@ function H:UpdateClassBarAnchors(frame,element)
 	end
 
 	if element == 'classbars' then
-		if E.myclass == "DRUID" then
-			frame.EclipseBar.LunarBar:SetPoint('LEFT', frame.EclipseBar, 'LEFT', 0, 0)
-			frame.EclipseBar.SolarBar:SetPoint('LEFT', frame.EclipseBar, 'LEFT', 0, 0)
-		end
-
 		if E.myclass == "WARLOCK" then
 			for i=1,4 do
 				if i == 1 then

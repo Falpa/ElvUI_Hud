@@ -306,41 +306,46 @@ function H:AddElement(frame,element)
 	end
 end
 
-function H:ConfigureStatusBar(frame,element,parent,name)
+function H:ConfigureStatusBar(frame,element,parent,name,t)
 	if parent == nil then parent = frame end
 	if name == nil then name = "statusbar" end
 	local sbname = frame.unit..'_hud_'..element..'_'..name
 
 	-- Create the status bar
 	local sb = CreateFrame('StatusBar', sbname, parent)
-	sb:SetTemplate("Default")
-	sb:CreateBackdrop("Default")
+	if not t then
+		sb:SetTemplate("Default")
+		sb:CreateBackdrop("Default")
+	end
 
 	-- Dummy texture so we can set colors
 	sb:SetStatusBarTexture(E['media'].blankTex)
 	sb:GetStatusBarTexture():SetHorizTile(false)
  
 	-- Frame strata/level
-	sb:SetFrameStrata(parent:GetFrameStrata())
-	sb:SetFrameLevel(parent:GetFrameLevel() + 5)
+	if not t then
+		sb:SetFrameStrata(parent:GetFrameStrata())
+		sb:SetFrameLevel(parent:GetFrameLevel() + 5)
 
-	-- Create the status bar background
-    local bg = sb:CreateTexture(nil, 'BORDER')
-    bg:SetAllPoints()
-    bg:SetTexture(E['media'].blankTex)
-    bg:SetTexture(.1, .1, .1)
-    bg:SetAlpha(.2)
-    bg.multiplier = 0.3 
-    sb.bg = bg
+		-- Create the status bar background
+	    local bg = sb:CreateTexture(nil, 'BORDER')
+	    bg:SetAllPoints()
+	    bg:SetTexture(E['media'].blankTex)
+	    bg:SetTexture(.1, .1, .1)
+	    bg:SetAlpha(.2)
+	    bg.multiplier = 0.3 
+	    sb.bg = bg
 
-    -- statusbar frame border
-	local sbframe = CreateFrame("Frame", nil, sb)
-	sbframe:SetPoint("TOPLEFT", sb, "TOPLEFT", E:Scale(-2), E:Scale(2))
-	sbframe:SetPoint("BOTTOMRIGHT", sb, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
-	sbframe:SetFrameLevel(frame:GetFrameLevel() + 4)
+	    -- statusbar frame border
+		local sbframe = CreateFrame("Frame", nil, sb)
+		sbframe:SetPoint("TOPLEFT", sb, "TOPLEFT", E:Scale(-2), E:Scale(2))
+		sbframe:SetPoint("BOTTOMRIGHT", sb, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+		sbframe:SetFrameLevel(frame:GetFrameLevel() + 4)
 
-	sbframe:SetTemplate("Default")
-	sb.FrameBorder = sbframe
+		sbframe:SetTemplate("Default")
+		sb.FrameBorder = sbframe
+	end
+	
 	if not self.units[frame.unit][element].statusbars then
 		self.units[frame.unit][element].statusbars =  { }
 	end
