@@ -46,6 +46,10 @@ function H:UpdateClassBar(frame,element)
 		local maxPoints
 		local curPoints
 		if E.myclass == "DRUID" then
+			frame.EclipseBar.LunarBar:SetMinMaxValues(0, 0)
+			frame.EclipseBar.SolarBar:SetMinMaxValues(0, 0)
+			frame.EclipseBar.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.eclipseBar[1]))
+			frame.EclipseBar.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.eclipseBar[2]))
 			frame.EclipseBar.LunarBar:Size(frame.EclipseBar:GetSize())
 			frame.EclipseBar.SolarBar:Size(frame.EclipseBar:GetSize())
 			frame.EclipseBar:ForceUpdate()
