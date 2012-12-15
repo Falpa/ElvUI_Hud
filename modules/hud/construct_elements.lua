@@ -201,7 +201,7 @@ function H:ConstructSubBars(frame,element,name,num)
     bars:SetBackdropBorderColor(0,0,0,0)
 
     for i = 1, num do
-        bars[i] = self:ConfigureStatusBar(frame,element,bars,name..i)
+        bars[i] = self:ConfigureStatusBar(frame,element,frame,name..i)
         bars[i]:SetFrameStrata("MEDIUM")
         bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
 

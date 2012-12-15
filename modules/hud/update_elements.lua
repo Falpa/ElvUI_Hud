@@ -138,11 +138,14 @@ function H:UpdateClassBar(frame,element)
 				frame[e][i]:Show()
 				frame[e][i]:SetAlpha(i <= curPoints and 1 or .2)
 				if spaced then
-					frame[e][i]:SetAlpha(1)
+					frame[e][i]:SetAlpha(1 <= curPoints and 1 or .2)
 					frame[e][i].backdrop:Show()
 				else
 					frame[e][i].backdrop:Hide()
 				end
+			else
+				frame[e][i]:Hide()
+				frame[e][i]:SetAlpha(0)
 			end
 		end
 	end
