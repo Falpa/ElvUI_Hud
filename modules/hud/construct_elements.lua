@@ -173,22 +173,22 @@ function H:ConstructEclipseBar(frame)
     eclipseBar:SetTemplate("Default")
     eclipseBar:SetBackdropBorderColor(0,0,0,0)
                     
-    local lunarBar = self:ConfigureStatusBar(frame,'classbars',frame,'lunarbar')
-    lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
+    local lunarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'lunarbar')
+    lunarBar:SetPoint('BOTTOM', eclipseBar)
     lunarBar:SetStatusBarColor(.30, .52, .90)
     lunarBar:SetOrientation('VERTICAL')
     eclipseBar.LunarBar = lunarBar
 
-    local solarBar = self:ConfigureStatusBar(frame,'classbars',frame,'solarbar')
-    solarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
+    local solarBar = self:ConfigureStatusBar(frame,'classbars',eclipseBar,'solarbar')
+    solarBar:SetPoint('BOTTOM', lunarBar, 'TOP')
     solarBar:SetStatusBarColor(.30, .52, .90)
     solarBar:SetOrientation('VERTICAL')
     eclipseBar.SolarBar = solarBar
     
-    local eclipseBarText = self:ConfigureFontString(frame,'classbars',frame,'text')
+    local eclipseBarText = self:ConfigureFontString(frame,'classbars',eclipseBar,'text')
     eclipseBarText:SetPoint("LEFT", eclipseBar, "RIGHT", E:Scale(10), 0)
     
-    eclipseBar.PostUpdatePower = H.EclipseDirection
+    eclipseBar.PostUpdatePower = UF.EclipseDirection
     eclipseBar.Text = eclipseBarText
 
     return eclipseBar
@@ -203,7 +203,7 @@ function H:ConstructSubBars(frame,element,name,num)
     bars:SetBackdropBorderColor(0,0,0,0)
 
     for i = 1, num do
-        bars[i] = self:ConfigureStatusBar(frame,element,frame,name..i)
+        bars[i] = self:ConfigureStatusBar(frame,element,bars,name..i)
         bars[i]:SetFrameStrata("MEDIUM")
         bars[i]:SetFrameLevel(frame:GetFrameLevel() + 35)
 
