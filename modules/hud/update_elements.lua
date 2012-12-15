@@ -134,8 +134,10 @@ function H:UpdateClassBar(frame,element)
 		end
 		for i = 1, maxPoints do
 			frame[e][i]:Size(size.width,(size.height - (spaced and totalspacing or 2)) / numPoints)
-			if i <= numPoints then
-				frame[e][i]:Show()
+			if not frame[e][i].SetAlpha_ then frame[e][i].SetAlpha_ = frame[e][i].SetAlpha; frame[e][i].SetAlpha = function(self,alpha) self:SetAlpha_(self.enabled and alpha or self.alpha) end end
+			if config['enabled'] and i <= numPoints then
+				frame[e][i].enabled = true
+				frame[e][i].alpha = 1
 				frame[e][i]:SetAlpha(i <= curPoints and 1 or .2)
 				if spaced then
 					frame[e][i]:SetAlpha(i <= curPoints and 1 or .2)
@@ -144,7 +146,9 @@ function H:UpdateClassBar(frame,element)
 					frame[e][i].backdrop:Hide()
 				end
 			else
-				frame[e][i]:Hide()
+				frame[e][i].enabled = false
+				frame[e][i].backdrop:Hide()
+				frame[e][i].alpha = 0
 				frame[e][i]:SetAlpha(0)
 			end
 		end
@@ -471,7 +475,6 @@ function H:UpdateElementAnchor(frame,element)
 
 	if enabled then
 		frame:EnableElement(e)
-		frame[e]:Show()
 		frame[e]:SetAlpha(1)
 		if config['value'] and frame[e].value then
 			if config['value']['enabled'] then
