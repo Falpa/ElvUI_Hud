@@ -337,15 +337,16 @@ function H:ConfigureStatusBar(frame,element,parent,name,t)
 	    sb.bg = bg
 
 	    -- statusbar frame border
+	    local mult = E.PixelMode and 1 or 2
 		local sbframe = CreateFrame("Frame", nil, sb)
-		sbframe:SetPoint("TOPLEFT", sb, "TOPLEFT", E:Scale(-2), E:Scale(2))
-		sbframe:SetPoint("BOTTOMRIGHT", sb, "BOTTOMRIGHT", E:Scale(2), E:Scale(-2))
+		sbframe:SetPoint("TOPLEFT", sb, "TOPLEFT", E:Scale(-mult), E:Scale(mult))
+		sbframe:SetPoint("BOTTOMRIGHT", sb, "BOTTOMRIGHT", E:Scale(mult), E:Scale(-mult))
 		sbframe:SetFrameLevel(frame:GetFrameLevel() + 4)
 
 		sbframe:SetTemplate("Default")
 		sb.FrameBorder = sbframe
 	end
-	
+
 	if not self.units[frame.unit][element].statusbars then
 		self.units[frame.unit][element].statusbars =  { }
 	end
