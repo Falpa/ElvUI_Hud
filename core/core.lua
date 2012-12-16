@@ -62,12 +62,12 @@ function H:Hide(frame,event)
 
     if not UnitExists(frame.unit) then return end
 	if (event == "PLAYER_REGEN_DISABLED") then
-			UIFrameFadeIn(frame, 0.3 * (alpha - frame:GetAlpha()), frame:GetAlpha(), alpha)
+			E:UIFrameFadeIn(frame, 0.3 * (alpha - frame:GetAlpha()), frame:GetAlpha(), alpha)
 	elseif (event == "PLAYER_REGEN_ENABLED") then
-			UIFrameFadeOut(frame, 0.3 * (oocalpha + frame:GetAlpha()), frame:GetAlpha(), oocalpha)
+			E:UIFrameFadeOut(frame, 0.3 * (oocalpha + frame:GetAlpha()), frame:GetAlpha(), oocalpha)
 	elseif (event == "PLAYER_ENTERING_WORLD") then
-			if (not c) then
-				frame:SetAlpha(oocalpha)
+			if (not UnitAffectingCombat("player")) then
+				E:UIFrameFadeOut(frame, 0.3 * (oocalpha + frame:GetAlpha()), frame:GetAlpha(), oocalpha)
 			end
 	end
 end
