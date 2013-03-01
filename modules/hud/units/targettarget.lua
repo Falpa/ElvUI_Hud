@@ -14,5 +14,4 @@ function H:ConstructTargetTargetFrame(frame,unit)
     H:HideOOC(frame)
     frame:Point("BOTTOMLEFT", ElvUF_TargetHud, "BOTTOMRIGHT", 110, 0)
     E:CreateMover(frame, frame:GetName()..'Mover', 'Target Target Hud Frame', nil, nil, nil, 'ALL,SOLO')
-    frame:Disable()
 end

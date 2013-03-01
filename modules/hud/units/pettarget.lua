@@ -14,5 +14,4 @@ function H:ConstructPetTargetFrame(frame,unit)
     H:HideOOC(frame)
     frame:Point("BOTTOMRIGHT", ElvUF_PetHud, "BOTTOMLEFT", -110, 0)
     E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Target Hud Frame', nil, nil, nil, 'ALL,SOLO')
-    frame:Disable()
 end

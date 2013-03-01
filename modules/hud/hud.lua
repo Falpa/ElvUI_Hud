@@ -239,6 +239,7 @@ function H:UpdateFrame(unit)
 
 	if E.db.hud.enabled and self.db.units[frame.unit].enabled then
 		frame:EnableMouse(self.db.hideElv or self.db.enableMouse)
+		frame:Enable()
 		frame:SetAlpha(self.db.alpha)
 		local event
 		if InCombatLockdown() then
@@ -257,7 +258,6 @@ function H:UpdateFrame(unit)
 		end
 		if not frame then return end -- don't know, fuck this shit
 
-		frame:Enable()
 		if H.enableAuraBars then
 			frame:UpdateAllElements()
 		end

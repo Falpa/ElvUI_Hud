@@ -27,5 +27,4 @@ function H:ConstructTargetFrame(frame,unit)
     H:HideOOC(frame)
     frame:Point("RIGHT", E.UIParent, "CENTER", 275, 0) --Set to default position
     E:CreateMover(frame, frame:GetName()..'Mover', 'Target Hud Frame', nil, nil, nil, 'ALL,SOLO')
-    frame:Disable()
 end

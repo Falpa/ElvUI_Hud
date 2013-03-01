@@ -8,7 +8,8 @@ local LSM = LibStub("LibSharedMedia-3.0");
 local EP = LibStub("LibElvUIPlugin-1.0")
 H.frames = {}
 
-
+-- wonder if this is related
+E.db.hud = {}
 E.Hud = H
 
 function H:updateAllElements(frame)
@@ -91,7 +92,7 @@ function H:UpdateHideSetting()
     else
         for _,f in pairs(frames) do
             self:EnableHide(f)
-            local alpha = self.db[InCombatLockdown() and 'alpha' or 'alphaOOC']
+            local alpha = self.db[InCombatLockdown() and 'alpha' or 'alphaOOC'] or P.hud[InCombatLockdown() and 'alpha' or 'alphaOOC']
             f:SetAlpha(alpha)
         end
     end
@@ -188,28 +189,20 @@ function H:UpdateMouseSetting()
     end
 end
 
-function H:ResetSettings()
-    local oldSettings = {}
-    local sl = self.db.simpleLayout
-    E:CopyTable(oldSettings,self.db)
-    E:CopyTable(self.db,P.hud)
-    for k,_ in pairs(oldSettings) do
-        if self.db[k] then
-            self.db[k] = oldSettings[k]
-        end
-    end
-    self.db['install_complete'] = 3
-    return sl
+function H:UpdateAll()
+    self.db = E.db.hud
+
+    self:UpdateAllFrames()
+    self:UpdateMouseSetting()
+    self:UpdateHideSetting()
+    if UnitAffectingCombat("player") then self:RegisterEvent("PLAYER_REGEN_ENABLED") else self:Enable() end
 end
 
 function H:Initialize()
-    if self.db then return end;
     self.db = E.db.hud
 
     self:CreateWarningFrame()
-    local sl = false 
-    if not self.db['install_complete'] or self.db['install_complete'] and self.db['install_complete'] < 3 then sl = self:ResetSettings() end
-
+    
     oUF:RegisterStyle('ElvUI_Hud',function(frame,unit)
         H:ConstructHudFrame(frame,unit)
     end)
@@ -224,13 +217,14 @@ function H:Initialize()
         oUF:Spawn(unit, "ElvUF_"..stringTitle.."Hud")
     end
 
-    if sl then self:simpleLayout() end
     EP:RegisterPlugin(addon, H.GenerateOptions)
     self:UpdateAllFrames()
     self:UpdateMouseSetting()
     self:UpdateHideSetting()
 
-    hooksecurefunc(UF,"Update_AllFrames",function(self) H:UpdateAllFrames() end)
+    -- Why did I need this?
+    --hooksecurefunc(UF,"Update_AllFrames",function(self) H:UpdateAllFrames() end)
+    hooksecurefunc(E,"UpdateAll",function(self,ignoreInstall) H:UpdateAll() end)
 
     local f = CreateFrame('Frame', nil, UIParent); 
     f:SetAllPoints();
