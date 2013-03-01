@@ -435,4 +435,34 @@ function H:SimpleLayout()
 	self.db.units.player.power.anchor.xOffset = 550
 	self.db.units.player.classbars.enabled = true
 	self.db.units.player.cpoints.enabled = true
+	self.db.units.player.castbar.enabled = true
+	H:UpdateAllFrames()
+end
+
+function H:ComboLayout()
+	self.db.hideElv = false
+	self.db.hideOOC = true
+	self.db.units.targettarget.enabled = false
+	self.db.units.pet.enabled = false
+	self.db.units.pettarget.enabled = false
+	for element,_ in pairs(self.db.units.player) do
+		if self:GetElement(element) then
+			self.db.units.player[element].enabled = false
+		end
+	end
+	for element,_ in pairs(self.db.units.target) do
+		if self:GetElement(element) then
+			self.db.units.player[element].enabled = false
+		end
+	end
+	self.db.units.player.health.enabled = true
+	self.db.units.player.castbar.enabled = true
+	self.db.units.target.health.enabled = true
+	self.db.units.target.name.enabled = true
+	self.db.units.target.raidicon.enabled = true
+	self.db.horizCastbar = true
+	--self.db['units'][unit].castbar.enable
+	UF.db['units'].player.castbar.enable = false
+	UF.db['units'].target.castbar.enable = false
+	UF:Update_AllFrames()
 end

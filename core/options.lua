@@ -45,8 +45,15 @@ function H:GenerateOptions()
                         order = 3,
                         name = L['Simple Layout'],
                         desc = L['Use the simple layout from 2.0'],
-                        func = function() H:SimpleLayout(); H:UpdateAllFrames(); end,
-                    }
+                        func = function() H:SimpleLayout(); end,
+                    },
+                    comboLayout = {
+                        type = 'execute',
+                        order = 4,
+                        name = L['Combo Layout'],
+                        desc = L["Use a layout designed to work with ElvUI unitframes"],
+                        func = function() H:ComboLayout() end,
+                    },
                 },
             },
             hudOptions = {
