@@ -151,6 +151,11 @@ function H:DisableHide(frame)
     hider:SetScript("OnEvent", nil)
 end
 
+function H:AuraBarsSuck()
+    H.enableAuraBars = true
+    H:UpdateAllFrames()
+end
+
 function H:Enable()
     self:UpdateElvUFSetting(true)
     for _,f in pairs(frames) do
@@ -169,6 +174,7 @@ function H:Enable()
     end
     self.lowHealthFlash:Show()
     self.lowHealthFlash:SetAlpha(0)
+    H:ScheduleTimer('AuraBarsSuck',5)
 end
 
 function H:UpdateMouseSetting()

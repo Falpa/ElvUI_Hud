@@ -238,7 +238,6 @@ function H:UpdateFrame(unit)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	if E.db.hud.enabled and self.db.units[frame.unit].enabled then
-		frame:Enable()
 		frame:EnableMouse(self.db.hideElv or self.db.enableMouse)
 		frame:SetAlpha(self.db.alpha)
 		local event
@@ -248,12 +247,19 @@ function H:UpdateFrame(unit)
 			event = "PLAYER_REGEN_ENABLED"
 		end
 		if self.db.hideOOC then H:Hide(frame, event) end
+		if not frame.AuraBars then frame.AuraBars = frame.DummyAuraBars end
 		self:UpdateAllElements(frame)
 		self:UpdateAllElementAnchors(frame)
 
 		if E.myclass == 'DRUID' and unit == 'player' then
 			local spec = GetSpecialization()
 			self:CheckHealthValue(frame,spec==1)
+		end
+		if not frame then return end -- don't know, fuck this shit
+
+		frame:Enable()
+		if H.enableAuraBars then
+			frame:UpdateAllElements()
 		end
 	else
 		frame:Disable()

@@ -13,7 +13,8 @@ function H:ConstructPlayerFrame(frame,unit)
 
 	frame.Name = self:ConstructName(frame)
 		
-	frame.AuraBars = self:ConstructAuraBarHeader(frame)
+	frame.DummyAuraBars = self:ConstructAuraBarHeader(frame)
+	frame:DisableElement('AuraBars') -- disable it until its configured
 
 	if E.myclass == "DRUID" then
 		frame.EclipseBar = self:ConstructEclipseBar(frame)
@@ -65,5 +66,6 @@ function H:ConstructPlayerFrame(frame,unit)
     H:HideOOC(frame)
     frame:Point("RIGHT", E.UIParent, "CENTER", -275, 0) --Set to default position 
     E:CreateMover(frame, frame:GetName()..'Mover', 'Player Hud Frame', nil, nil, nil, 'ALL,SOLO')
+    frame:Disable()
 end
 

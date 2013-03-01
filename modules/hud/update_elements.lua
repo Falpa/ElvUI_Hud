@@ -19,7 +19,7 @@ function H:GetCastbar(frame)
 		frame.Castbar = frame.HorizCastbar
 	end
 	frame:EnableElement('Castbar')
-	frame.Castbar:ForceUpdate()
+	if frame.Castbar.ForceUpdate then frame.Castbar:ForceUpdate() end
 end
 
 -- This function is only responsible for updating bar sizes for class bar children
@@ -348,10 +348,13 @@ function H:UpdateElement(frame,element)
 	end
 end
 
+H.enableAuraBars = false
+
 function H:UpdateElementAnchor(frame,element)
 	local e = H:GetElement(element)
 	local config = self.db.units[frame.unit][element]
 	local enabled = config['enabled']
+	local enableAuraBars = H.enableAuraBars
 	if element == 'healcomm' then
 		if enabled then
 			frame:EnableElement(e)
@@ -450,7 +453,9 @@ function H:UpdateElementAnchor(frame,element)
 		    		holder:Point("CENTER", E.UIParent, "CENTER", 0, -200)
 		    	end
 		    end
-		    f:SetPoint("TOP", holder, "TOP", 0, 0)
+		    f:ClearAllPoints()
+		    f:SetPoint("TOPLEFT", holder, "BOTTOMLEFT", 0, 0)
+		    f:SetPoint("TOPRIGHT", holder, "BOTTOMRIGHT", 0, 0)
 		    f.Holder = holder
 
 		    E:CreateMover(f.Holder, string.format(moverFormat,frame:GetName()), name, nil, nil, nil, 'ALL,SOLO')
@@ -480,7 +485,7 @@ function H:UpdateElementAnchor(frame,element)
 	end
 
 	if enabled then
-		frame:EnableElement(e)
+		if element ~= 'aurabars' or enableAuraBars then frame:EnableElement(e) end
 		frame[e]:SetAlpha(1)
 		if config['value'] and frame[e].value then
 			if config['value']['enabled'] then
@@ -490,7 +495,7 @@ function H:UpdateElementAnchor(frame,element)
 			end
 		end
 		if element ~= 'raidicon' then frame[e]:Show() end
-		if frame[e].ForceUpdate then frame[e]:ForceUpdate() end
+		if frame[e].ForceUpdate and (element ~= 'aurabars') then frame[e]:ForceUpdate() end
 	else
 		frame:DisableElement(e)
 		frame[e]:SetAlpha(0)

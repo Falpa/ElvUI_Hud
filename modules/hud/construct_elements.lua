@@ -313,8 +313,8 @@ function H:ConstructComboPoints(frame)
     return bars
 end
 
-function H:ConstructAuraBars()
-    local config = E.db.hud.units.player['aurabars']
+function H.ConstructAuraBars(self,unit)
+    local config = E.db.hud.units[unit]['aurabars']
     local media = config.media
     local size = config.size
     local bar = self.statusBar
@@ -322,8 +322,8 @@ function H:ConstructAuraBars()
     self:SetTemplate('Default')
 
     bar:Size(size.width,size.height)
-    local textureSetting = 'units.player.aurabars.media.texture'
-    local fontSetting = 'units.player.aurabars.media.font'
+    local textureSetting = 'units.'..unit..'.aurabars.media.texture'
+    local fontSetting = 'units.'..unit..'.aurabars.media.font'
     if not H:IsDefault(textureSetting) then
         bar:SetStatusBarTexture(LSM:Fetch("statusbar", media.texture.statusbar))
     else
@@ -359,10 +359,23 @@ function H:ConstructAuraBars()
     bar.bg:Hide()
 end
 
+function H:ConstructPlayerAuraBars()
+    H.ConstructAuraBars(self,"player")
+end
+
+function H:ConstructTargetAuraBars()
+    H.ConstructAuraBars(self,"target")
+end
+
 function H:ConstructAuraBarHeader(frame)
     self:AddElement(frame,'aurabars')
     local auraBar = self:ConfigureFrame(frame,'aurabars')
-    auraBar.PostCreateBar = H.ConstructAuraBars
+
+    if frame.unit == "player" then
+        auraBar.PostCreateBar = H.ConstructPlayerAuraBars
+    else
+        auraBar.PostCreateBar = H.ConstructTargetAuraBars
+    end
     auraBar.PostUpdate = UF.ColorizeAuraBars
     auraBar.gap = 1
     auraBar.spacing = 1
