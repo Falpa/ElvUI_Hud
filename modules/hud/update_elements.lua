@@ -7,6 +7,21 @@ local UF = E:GetModule('UnitFrames');
 
 local warningTextShown = false;
 
+function H:GetCastbar(frame)
+	local hc = self.units[frame.unit].hcastbar
+	local vc = self.units[frame.unit].vcastbar
+	frame:DisableElement('Castbar')
+	if not self.db.horizCastbar or (frame.unit ~= 'player' and frame.unit ~= 'target') then
+		self.units[frame.unit].castbar = vc
+		frame.Castbar = frame.VertCastbar
+	else
+		self.units[frame.unit].castbar = hc
+		frame.Castbar = frame.HorizCastbar
+	end
+	frame:EnableElement('Castbar')
+	frame.Castbar:ForceUpdate()
+end
+
 -- This function is only responsible for updating bar sizes for class bar children
 -- textures work normally as does parent size
 function H:UpdateClassBar(frame,element)
@@ -241,6 +256,9 @@ function H:UpdateClassBarAnchors(frame,element)
 end
 
 function H:UpdateElement(frame,element)
+	if element == 'castbar' then
+		self:GetCastbar(frame)
+	end
 	local config = self.db.units[frame.unit][element]
 	local size = config['size']
 	local media = config['media']

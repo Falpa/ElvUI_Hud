@@ -110,8 +110,8 @@ function H:GenerateOptions()
                         order = 20,
                         name = L["Horizontal Castbar"],
                         desc = L["Use a horizontal castbar"],
-                        get = function(info) return E.db.hud[info[#info]] end,
-                        set = function(info,value) E.db.hud[info[#info]] = value; E:StaticPopup_Show("CONFIG_RL"); end,
+                        get = function(info) return E.db.hud[ info[#info] ] end,
+                        set = function(info,value) E.db.hud[ info[#info] ] = value; H:UpdateAllFrames() end,
                     },
                     font = {
                         type = "select", dialogControl = 'LSM30_Font',
