@@ -159,7 +159,7 @@ function H:ConstructCastbar(frame)
         vcastbar:HookScript("OnHide", function(self) if E.db.hud.hideOOC and not InCombatLockdown() then H:Hide(frame,"PLAYER_REGEN_ENABLED") end end)
     end
     
-    if not self.db.horizCastbar or (frame.unit ~= 'player' and frame.unit ~= 'target') then
+    if (frame.unit ~= 'player' and frame.unit ~= 'target') or not self.db.units[frame.unit].horizCastbar then
         return vcastbar
     else
         return hcastbar

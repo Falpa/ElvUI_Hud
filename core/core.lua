@@ -112,7 +112,7 @@ function H:EnableFrame(f,a,m)
     f:SetAlpha(a)
 end
 
-local elv_units = { 'player', 'target', 'pet', 'pettarget', 'targettarget' }
+local elv_units = { 'player', 'target', 'pet', 'pettarget', 'targettarget', 'focus', 'focustarget' }
 local old_settings = {}
 
 function H:UpdateElvUFSetting()
@@ -208,7 +208,7 @@ function H:Initialize()
     end)
 
     oUF:SetActiveStyle('ElvUI_Hud')
-    local units = { 'player', 'target', 'pet', 'targettarget', 'pettarget' }
+    local units = { 'player', 'target', 'pet', 'targettarget', 'pettarget', 'focus', 'focustarget' }
     for _,unit in pairs(units) do
         local stringTitle = E:StringTitle(unit)
         if stringTitle:find('target') then

@@ -11,7 +11,7 @@ function H:GetCastbar(frame)
 	local hc = self.units[frame.unit].hcastbar
 	local vc = self.units[frame.unit].vcastbar
 	frame:DisableElement('Castbar')
-	if not self.db.horizCastbar or (frame.unit ~= 'player' and frame.unit ~= 'target') then
+	if (frame.unit ~= 'player' and frame.unit ~= 'target') or not self.db.units[frame.unit].horizCastbar then
 		self.units[frame.unit].castbar = vc
 		frame.Castbar = frame.VertCastbar
 	else
@@ -259,6 +259,7 @@ function H:UpdateElement(frame,element)
 	if element == 'castbar' then
 		self:GetCastbar(frame)
 	end
+	
 	local config = self.db.units[frame.unit][element]
 	local size = config['size']
 	local media = config['media']
@@ -269,7 +270,7 @@ function H:UpdateElement(frame,element)
 	if size then
 		if e.statusbars then
 			if element == 'castbar' and size['vertical'] ~= nil then
-				if not self.db.horizCastbar then
+				if not self.db.units[frame.unit].horizCastbar then
 					size = size['vertical']
 				else
 					size = size['horizontal']
@@ -280,7 +281,7 @@ function H:UpdateElement(frame,element)
 				statusbar:Size(size.width,size.height)
 			end			
 			if element == 'castbar' then
-				if not self.db.horizCastbar or (frame.unit ~= 'player' and frame.unit ~= 'target') then
+				if (frame.unit ~= 'player' and frame.unit ~= 'target') or not self.db.units[frame.unit].horizCastbar then
 					frame.Castbar.Spark:Width(frame.Castbar:GetWidth()*2)
 				else
 					frame.Castbar.Spark:Height(frame.Castbar:GetHeight()*2)
@@ -404,7 +405,7 @@ function H:UpdateElementAnchor(frame,element)
 	local hasAnchor = anchor ~= nil
 	if element == 'castbar' then
 		if frame.unit == 'player' or frame.unit == 'target' then
-			if self.db.horizCastbar then
+			if self.db.units[frame.unit].horizCastbar then
 				hasAnchor = false
 			end
 		end

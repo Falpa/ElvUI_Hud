@@ -425,7 +425,7 @@ function H:UpdateElementSizes(unit,isWidth,newSize)
 		if size then
 			local config = true
 			if element == 'castbar' and (unit == 'player' or unit == 'target') then 
-				if self.db.horizCastbar then
+				if self.db.units[unit].horizCastbar then
 					config = false
 				else
 					size = size['vertical']
@@ -477,8 +477,10 @@ function H:ComboLayout()
 	self.db.units.target.health.enabled = true
 	self.db.units.target.name.enabled = true
 	self.db.units.target.raidicon.enabled = true
-	self.db.horizCastbar = true
+	self.db.player.horizCastbar = true
+	self.db.target.horizCastbar = true
 	--self.db['units'][unit].castbar.enable
 	UF.db['units'].player.castbar.enable = false
 	UF.db['units'].target.castbar.enable = false
+	UF:Update_AllFrames()
 end
