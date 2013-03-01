@@ -209,7 +209,7 @@ function H:ConstructHudFrame(frame,unit)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
 	if frame.unit ~= 'target' then
 		frame:HookScript("OnHide",function(self)
-			if E.db.hud.enabled and E.db.hud.hideOOC and not InCombatLockdown() then
+			if E.db.hud.enabled and E.db.hud.hideOOC and not InCombatLockdown() and E.db.hud.units[frame.unit].enabled then
 				self:Show()
 				self:SetAlpha(0)
 			end
@@ -262,7 +262,18 @@ function H:UpdateFrame(unit)
 			frame:UpdateAllElements()
 		end
 	else
+		if frame:IsVisible() then frame:Hide() end
+		frame:SetAlpha(0)
 		frame:Disable()
+		H:ScheduleTimer('DisableThisShit',1)
+	end
+end
+
+function H:DisableThisShit()
+	for _,f in pairs(self.frames) do
+		if(not self.db.units[frame.unit].enabled) then
+			f:Disable()
+		end
 	end
 end
 
@@ -442,12 +453,12 @@ function H:SimpleLayout()
 	self.db.units.player.classbars.enabled = true
 	self.db.units.player.cpoints.enabled = true
 	self.db.units.player.castbar.enabled = true
-	H:UpdateAllFrames()
 end
 
 function H:ComboLayout()
 	self.db.hideElv = false
 	self.db.hideOOC = true
+	self.db.enableMouse = false
 	self.db.units.targettarget.enabled = false
 	self.db.units.pet.enabled = false
 	self.db.units.pettarget.enabled = false
@@ -458,7 +469,7 @@ function H:ComboLayout()
 	end
 	for element,_ in pairs(self.db.units.target) do
 		if self:GetElement(element) then
-			self.db.units.player[element].enabled = false
+			self.db.units.target[element].enabled = false
 		end
 	end
 	self.db.units.player.health.enabled = true
@@ -470,5 +481,4 @@ function H:ComboLayout()
 	--self.db['units'][unit].castbar.enable
 	UF.db['units'].player.castbar.enable = false
 	UF.db['units'].target.castbar.enable = false
-	UF:Update_AllFrames()
 end

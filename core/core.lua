@@ -114,7 +114,7 @@ end
 local elv_units = { 'player', 'target', 'pet', 'pettarget', 'targettarget' }
 local old_settings = {}
 
-function H:UpdateElvUFSetting(enableChanged,init)
+function H:UpdateElvUFSetting()
     local value
     if E.db.hud.enabled then value = not E.db.hud.hideElv else value = true end
     for _,unit in pairs(elv_units) do
@@ -154,6 +154,7 @@ end
 function H:AuraBarsSuck()
     H.enableAuraBars = true
     H:UpdateAllFrames()
+    H.enableAuraBars = false
 end
 
 function H:Enable()
@@ -174,7 +175,7 @@ function H:Enable()
     end
     self.lowHealthFlash:Show()
     self.lowHealthFlash:SetAlpha(0)
-    H:ScheduleTimer('AuraBarsSuck',5)
+    H:ScheduleTimer('AuraBarsSuck',3)
 end
 
 function H:UpdateMouseSetting()
