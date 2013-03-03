@@ -522,7 +522,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
     return options
 end
 
-local function healthOptions(unit) return H:GenerateElementOptionTable(unit,'health',100,'Health',false,true,true,true,true,true,true,false) end
+local function healthOptions(unit) return H:GenerateElementOptionTable(unit,'health',100,'Health',false,true,true,true,false,true,true,false) end
 local function powerOptions(unit) return H:GenerateElementOptionTable(unit,'power',200,'Power',true,true,true,true,false,true,true,false) end
 local function castbarOptions(unit) return H:GenerateElementOptionTable(unit,'castbar',300,'Castbar',true,true,true,true,true,false,false,false) end
 local function nameOptions(unit) return H:GenerateElementOptionTable(unit,'name',400,'Name',true,false,false,true,false,false,true,false) end

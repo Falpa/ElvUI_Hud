@@ -460,8 +460,10 @@ function H:ComboLayout()
 	self.db.hideOOC = true
 	self.db.enableMouse = false
 	self.db.units.targettarget.enabled = false
-	self.db.units.pet.enabled = false
 	self.db.units.pettarget.enabled = false
+	self.db.units.player.enabled = true
+	self.db.units.target.enabled = true
+	self.db.units.pet.enabled = true
 	for element,_ in pairs(self.db.units.player) do
 		if self:GetElement(element) then
 			self.db.units.player[element].enabled = false
@@ -472,15 +474,25 @@ function H:ComboLayout()
 			self.db.units.target[element].enabled = false
 		end
 	end
+	for element,_ in pairs(self.db.units.pet) do
+		if self:GetElement(element) then
+			self.db.units.target[element].enabled = false
+		end
+	end
 	self.db.units.player.health.enabled = true
 	self.db.units.player.castbar.enabled = true
+	self.db.units.player.aurabars.enabled = true
 	self.db.units.target.health.enabled = true
 	self.db.units.target.name.enabled = true
 	self.db.units.target.raidicon.enabled = true
-	self.db.player.horizCastbar = true
-	self.db.target.horizCastbar = true
-	--self.db['units'][unit].castbar.enable
-	UF.db['units'].player.castbar.enable = false
-	UF.db['units'].target.castbar.enable = false
+	self.db.units.target.aurabars.enabled = true
+	self.db.units.pet.health.enabled = true
+	self.db.units.player.horizCastbar = true
+	self.db.units.target.horizCastbar = true
+	local db = E.db['unitframe']['units']
+	db.player.castbar.enable = false
+	db.target.castbar.enable = false
+	db.player.aurabar.enable = false
+	db.target.aurabar.enable = false
 	UF:Update_AllFrames()
 end

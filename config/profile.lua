@@ -575,6 +575,15 @@ P['hud']['units'] = {
                 ['width'] = 252,
             },
         },
+        ['healcomm'] = {
+            ['enabled'] = true,
+            ['media'] = {
+                ['texture'] = {
+                    ['overide'] = false,
+                    ['statusbar'] = "Minimalist",
+                },
+            }
+        },
         ['raidicon'] = {
             ['enabled'] = true,
             ['anchor'] = {
@@ -738,6 +747,15 @@ P['hud']['units'] = {
                 ['width'] = 252,
             },
         },
+        ['healcomm'] = {
+            ['enabled'] = true,
+            ['media'] = {
+                ['texture'] = {
+                    ['overide'] = false,
+                    ['statusbar'] = "Minimalist",
+                },
+            }
+        },
     },
     ['targettarget'] = {
         ['enabled'] = true,
@@ -835,6 +853,15 @@ P['hud']['units'] = {
                 ['pointTo'] = 'CENTER',
                 ['xOffset'] = 0,
                 ['yOffset'] = 0
+            }
+        },
+        ['healcomm'] = {
+            ['enabled'] = true,
+            ['media'] = {
+                ['texture'] = {
+                    ['overide'] = false,
+                    ['statusbar'] = "Minimalist",
+                },
             }
         },
     },
@@ -962,6 +989,15 @@ P['hud']['units'] = {
                 ['pointTo'] = 'CENTER',
                 ['xOffset'] = 0,
                 ['yOffset'] = 0
+            }
+        },
+        ['healcomm'] = {
+            ['enabled'] = true,
+            ['media'] = {
+                ['texture'] = {
+                    ['overide'] = false,
+                    ['statusbar'] = "Minimalist",
+                },
             }
         },
     },
@@ -1117,6 +1153,15 @@ P['hud']['units'] = {
                 ['width'] = 252,
             },
         },
+        ['healcomm'] = {
+            ['enabled'] = true,
+            ['media'] = {
+                ['texture'] = {
+                    ['overide'] = false,
+                    ['statusbar'] = "Minimalist",
+                },
+            }
+        },
     },
     ['focustarget'] = {
         ['enabled'] = false,
@@ -1214,6 +1259,15 @@ P['hud']['units'] = {
                 ['pointTo'] = 'CENTER',
                 ['xOffset'] = 0,
                 ['yOffset'] = 0
+            }
+        },
+        ['healcomm'] = {
+            ['enabled'] = true,
+            ['media'] = {
+                ['texture'] = {
+                    ['overide'] = false,
+                    ['statusbar'] = "Minimalist",
+                },
             }
         },
     },

@@ -22,6 +22,8 @@ function H:ConstructTargetFrame(frame,unit)
     end
 
     frame.RaidIcon = self:ConstructRaidIcon(frame)
+
+    frame.HealPrediction = self:ConstructHealComm(frame)
     
     frame:SetAlpha(self.db.alpha)
     H:HideOOC(frame)
