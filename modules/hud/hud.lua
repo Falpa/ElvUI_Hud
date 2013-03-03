@@ -476,7 +476,7 @@ function H:ComboLayout()
 	end
 	for element,_ in pairs(self.db.units.pet) do
 		if self:GetElement(element) then
-			self.db.units.target[element].enabled = false
+			self.db.units.pet[element].enabled = false
 		end
 	end
 	self.db.units.player.health.enabled = true
