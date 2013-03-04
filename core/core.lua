@@ -58,10 +58,13 @@ function H:CreateWarningFrame()
 	--f:SetInsertMode("TOP") -- Bugged currently
 end
 
+H.fading = false
 function H:Hide(frame,event)
+    if not UnitExists(frame.unit) then return end
     local alpha = self.db.alpha
     local oocalpha = self.db.alphaOOC
 
+    H.fading = true
     if (event == "PLAYER_REGEN_DISABLED") then
             E:UIFrameFadeIn(frame, 0.3 * (alpha - frame:GetAlpha()), frame:GetAlpha(), alpha)
 	elseif (event == "PLAYER_REGEN_ENABLED") then
@@ -71,6 +74,7 @@ function H:Hide(frame,event)
                 E:UIFrameFadeOut(frame, 0.3 * (oocalpha + frame:GetAlpha()), frame:GetAlpha(), oocalpha)
 			end
 	end
+    H.fading = false
 end
 
 local frames = { }
@@ -92,7 +96,7 @@ function H:UpdateHideSetting()
         for _,f in pairs(frames) do
             self:EnableHide(f)
             local alpha = self.db[InCombatLockdown() and 'alpha' or 'alphaOOC'] or P.unitframe.hud[InCombatLockdown() and 'alpha' or 'alphaOOC']
-            if f.unit ~= 'target' then f:SetAlpha(alpha) else f:SetAlpha(self.db['alpha'] or P.unitframe.hud['alpha']) end
+            f:SetAlpha(alpha)
         end
     end
 end
