@@ -198,6 +198,11 @@ function H:UpdateAll()
 end
 
 function H:Initialize()
+    if E.db.hud then
+        E.db.unitframe.hud = {}
+        E:CopyTable(E.db.unitframe.hud,E.db.hud)
+        E.db.hud = nil
+    end
     self.db = E.db.unitframe.hud
 
     self:CreateWarningFrame()
