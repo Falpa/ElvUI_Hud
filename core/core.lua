@@ -9,7 +9,7 @@ local EP = LibStub("LibElvUIPlugin-1.0")
 H.frames = {}
 
 -- wonder if this is related
-E.db.hud = {}
+E.db.unitframe.hud = {}
 E.Hud = H
 
 function H:updateAllElements(frame)
@@ -31,7 +31,7 @@ function H:SetUpAnimGroup()
 end
 
 function H:Flash(duration)
-    if not E.db.hud.flash then return end
+    if not E.db.unitframe.hud.flash then return end
     if not self.anim then
         H.SetUpAnimGroup(self)
     end
@@ -43,7 +43,7 @@ end
 
 function H:CreateWarningFrame()
 	local f=CreateFrame("ScrollingMessageFrame","ElvUIHudWarning",UIParent)
-	f:SetFont(LSM:Fetch("font", (self.db or P.hud).font),(self.db or P.hud).fontsize*2,"THINOUTLINE")
+	f:SetFont(LSM:Fetch("font", (UF.db or P.unitframe).font),(UF.db or P.unitframe).fontSize*2,"THINOUTLINE")
 	f:SetShadowColor(0,0,0,0)
 	f:SetFading(true)
 	f:SetFadeDuration(0.5)
@@ -62,14 +62,13 @@ function H:Hide(frame,event)
     local alpha = self.db.alpha
     local oocalpha = self.db.alphaOOC
 
-    if not UnitExists(frame.unit) then return end
-	if (event == "PLAYER_REGEN_DISABLED") then
-			E:UIFrameFadeIn(frame, 0.3 * (alpha - frame:GetAlpha()), frame:GetAlpha(), alpha)
+    if (event == "PLAYER_REGEN_DISABLED") then
+            E:UIFrameFadeIn(frame, 0.3 * (alpha - frame:GetAlpha()), frame:GetAlpha(), alpha)
 	elseif (event == "PLAYER_REGEN_ENABLED") then
-			E:UIFrameFadeOut(frame, 0.3 * (oocalpha + frame:GetAlpha()), frame:GetAlpha(), oocalpha)
+            E:UIFrameFadeOut(frame, 0.3 * (oocalpha + frame:GetAlpha()), frame:GetAlpha(), oocalpha)
 	elseif (event == "PLAYER_ENTERING_WORLD") then
 			if (not UnitAffectingCombat("player")) then
-				E:UIFrameFadeOut(frame, 0.3 * (oocalpha + frame:GetAlpha()), frame:GetAlpha(), oocalpha)
+                E:UIFrameFadeOut(frame, 0.3 * (oocalpha + frame:GetAlpha()), frame:GetAlpha(), oocalpha)
 			end
 	end
 end
@@ -92,8 +91,8 @@ function H:UpdateHideSetting()
     else
         for _,f in pairs(frames) do
             self:EnableHide(f)
-            local alpha = self.db[InCombatLockdown() and 'alpha' or 'alphaOOC'] or P.hud[InCombatLockdown() and 'alpha' or 'alphaOOC']
-            f:SetAlpha(alpha)
+            local alpha = self.db[InCombatLockdown() and 'alpha' or 'alphaOOC'] or P.unitframe.hud[InCombatLockdown() and 'alpha' or 'alphaOOC']
+            if f.unit ~= 'target' then f:SetAlpha(alpha) else f:SetAlpha(self.db['alpha'] or P.unitframe.hud['alpha']) end
         end
     end
 end
@@ -117,10 +116,10 @@ local old_settings = {}
 
 function H:UpdateElvUFSetting()
     local value
-    if E.db.hud.enabled then value = not E.db.hud.hideElv else value = true end
+    if E.db.unitframe.hud.enabled then value = not E.db.unitframe.hud.hideElv else value = true end
     for _,unit in pairs(elv_units) do
         if not value and not old_settings[unit] then old_settings[unit] = E.db.unitframe.units[unit]['enable'] end
-        E.db.unitframe.units[unit]['enable'] = (value and old_settings[unit] or (E.db.hud.units[unit]['enabled'] and value)) or value; UF:CreateAndUpdateUF(unit)
+        E.db.unitframe.units[unit]['enable'] = (value and old_settings[unit] or (E.db.unitframe.hud.units[unit]['enabled'] and value)) or value; UF:CreateAndUpdateUF(unit)
     end
 end
 
@@ -190,7 +189,7 @@ function H:UpdateMouseSetting()
 end
 
 function H:UpdateAll()
-    self.db = E.db.hud
+    self.db = E.db.unitframe.hud
 
     self:UpdateAllFrames()
     self:UpdateMouseSetting()
@@ -199,7 +198,7 @@ function H:UpdateAll()
 end
 
 function H:Initialize()
-    self.db = E.db.hud
+    self.db = E.db.unitframe.hud
 
     self:CreateWarningFrame()
     
@@ -222,8 +221,6 @@ function H:Initialize()
     self:UpdateMouseSetting()
     self:UpdateHideSetting()
 
-    -- Why did I need this?
-    --hooksecurefunc(UF,"Update_AllFrames",function(self) H:UpdateAllFrames() end)
     hooksecurefunc(E,"UpdateAll",function(self,ignoreInstall) H:UpdateAll() end)
 
     local f = CreateFrame('Frame', nil, UIParent); 
