@@ -90,13 +90,17 @@ function H:UpdateHideSetting()
     if not self.db.hideOOC then
         for _,f in pairs(frames) do
             self:DisableHide(f)
-            f:SetAlpha(self.db['alpha'])
+            if UnitExists(f.unit) then
+                f:SetAlpha(self.db['alpha'])
+            end
         end
     else
         for _,f in pairs(frames) do
             self:EnableHide(f)
             local alpha = self.db[InCombatLockdown() and 'alpha' or 'alphaOOC'] or P.unitframe.hud[InCombatLockdown() and 'alpha' or 'alphaOOC']
-            f:SetAlpha(alpha)
+            if UnitExists(f.unit) then
+                f:SetAlpha(alpha)
+            end
         end
     end
 end
