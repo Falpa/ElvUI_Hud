@@ -206,10 +206,12 @@ function H:UpdateAll()
 end
 
 function H:Initialize()
-    if E.db.hud then
+    if E.db.hud and not E.db.unitframe.hud.copied then
         E.db.unitframe.hud = {}
         E:CopyTable(E.db.unitframe.hud,E.db.hud)
-        E.db.hud = nil
+        E.db.unitframe.hud.copied = true
+    else
+        E.db.unitframe.hud.copied = true
     end
     self.db = E.db.unitframe.hud
 

@@ -200,6 +200,7 @@ function H:CheckHealthValue(frame,eclipse)
 end
 
 function H:ConstructHudFrame(frame,unit)
+	if not self.db.units then return end
 	if not self.units then self.units = { } end
 	self.units[unit] = frame
 	self.units[unit]['elements'] = { }
