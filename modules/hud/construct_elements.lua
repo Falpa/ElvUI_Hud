@@ -9,6 +9,7 @@ function H:ConstructHealth(frame)
 
 	-- Health Bar
     local health = self:ConfigureStatusBar(frame,'health')
+    health:SetFrameStrata("LOW")
     health:SetOrientation("VERTICAL")
     health:SetFrameLevel(frame:GetFrameLevel() + 5)
     health:Point("LEFT",frame,"LEFT")
@@ -509,3 +510,36 @@ function H:ConstructBuffs(frame)
 
     return buffs
 end 
+
+
+function H:ConstructPortrait(frame)
+    self:AddElement(frame,'portrait2d')
+    self:AddElement(frame,'portrait3d')
+    self:AddElement(frame,'portrait')
+    local portrait2d = self:ConfigureFrame(frame,'portrait2d')
+    local portrait3d = self:ConfigureFrame(frame,'portrait3d')
+    
+    local backdrop = CreateFrame('Frame',nil,frame)
+    portrait2d = frame:CreateTexture(nil, 'OVERLAY')
+    portrait2d:SetTexCoord(0.15,0.85,0.15,0.85)
+    backdrop:SetOutside(portrait2d)
+    backdrop:SetFrameLevel(frame:GetFrameLevel())
+    backdrop:SetTemplate('Default')
+    portrait2d.backdrop = backdrop 
+    frame.Portrait2D = portrait2d
+
+    portrait3d = CreateFrame("PlayerModel", nil, frame)
+    portrait3d:SetFrameStrata('LOW')
+    portrait3d:CreateBackdrop('Default')
+    frame.Portrait3D = portrait3d
+
+    portrait2d.PostUpdate = self.PortraitUpdate
+    portrait3d.PostUpdate = self.PortraitUpdate
+
+    portrait2d.overlay = CreateFrame("Frame", nil, frame)
+    portrait2d.overlay:SetFrameLevel(frame:GetFrameLevel() - 5)
+    portrait3d.overlay = CreateFrame("Frame", nil, frame)
+    portrait3d.overlay:SetFrameLevel(frame:GetFrameLevel() - 5)
+
+    return portrait3d
+end

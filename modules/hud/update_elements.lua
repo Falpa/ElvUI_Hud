@@ -22,6 +22,20 @@ function H:GetCastbar(frame)
 	if frame.Castbar.ForceUpdate then frame.Castbar:ForceUpdate() end
 end
 
+function H:GetPortait(frame)
+	local p2d = self.units[frame.unit].portrait2d
+	local p3d = self.units[frame.unit].portrait3d
+	frame:DisableElement('Portrait')
+	local db = self.db.units[frame.unit].portrait
+	if db["2D"] then
+		frame.Portrait = frame.Portrait2D
+	else
+		frame.Portrait = frame.Portrait3D
+	end
+	frame:EnableElement('Portrait')
+	if frame.Portrait.ForceUpdate then frame.Portrait:ForceUpdate() end
+end
+
 -- This function is only responsible for updating bar sizes for class bar children
 -- textures work normally as does parent size
 function H:UpdateClassBar(frame,element)
@@ -272,6 +286,10 @@ function H:UpdateElement(frame,element)
 	if element == 'castbar' then
 		self:GetCastbar(frame)
 	end
+
+	if element == 'portrait' then
+		self:GetPortait(frame)
+	end
 	
 	local config = self.db.units[frame.unit][element]
 	local size = config['size']
@@ -281,6 +299,7 @@ function H:UpdateElement(frame,element)
 		if not frame.GCD then frame.GCD = self:ConstructGCD(frame) end
 	end
 	if size then
+		if element == 'portrait' and config.overlay then return end
 		if e.statusbars then
 			if element == 'castbar' and size['vertical'] ~= nil then
 				if not self.db.units[frame.unit].horizCastbar then
@@ -405,19 +424,51 @@ function H:UpdateElementAnchor(frame,element)
 			end
 		end
 	end
-	if hasAnchor then
+	if element == 'health' then
+		local health = frame.Health
+		health.bg:ClearAllPoints()
+		if self.db.units[frame.unit].portrait and self.db.units[frame.unit].portrait.enabled and self.db.units[frame.unit].portrait.overlay then
+			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'TOPLEFT')
+			health.bg:Point('TOPRIGHT', health)		
+			health.bg:SetParent(frame.Portrait.overlay)	
+		else
+			health:Point("TOPLEFT", E.Border, -E.Border)		
+			health.bg:SetParent(health)
+			health.bg:SetAllPoints()
+		end
+	end
+	if hasAnchor and not (element == 'portrait' and config.overlay) then
 		local pointFrom = anchor['pointFrom']
 		local attachTo = H:GetAnchor(frame,anchor['attachTo'])
 		local pointTo = anchor['pointTo']
 		local xOffset = anchor['xOffset']
 		local yOffset = anchor['yOffset']
+		local _frame = frame[e]
+		if element == 'portrait' then
+			_frame = _frame.backdrop
+		end
 		if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
 			if config['spaced'] then yOffset = yOffset + config['spacesettings'].offset end
 		end
-		if not frame[e] then return end
-		frame[e]:Point(pointFrom, attachTo, pointTo, xOffset, yOffset)
+		if not _frame then return end
+		_frame:Point(pointFrom, attachTo, pointTo, xOffset, yOffset)
 		if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
 			self:UpdateClassBarAnchors(frame,element)
+		end
+		if element == 'portrait' then
+			local portrait = frame.Portrait
+			portrait:ClearAllPoints()
+			portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
+			portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', E.Border, E.Border)		
+			portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -E.Border, -E.Border)
+			if config.enabled then
+				portrait:SetAlpha(1)
+				portrait:Show()
+				portrait.backdrop:Show()
+			else
+				portrait:Hide()
+				portrait.backdrop:Hide()
+			end
 		end
 	elseif element == 'aurabars' or element == 'castbar' then
 		local f,format,moverFormat
@@ -456,6 +507,20 @@ function H:UpdateElementAnchor(frame,element)
 
 		    E:CreateMover(f.Holder, string.format(moverFormat,frame:GetName()), name, nil, nil, nil, 'ALL,SOLO')
 		    self.moversCreated[frame.unit][element] = true
+		end
+	elseif element == 'portrait' then
+		local portrait = frame.Portrait
+		portrait:ClearAllPoints()
+		-- we got here because overlay was enabled
+		portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+		portrait:SetAllPoints(frame.Health)
+		if config.enabled then
+			portrait:SetAlpha(0.3)
+			portrait:Show()		
+			portrait.backdrop:Hide()
+		else
+			portrait:Hide()
+			portrait.backdrop:Hide()
 		end
 	end
 	if config['tag'] then
@@ -514,6 +579,7 @@ function H:UpdateElementAnchor(frame,element)
 				UF:CreateAndUpdateUF('player')
 			end, 1)
 		end
+		if element == 'portrait' then frame[e]:ForceUpdate() end
 	end
 end
 
@@ -527,6 +593,10 @@ function H.PostUpdateHealth(health, unit, min, max)
 		local newr, newg, newb = oUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
 		health:SetStatusBarColor(newr, newg, newb)
+		if health.bg and health.bg.multiplier then
+			local mu = health.bg.multiplier
+			health.bg:SetVertexColor(newr * mu, newg * mu, newb * mu)
+		end
 	end
 
     -- Flash health below threshold %
@@ -1104,3 +1174,31 @@ function H:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, ex
 	
 	return true
 end
+
+function H:PortraitUpdate(unit)
+	local db = E.db.unitframe.hud.units[unit]
+	
+	if not db then print('Returning because I have no database for unit',unit); return end
+	
+	local portrait = db.portrait
+	if portrait.enabled and portrait.overlay then
+		self:SetAlpha(0); 
+		self:SetAlpha(0.35);
+	else
+		self:SetAlpha(1)
+	end
+	
+	if self:GetObjectType() ~= 'Texture' then
+		local model = self:GetModel()
+		if model and model.find and model:find("worgenmale") then
+			self:SetCamera(1)
+		end	
+		
+		if self:GetFacing() ~= (portrait.rotation / 60) then
+			self:SetFacing(portrait.rotation / 60)
+		end
+
+		self:SetCamDistanceScale(portrait.camDistanceScale)
+	end
+end
+

@@ -64,6 +64,7 @@ function H:ConstructPlayerFrame(frame,unit)
 	frame.PvPText = self:ConstructPvPIndicator(frame)
 	frame.HealPrediction = self:ConstructHealComm(frame)
 	frame.GCD = self:ConstructGCD(frame)
+	frame.Portrait = self:ConstructPortrait(frame)
 	frame:SetAlpha(self.db.alpha)
 
     H:HideOOC(frame)

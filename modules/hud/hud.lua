@@ -101,6 +101,7 @@ local elements = {
 	['gcd'] = 'GCD',
 	['buffs'] = 'Buffs',
 	['debuffs'] = 'Debuffs',
+	['portrait'] = 'Portrait',
 }
 
 H.Elements = elements
@@ -341,18 +342,8 @@ function H:ConfigureStatusBar(frame,element,parent,name,t)
     bg:SetTexture(E['media'].blankTex)
     bg:SetTexture(.1, .1, .1)
     bg:SetAlpha(.2)
-    bg.multiplier = 0.3 
+    bg.multiplier = 0.25
     sb.bg = bg
-
-    -- statusbar frame border
-    local mult = E.PixelMode and 1 or 2
-	local sbframe = CreateFrame("Frame", nil, sb)
-	sbframe:SetPoint("TOPLEFT", sb, "TOPLEFT", E:Scale(-mult), E:Scale(mult))
-	sbframe:SetPoint("BOTTOMRIGHT", sb, "BOTTOMRIGHT", E:Scale(mult), E:Scale(-mult))
-	sbframe:SetFrameLevel(frame:GetFrameLevel() + 4)
-
-	sbframe:SetTemplate("Default")
-	sb.FrameBorder = sbframe
 
 	if not self.units[frame.unit][element].statusbars then
 		self.units[frame.unit][element].statusbars =  { }
@@ -430,6 +421,15 @@ function H:UpdateElementSizes(unit,isWidth,newSize)
 	end
 end
 
+function H:OldDefault()
+	self.db.units.player.width = 39
+	self.db.units.player.health.size.width = 15
+	self.db.units.player.portrait.enabled = false
+	self.db.units.target.width = 39
+	self.db.units.target.health.size.width = 15
+	self.db.units.target.portrait.enabled = false
+end
+
 function H:SimpleLayout()
 	self.db.units.target.enabled = false
 	self.db.units.targettarget.enabled = false
@@ -440,7 +440,9 @@ function H:SimpleLayout()
 			self.db.units.player[element].enabled = false
 		end
 	end
+	self.db.units.player.width = 39
 	self.db.units.player.health.enabled = true
+	self.db.units.player.health.size.width = 15
 	self.db.units.player.power.enabled = true
 	self.db.units.player.power.anchor.xOffset = 550
 	self.db.units.player.classbars.enabled = true
@@ -485,6 +487,10 @@ function H:ComboLayout()
 	self.db.units.pet.health.enabled = true
 	self.db.units.player.horizCastbar = true
 	self.db.units.target.horizCastbar = true
+	self.db.units.player.width = 39
+	self.db.units.player.health.size.width = 15
+	self.db.units.target.width = 39
+	self.db.units.target.health.size.width = 15
 	local db = E.db['unitframe']['units']
 	db.player.castbar.enable = false
 	db.target.castbar.enable = false
