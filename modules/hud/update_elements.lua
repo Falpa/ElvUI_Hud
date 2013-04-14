@@ -150,13 +150,11 @@ function H:UpdateClassBar(frame,element)
 	for i = 1, maxPoints do
 		frame[e][i]:Size(size.width,(size.height - (spaced and totalspacing or 2)) / numPoints)
 		if not frame[e][i].SetAlpha_ then frame[e][i].SetAlpha_ = frame[e][i].SetAlpha; frame[e][i].SetAlpha = function(self,alpha) self:SetAlpha_(self.enabled and alpha or self.alpha) end end
-		if E.myclass ~= 'MONK' and E.myclass ~= 'WARLOCK' and E.myclass ~= 'DRUID' then	
-			if E.myclass ~= 'DEATHKNIGHT' then
-				frame[e][i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
+		if E.myclass ~= 'MONK' and E.myclass ~= 'WARLOCK' and E.myclass ~= 'DRUID' and E.myclass ~= 'DEATHKNIGHT' and E.myclass ~= 'ROGUE' then	
+			frame[e][i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
 
-				if frame[e][i].bg then
-					frame[e][i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
-				end
+			if frame[e][i].bg then
+				frame[e][i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
 			end
 		end
 		if config['enabled'] and i <= numPoints then

@@ -292,11 +292,11 @@ P['unitframe']['hud']['units'] = {
             ['rotation'] = 0,
             ['camDistanceScale'] = 1,
             ['anchor'] = { -- for non-overlay
-                ['pointFrom'] = 'BOTTOM',
+                ['pointFrom'] = 'TOP',
                 ['attachTo'] = 'health',
-                ['pointTo'] = 'TOP',
+                ['pointTo'] = 'BOTTOM',
                 ['xOffset'] = 0,
-                ['yOffset'] = 15,
+                ['yOffset'] = -5,
             },
             ['size'] = { -- for non-overlay
                 ['height'] = 30,
@@ -452,6 +452,7 @@ P['unitframe']['hud']['units'] = {
                 ['xOffset'] = 0,
                 ['yOffset'] = 0
             }
+
         },
         ['portrait'] = {
             ['enabled'] = true,
@@ -460,11 +461,11 @@ P['unitframe']['hud']['units'] = {
             ['rotation'] = 0,
             ['camDistanceScale'] = 1,
             ['anchor'] = { -- for non-overlay
-                ['pointFrom'] = 'BOTTOM',
+                ['pointFrom'] = 'TOP',
                 ['attachTo'] = 'health',
-                ['pointTo'] = 'TOP',
+                ['pointTo'] = 'BOTTOM',
                 ['xOffset'] = 0,
-                ['yOffset'] = 15,
+                ['yOffset'] = -5,
             },
             ['size'] = { -- for non-overlay
                 ['height'] = 30,
