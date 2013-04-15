@@ -49,7 +49,7 @@ function H:ConstructPlayerFrame(frame,unit)
 
 	if E.myclass == "MAGE" then
 		frame.ArcaneChargeBar = self:ConstructArcaneBar(frame)
-		frame.ClassBar = 'ArcanceChargeBar'
+		frame.ClassBar = 'ArcaneChargeBar'
 	end
 
 	if E.myclass == "ROGUE" or E.myclass == "DRUID" then
