@@ -408,18 +408,20 @@ function H:UpdateElementSizes(unit,isWidth,newSize)
 	
 	for element,_ in pairs(elements) do
 		local config = self.db.units[unit][element]
-		local size = config['size']
-		if size then
-			local config = true
-			if element == 'castbar' and (unit == 'player' or unit == 'target') then 
-				if self.db.units[unit].horizCastbar then
-					config = false
-				else
-					size = size['vertical']
+		if config then
+			local size = config['size']
+			if size then
+				local config = true
+				if element == 'castbar' and (unit == 'player' or unit == 'target') then 
+					if self.db.units[unit].horizCastbar then
+						config = false
+					else
+						size = size['vertical']
+					end
 				end
+				local var = (isWidth and 'width') or 'height'
+				if config then size[var] = newSize end
 			end
-			local var = (isWidth and 'width') or 'height'
-			if config then size[var] = newSize end
 		end
 	end
 end
