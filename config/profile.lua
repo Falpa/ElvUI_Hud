@@ -287,21 +287,8 @@ P['unitframe']['hud']['units'] = {
         },
         ['portrait'] = {
             ['enabled'] = true,
-            ['overlay'] = true,
-            ['2D'] = false,
             ['rotation'] = 0,
             ['camDistanceScale'] = 1,
-            ['anchor'] = { -- for non-overlay
-                ['pointFrom'] = 'TOP',
-                ['attachTo'] = 'health',
-                ['pointTo'] = 'BOTTOM',
-                ['xOffset'] = 0,
-                ['yOffset'] = -5,
-            },
-            ['size'] = { -- for non-overlay
-                ['height'] = 30,
-                ['width'] = 30,
-            },
         },
     },
     ['target'] = {
@@ -456,21 +443,8 @@ P['unitframe']['hud']['units'] = {
         },
         ['portrait'] = {
             ['enabled'] = true,
-            ['overlay'] = true,
-            ['2D'] = false,
             ['rotation'] = 0,
             ['camDistanceScale'] = 1,
-            ['anchor'] = { -- for non-overlay
-                ['pointFrom'] = 'TOP',
-                ['attachTo'] = 'health',
-                ['pointTo'] = 'BOTTOM',
-                ['xOffset'] = 0,
-                ['yOffset'] = -5,
-            },
-            ['size'] = { -- for non-overlay
-                ['height'] = 30,
-                ['width'] = 30,
-            },
         },
     },
     ['pet'] = {

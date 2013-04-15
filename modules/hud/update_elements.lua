@@ -22,20 +22,6 @@ function H:GetCastbar(frame)
 	if frame.Castbar.ForceUpdate then frame.Castbar:ForceUpdate() end
 end
 
-function H:GetPortait(frame)
-	local p2d = self.units[frame.unit].portrait2d
-	local p3d = self.units[frame.unit].portrait3d
-	frame:DisableElement('Portrait')
-	local db = self.db.units[frame.unit].portrait
-	if db["2D"] then
-		frame.Portrait = frame.Portrait2D
-	else
-		frame.Portrait = frame.Portrait3D
-	end
-	frame:EnableElement('Portrait')
-	if frame.Portrait.ForceUpdate then frame.Portrait:ForceUpdate() end
-end
-
 -- This function is only responsible for updating bar sizes for class bar children
 -- textures work normally as does parent size
 function H:UpdateClassBar(frame,element)
@@ -284,10 +270,6 @@ function H:UpdateElement(frame,element)
 	if element == 'castbar' then
 		self:GetCastbar(frame)
 	end
-
-	if element == 'portrait' then
-		self:GetPortait(frame)
-	end
 	
 	local config = self.db.units[frame.unit][element]
 	local size = config['size']
@@ -422,29 +404,14 @@ function H:UpdateElementAnchor(frame,element)
 			end
 		end
 	end
-	if element == 'health' then
-		local health = frame.Health
-		health.bg:ClearAllPoints()
-		if self.db.units[frame.unit].portrait and self.db.units[frame.unit].portrait.enabled and self.db.units[frame.unit].portrait.overlay then
-			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'TOPLEFT')
-			health.bg:Point('TOPRIGHT', health)		
-			health.bg:SetParent(frame.Portrait.overlay)	
-		else
-			health:Point("TOPLEFT", E.Border, -E.Border)		
-			health.bg:SetParent(health)
-			health.bg:SetAllPoints()
-		end
-	end
-	if hasAnchor and not (element == 'portrait' and config.overlay) then
+
+	if hasAnchor then
 		local pointFrom = anchor['pointFrom']
 		local attachTo = H:GetAnchor(frame,anchor['attachTo'])
 		local pointTo = anchor['pointTo']
 		local xOffset = anchor['xOffset']
 		local yOffset = anchor['yOffset']
 		local _frame = frame[e]
-		if element == 'portrait' then
-			_frame = _frame.backdrop
-		end
 		if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
 			if config['spaced'] then yOffset = yOffset + config['spacesettings'].offset end
 		end
@@ -452,21 +419,6 @@ function H:UpdateElementAnchor(frame,element)
 		_frame:Point(pointFrom, attachTo, pointTo, xOffset, yOffset)
 		if (element == 'classbars' or element == 'mushroom' or element == 'cpoints') then
 			self:UpdateClassBarAnchors(frame,element)
-		end
-		if element == 'portrait' then
-			local portrait = frame.Portrait
-			portrait:ClearAllPoints()
-			portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
-			portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', E.Border, E.Border)		
-			portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -E.Border, -E.Border)
-			if config.enabled then
-				portrait:SetAlpha(1)
-				portrait:Show()
-				portrait.backdrop:Show()
-			else
-				portrait:Hide()
-				portrait.backdrop:Hide()
-			end
 		end
 	elseif element == 'aurabars' or element == 'castbar' then
 		local f,format,moverFormat
@@ -509,16 +461,19 @@ function H:UpdateElementAnchor(frame,element)
 	elseif element == 'portrait' then
 		local portrait = frame.Portrait
 		portrait:ClearAllPoints()
-		-- we got here because overlay was enabled
-		portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+		portrait:SetFrameLevel(frame.Health:GetFrameLevel())
+		portrait.overlay:SetFrameLevel(portrait:GetFrameLevel() + 1)
+		portrait.overlay:SetAllPoints()
+		portrait.overlay:Point("TOP",frame.Health)
+		portrait.overlay:Point("BOTTOM",frame.Health:GetStatusBarTexture(),"TOP")
 		portrait:SetAllPoints(frame.Health)
 		if config.enabled then
+			portrait.overlay:Show()
 			portrait:SetAlpha(0.3)
 			portrait:Show()		
-			portrait.backdrop:Hide()
 		else
+			portrait.overlay:Hide()
 			portrait:Hide()
-			portrait.backdrop:Hide()
 		end
 	end
 	if config['tag'] then
@@ -594,6 +549,13 @@ function H.PostUpdateHealth(health, unit, min, max)
 		if health.bg and health.bg.multiplier then
 			local mu = health.bg.multiplier
 			health.bg:SetVertexColor(newr * mu, newg * mu, newb * mu)
+		end
+
+		if E.db.unitframe.hud.units[unit].portrait and E.db.unitframe.hud.units[unit].portrait.enabled then
+			local overlay = health:GetParent().Portrait.overlay
+			local r,g,b=health:GetStatusBarColor()
+			local mu=health.bg.multiplier
+			overlay:SetBackdropColor(r*mu,g*mu,b*mu)
 		end
 	end
 

@@ -511,35 +511,25 @@ function H:ConstructBuffs(frame)
     return buffs
 end 
 
+local function CreatePortaitOverlay(frame,portrait)
+    local pOverlay = CreateFrame("Frame", nil, frame.Health)
+    pOverlay:SetBackdrop({ bgFile = E["media"].blankTex, })
+    pOverlay:SetBackdropColor(.1, .1, .1, 1)
+    pOverlay:SetPoint("BOTTOMLEFT", portrait)
+    pOverlay:SetPoint("TOPRIGHT", portrait)
+    portrait.overlay = pOverlay
+end
 
 function H:ConstructPortrait(frame)
-    self:AddElement(frame,'portrait2d')
-    self:AddElement(frame,'portrait3d')
     self:AddElement(frame,'portrait')
-    local portrait2d = self:ConfigureFrame(frame,'portrait2d')
-    local portrait3d = self:ConfigureFrame(frame,'portrait3d')
+    local portrait = self:ConfigureFrame(frame,'portrait',nil,frame.Health)
     
-    local backdrop = CreateFrame('Frame',nil,frame)
-    portrait2d = frame:CreateTexture(nil, 'OVERLAY')
-    portrait2d:SetTexCoord(0.15,0.85,0.15,0.85)
-    backdrop:SetOutside(portrait2d)
-    backdrop:SetFrameLevel(frame:GetFrameLevel())
-    backdrop:SetTemplate('Default')
-    portrait2d.backdrop = backdrop 
-    frame.Portrait2D = portrait2d
+    portrait = CreateFrame("PlayerModel", nil, frame)
+    portrait:SetFrameStrata('LOW')
+    
+    portrait.PostUpdate = self.PortraitUpdate
 
-    portrait3d = CreateFrame("PlayerModel", nil, frame)
-    portrait3d:SetFrameStrata('LOW')
-    portrait3d:CreateBackdrop('Default')
-    frame.Portrait3D = portrait3d
+    CreatePortaitOverlay(frame,portrait)
 
-    portrait2d.PostUpdate = self.PortraitUpdate
-    portrait3d.PostUpdate = self.PortraitUpdate
-
-    portrait2d.overlay = CreateFrame("Frame", nil, frame)
-    portrait2d.overlay:SetFrameLevel(frame:GetFrameLevel() - 5)
-    portrait3d.overlay = CreateFrame("Frame", nil, frame)
-    portrait3d.overlay:SetFrameLevel(frame:GetFrameLevel() - 5)
-
-    return portrait3d
+    return portrait
 end

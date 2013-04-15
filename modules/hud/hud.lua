@@ -334,13 +334,15 @@ function H:ConfigureStatusBar(frame,element,parent,name,t)
  
 	-- Frame strata/level
 	sb:SetFrameStrata(parent:GetFrameStrata())
-	sb:SetFrameLevel(parent:GetFrameLevel() + 5)
+	sb:SetFrameLevel(parent:GetFrameLevel())
 
 	-- Create the status bar background
     local bg = sb:CreateTexture(nil, 'BORDER')
     bg:SetAllPoints()
     bg:SetTexture(E['media'].blankTex)
-    bg:SetTexture(.1, .1, .1)
+    if element == 'gcd' then
+    	bg:SetTexture(.1,.1,.1)
+    end
     bg:SetAlpha(.2)
     bg.multiplier = 0.25
     sb.bg = bg
@@ -385,10 +387,11 @@ function H:ConfigureTexture(frame,element,parent,name)
 	return t
 end
 
-function H:ConfigureFrame(frame,element,visible)
+function H:ConfigureFrame(frame,element,visible,parent)
 	if visible == nil then visible = false end
+	if parent == nil then parent = frame end
 	local name = frame.unit..'_hud_'..element
-	local f = CreateFrame('Frame',name,frame)
+	local f = CreateFrame('Frame',name,parent)
 	self.units[frame.unit][element].frame = f
 	return f
 end

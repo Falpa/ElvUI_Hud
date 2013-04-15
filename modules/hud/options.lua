@@ -384,16 +384,7 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
     end
 
     if element == 'portrait' then
-        options.args.overlay = {
-            type = "toggle",
-            order = 2,
-            name = L["Overlay"],
-        }
-        options.args["2D"] = {
-            type = "toggle",
-            order = 3,
-            name = L["2D"],
-        }
+        options.args.enabled.set = function(info,value) E.db.unitframe.hud.units[unit][element][ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
         options.args.rotation = {
             type = 'range',
             name = L['Model Rotation'],
@@ -407,8 +398,6 @@ function H:GenerateElementOptionTable(unit,element,order,name,hasAnchor,hasSize,
             order = 5,
             min = 0.01, max = 4, step = 0.01,
         }
-        options.args.anchor.disabled = function() return E.db.unitframe.hud.units[unit].portrait.overlay end
-        options.args.size.disabled = function() return E.db.unitframe.hud.units[unit].portrait.overlay end
     end
 
     return options
@@ -430,7 +419,7 @@ local function mushroomOptions(unit) return H:GenerateElementOptionTable(unit,'m
 local function gcdOptions(unit) return H:GenerateElementOptionTable(unit,'gcd',1300,'GCD Spark',true,true,false,false,false) end
 local function buffOptions(unit) return H:GenerateElementOptionTable(unit,'buffs',725,'Buffs',true,true,false,false,false) end
 local function debuffOptions(unit) return H:GenerateElementOptionTable(unit,'debuffs',750,'Debuffs',true,true,false,false,false) end
-local function portraitOptions(unit) return H:GenerateElementOptionTable(unit,'portrait',850,'Portrait',true,true,false,false,false) end
+local function portraitOptions(unit) return H:GenerateElementOptionTable(unit,'portrait',850,'Portrait',false,false,false,false,false) end
 
 local elementOptions = {
 	['health'] = healthOptions,
