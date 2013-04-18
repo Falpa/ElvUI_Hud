@@ -311,7 +311,7 @@ function H:UpdateElement(frame,element)
 			end
 		end
 		if element == 'health' then
-			frame:Size(frame.health:GetSize())
+			frame:Size(frame.Health:GetSize())
 		end
 	end
 	local texture
