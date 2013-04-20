@@ -196,7 +196,7 @@ P['unitframe']['hud']['units'] = {
         ['aurabars'] = {
             ['enabled'] = true,
             ['size'] = {
-                ['height'] = 30,
+                ['height'] = 20,
                 ['width'] = 225,
             },
             ['growthDirection'] = 'DOWN',
@@ -400,7 +400,7 @@ P['unitframe']['hud']['units'] = {
         ['aurabars'] = {
             ['enabled'] = true,
             ['size'] = {
-                ['height'] = 30,
+                ['height'] = 20,
                 ['width'] = 225,
             },
             ['growthDirection'] = 'DOWN'

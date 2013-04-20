@@ -119,7 +119,7 @@ function H:ConstructCastbar(frame)
     --Set to castbar.Icon
     vcastbar.ButtonIcon = icon
     frame.VertCastbar = vcastbar
-    
+
     hcastbar:SetFrameLevel(6)
 
     hcastbar.CustomTimeText = H.CustomCastTimeText
@@ -328,13 +328,10 @@ function H:ConstructComboPoints(frame)
 end
 
 function H.ConstructAuraBars(self,unit)
-    local config = E.db.unitframe.hud.units[unit]['aurabars']
-    local size = config.size
     local bar = self.statusBar
     
     self:SetTemplate('Default')
 
-    bar:Size(size.width,size.height)
     bar:SetInside(self)
 
     bar:SetStatusBarTexture(LSM:Fetch("statusbar", UF.db.statusbar))

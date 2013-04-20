@@ -345,6 +345,10 @@ function H:UpdateElement(frame,element)
 		if not aurabars then return end
 		aurabars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 		aurabars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+		aurabars.auraBarHeight = size.height
+		aurabars.auraBarWidth = size.width
+		aurabars:Size(size.width,size.height)
+		if aurabars.SetAnchors then aurabars:SetAnchors() end
 	end
 end
 
@@ -528,7 +532,7 @@ function H:UpdateElementAnchor(frame,element)
 	end
 
 	if enabled then
-		if element ~= 'aurabars' or enableAuraBars then frame:EnableElement(e) end
+		if element ~= 'aurabars' or enableAuraBars then frame:EnableElement(e); if element == 'aurabars' then frame[e]:SetAnchors() end end
 		frame[e]:SetAlpha(1)
 		if config['value'] and frame[e].value then
 			if config['value']['enabled'] then
