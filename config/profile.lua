@@ -85,6 +85,8 @@ P['unitframe']['hud']['units'] = {
             ['enabled'] = true,
             ['ticks'] = true,
             ['tickcolor'] = { r = 0.4, g = 0.4, b = 0.4 },
+            ['format'] = 'REMAINING',
+            ['displayTarget'] = false,
             ['size'] = {
                 ['horizontal'] = {
                     ['height'] = 26,
@@ -363,6 +365,7 @@ P['unitframe']['hud']['units'] = {
                     ['width'] = 10,
                 },
             },
+            ['format'] = 'REMAINING',
         },
         ['name'] = {
             ['enabled'] = true,
@@ -510,6 +513,7 @@ P['unitframe']['hud']['units'] = {
                 ['height'] = 112,
                 ['width'] = 10,
             },
+            ['format'] = 'REMAINING',
         },
         ['name'] = {
             ['enabled'] = true,
@@ -796,6 +800,7 @@ P['unitframe']['hud']['units'] = {
                 ['height'] = 112,
                 ['width'] = 10,
             },
+            ['format'] = 'REMAINING',
         },
         ['name'] = {
             ['enabled'] = true,
